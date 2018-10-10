@@ -29,6 +29,7 @@ import static org.springframework.http.HttpHeaders.USER_AGENT;
 public class LinkmakerApplication /*implements CommandLineRunner*/ {
 
 
+	//https://timezonedb.com/references/list-time-zone
 	private static final String URL = "http://api.timezonedb.com/v2.1/list-time-zone";
 	private static final String KEY = "B8DDW1KFOESH";
 
