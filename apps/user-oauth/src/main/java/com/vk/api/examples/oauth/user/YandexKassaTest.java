@@ -27,13 +27,11 @@ import java.util.stream.Stream;
 
 public class YandexKassaTest {
 
-    private static final Logger LOG = LoggerFactory.getLogger(VKAuthTest.class);
+    private static final Logger LOG = LoggerFactory.getLogger(YandexKassaTest.class);
 
     private static final String YANDEX_KASSA_API = "https://payment.yandex.net/api/v3/payments";
-    public static final String SHOP_ID = "545016";
-    public static final String PASS = "test_M7ykGn7_OvItR9QlxjBhrzaGBQvOeijsJ5YCWD8ClcU";
-
-
+    private static final String SHOP_ID = "545016";
+    private static final String PASS = "test_M7ykGn7_OvItR9QlxjBhrzaGBQvOeijsJ5YCWD8ClcU";
 
     public static void main(String[] args) throws Exception {
 
