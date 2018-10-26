@@ -1,4 +1,5 @@
 rootProject.name = 'linkmaker'
 include 'apps'
 include 'apps:user-oauth'
+include 'apps:web-spring'
 

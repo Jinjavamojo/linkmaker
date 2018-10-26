@@ -1,9 +1,15 @@
 subprojects {
 	apply plugin: 'java'
+	apply plugin: 'maven'
+	apply plugin: 'war'
+
 
 	group 'apps'
 	version '0.5.12'
 
+	tasks.withType(JavaCompile) {
+		options.encoding = 'US-ASCII'
+	}
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8
 	//versionSpring '5.0-SNAPSHOT'
