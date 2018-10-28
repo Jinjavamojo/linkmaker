@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-@Controller
+//@Controller
 public class ProjectController {
 
     @RequestMapping("/projects")
@@ -21,12 +21,12 @@ public class ProjectController {
 //        return "redirect:/projects.html";
 //    }
 
-    @ModelAttribute("projects")
-    public List<Project> populateSeedStarters() {
-        Project project = new Project();
-        project.setName("123");
-        List<Project> list = new ArrayList<>();
-        list.add(project);
-        return list;
-    }
+//    @ModelAttribute("projects")
+//    public List<Project> populateSeedStarters() {
+//        Project project = new Project();
+//        project.setName("123");
+//        List<Project> list = new ArrayList<>();
+//        list.add(project);
+//        return list;
+//    }
 }

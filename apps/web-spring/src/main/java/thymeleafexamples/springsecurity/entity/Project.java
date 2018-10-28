@@ -3,6 +3,7 @@ package thymeleafexamples.springsecurity.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.Date;
 
 @Entity
 @Table(name = "projects")
@@ -12,6 +13,15 @@ public class Project extends AbstractDomainClass {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "desc")
+    private String desc;
+
+    @Column(name = "date")
+    private Date projectStartDate;
+
+    @Column(name = "autoPaymentAvailable")
+    private Boolean autoPaymentAvailable;
+
     @ManyToOne
     @NotBlank(message="{validation.project.user.notBlank}")
     @JoinColumn(name = "userId")
@@ -20,6 +30,30 @@ public class Project extends AbstractDomainClass {
     @NotBlank(message="{validation.project.price.notBlank}")
     @Column(name = "price")
     private Double price;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public Date getProjectStartDate() {
+        return projectStartDate;
+    }
+
+    public void setProjectStartDate(Date projectStartDate) {
+        this.projectStartDate = projectStartDate;
+    }
+
+    public Boolean getAutoPaymentAvailable() {
+        return autoPaymentAvailable;
+    }
+
+    public void setAutoPaymentAvailable(Boolean autoPaymentAvailable) {
+        this.autoPaymentAvailable = autoPaymentAvailable;
+    }
 
     public String getName() {
         return name;

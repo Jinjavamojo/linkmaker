@@ -1,30 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
-    <head>
-        <title>Thymeleafexamples - Spring Security</title>
-        <meta charset="utf-8" />
-        <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
-    </head>
-    <body>
-        <div th:fragment="logout" class="logout"
-             sec:authorize="isAuthenticated()">
-            Logged user: <span sec:authentication="name">Bob</span> |
-            Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span> |
-            <!--/* When using CSRF this needs to be a POST */-->
-            <form th:action="@{/logout}" method="post" style="display:inline"><input type="submit" value="Logout"/></form>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"-->
+    <!--th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>-->
+
+    <title>
+        Projects
+    </title>
+
+</head>
+<body>
+<!--<div th:replace="~{fragments/header :: header}">Header</div>-->
+<div class="container">
+    <div class="text-left" th:if="${not #lists.isEmpty(projects)}">
+
+        <h1>Projects</h1>
+
+        <div class="lead">
+            <table class="table table-striped">
+                <tr>
+                    <th>Name</th>
+                    <th>Стоимость</th>
+                    <th>Ссылка на оплату</th>
+                    <th>Дата начала курса</th>
+                    <th>Возможность автоплатежа</th>
+                </tr>
+                <tr th:each="project : ${projects}">
+                    <td th:text="${project.name}">Singer First Name</td>
+                    <!--<td th:text="${singer.lastName}">Singer Last Name</td>-->
+                    <!--<td th:text="${singer.description}">Singer Description</td>-->
+                    <!--<td><a th:href="${ '/singers/' + singer.id}">View</a></td>-->
+                    <!--<td><a th:href="${'/singers/edit/' + singer.id}">Edit</a></td>-->
+                </tr>
+            </table>
         </div>
-        <h1>Thymeleafexamples - Spring Security</h1>
-        <p>This is a demo of Thymeleaf and Spring-Security integration.</p>
-        <h2>Private pages</h2>
-        <p>This is a public page, but you can navigate to protected pages to trigger authentication.</p>
-        <ul>
-            <li>Go to <a href="admin/index.html" th:href="@{/admin/index.html}">administration zone</a> (only admins)</li>
-            <li>Go to <a href="user/index.html" th:href="@{/user/index.html}">user zone</a> (only users)</li>
-            <li>Go to <a href="user/index.html" th:href="@{/shared/index.html}">shared zone</a> (both users and admins)</li>
-        </ul>
-        <h2>Exception handling</h2>
-        <ul>
-            <li>You can <a href="error.html" th:href="@{/simulateError.html}">simulate an exception</a> to see custom ErrorPage.</li>
-        </ul>
-    </body>
+
+        <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
+    </div>
+</div>
+
+</body>
 </html>

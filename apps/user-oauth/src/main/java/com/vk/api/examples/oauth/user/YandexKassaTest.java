@@ -30,13 +30,13 @@ public class YandexKassaTest {
     private static final Logger LOG = LoggerFactory.getLogger(YandexKassaTest.class);
 
     private static final String YANDEX_KASSA_API = "https://payment.yandex.net/api/v3/payments";
-    private static final String SHOP_ID = "545016";
-    private static final String PASS = "test_M7ykGn7_OvItR9QlxjBhrzaGBQvOeijsJ5YCWD8ClcU";
+    private static final String SHOP_ID = "";
+    private static final String PASS = "";
 
     public static void main(String[] args) throws Exception {
 
-        generateGetPaymentInfo("2362e42c-000f-5000-8000-151677e0ff24");
-        //createRequestToGeneratePayment();
+        //generateGetPaymentInfo("2362e42c-000f-5000-8000-151677e0ff24");
+        createRequestToGeneratePayment();
 
     }
 
