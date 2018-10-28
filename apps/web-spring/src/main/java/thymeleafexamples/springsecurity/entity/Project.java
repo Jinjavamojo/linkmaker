@@ -13,14 +13,17 @@ public class Project extends AbstractDomainClass {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "desc")
-    private String desc;
+    @Column(name = "project_description", columnDefinition="text")
+    private String projectDescription;
 
-    @Column(name = "date")
+    @Column(name = "project_startDate")
     private Date projectStartDate;
 
-    @Column(name = "autoPaymentAvailable")
+    @Column(name = "autopayment_available")
     private Boolean autoPaymentAvailable;
+
+    @Column(name = "payment_link")
+    private String paymentLink;
 
     @ManyToOne
     @NotBlank(message="{validation.project.user.notBlank}")
@@ -31,12 +34,20 @@ public class Project extends AbstractDomainClass {
     @Column(name = "price")
     private Double price;
 
-    public String getDesc() {
-        return desc;
+    public String getProjectDescription() {
+        return projectDescription;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setProjectDescription(String projectDescription) {
+        this.projectDescription = projectDescription;
+    }
+
+    public String getPaymentLink() {
+        return paymentLink;
+    }
+
+    public void setPaymentLink(String paymentLink) {
+        this.paymentLink = paymentLink;
     }
 
     public Date getProjectStartDate() {
