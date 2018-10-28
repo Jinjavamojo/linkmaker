@@ -8,6 +8,9 @@ tomcat {
 }
 
 buildscript {
+
+
+
     repositories {
         jcenter();
     }
@@ -16,8 +19,46 @@ buildscript {
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.4.2'
 
     }
+
+
 }
 
+
+def tomcatHome='D:/ll/apache-tomcat-8.5.34'
+def tomcat_webapps = tomcatHome + '/webapps'
+
+task startTom(dependsOn: ['stopTom','deployWar']) << {
+    ant.exec(osfamily: 'windows', dir: "", executable: 'cmd.exe', spawn: true) {
+        env(key: 'NOPAUSE', value: true)
+        arg(line: '/c run.bat ' )
+    }
+}
+
+task deployWar(type: Copy, dependsOn: ['undeploy','war']) {
+    from war.archivePath
+    into tomcat_webapps
+}
+
+task undeploy() << {
+    delete "${tomcatHome}/webapps/$project.name"
+    delete "${tomcatHome}/webapps/$project.name" + ".war"
+}
+
+task ech() << {
+    println "$project.name"
+}
+
+task redeploy(type: Copy,  dependsOn: ['undeploy','war']) {
+    from war.archivePath
+    into tomcat_webapps
+}
+
+task stopTom() << {
+    ant.exec(osfamily: 'windows', dir: "${tomcatHome}/bin", executable: 'cmd.exe', spawn: true) {
+        env(key: 'NOPAUSE', value: true)
+        arg(line: '/c shutdown.bat')
+    }
+}
 
 
 repositories {
@@ -43,6 +84,7 @@ dependencies {
     compile group: 'org.springframework.security', name: 'spring-security-config', version:'5.1.0.RELEASE'
     compile group: 'org.springframework', name: 'spring-orm', version:'5.1.0.RELEASE'
     compile group: 'org.hibernate', name: 'hibernate-validator', version:'6.0.7.Final'
+    //compile "org.webjars:bootstrap:'3.3.7-1"
     compile group: 'org.postgresql', name: 'postgresql', version: '42.2.2'
     compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
     compile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.25'

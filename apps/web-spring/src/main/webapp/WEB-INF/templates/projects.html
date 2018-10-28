@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"-->
+            <!--th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>-->
+
+    <title>
+        Projects
+    </title>
+
+</head>
+<body>
+<!--<div th:replace="~{fragments/header :: header}">Header</div>-->
+<div class="container">
+    <div class="text-left" th:if="${not #lists.isEmpty(projects)}">
+
+        <h1>Projects</h1>
+
+        <div class="lead">
+            <table class="table table-striped">
+                <tr>
+                    <th>Name</th>
+                    <th>Стоимость</th>
+                    <th>Ссылка на оплату</th>
+                    <th>Дата начала курса</th>
+                    <th>Возможность автоплатежа</th>
+                </tr>
+                <tr th:each="project : ${projects}">
+                    <td th:text="${project.name}">Singer First Name</td>
+                    <!--<td th:text="${singer.lastName}">Singer Last Name</td>-->
+                    <!--<td th:text="${singer.description}">Singer Description</td>-->
+                    <!--<td><a th:href="${ '/singers/' + singer.id}">View</a></td>-->
+                    <!--<td><a th:href="${'/singers/edit/' + singer.id}">Edit</a></td>-->
+                </tr>
+            </table>
+        </div>
+
+        <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
+    </div>
+</div>
+
+</body>
+</html>

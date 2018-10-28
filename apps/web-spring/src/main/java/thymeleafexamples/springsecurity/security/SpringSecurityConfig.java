@@ -37,6 +37,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
 
     public SpringSecurityConfig() {
         super();
@@ -48,12 +50,15 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .antMatchers("/error.html").anonymous()
-                .antMatchers("/index.html").hasAnyRole("EMPLOYEE", "ADMIN")
+                .antMatchers("/projects.html").hasAnyRole("EMPLOYEE","ADMIN")
+                .antMatchers("/index.html").hasAnyRole("EMPLOYEE","ADMIN")
+                //.antMatchers("/projects.html").hasAnyRole("EMPLOYEE", "ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .antMatchers("/shared/**").hasAnyRole("EMPLOYEE","ADMIN")
             .and()
                 .formLogin()
                 .loginPage("/login.html")
+                .successHandler(customAuthenticationSuccessHandler)
                 .failureUrl("/login-error.html")
                 .permitAll()
             .and()
