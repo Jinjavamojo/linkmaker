@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet"
@@ -26,6 +26,14 @@
                     <!--<li><a href="#" th:href="@{/singers}">Singers</a></li>-->
                     <!--<li><a href="#" th:href="@{/singers/new}">Add Singer</a></li>-->
                 <!--</ul>-->
+
+                <!--<div th:fragment="logout" class="logout"-->
+                     <!--sec:authorize="isAuthenticated()">-->
+                    <!--Logged user: <span sec:authentication="name">Bob</span> |-->
+                    <!--Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span> |-->
+                    <!--&lt;!&ndash;/* When using CSRF this needs to be a POST */&ndash;&gt;-->
+                    <!--<form th:action="@{/logout}" method="post" style="display:inline"><input type="submit" value="Logout"/></form>-->
+                <!--</div>-->
 
                 <ul class="nav navbar-nav navbar-right" >
                     <li th:if="${#authorization.expression('!isAuthenticated()')}">
