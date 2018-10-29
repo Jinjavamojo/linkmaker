@@ -11,7 +11,7 @@ public class Project extends AbstractDomainClass {
 
     @NotBlank(message="{validation.project.name.notBlank}")
     @Column(name = "name")
-    private String name;
+    private String name1;
 
     @Column(name = "desc")
     private String desc;
