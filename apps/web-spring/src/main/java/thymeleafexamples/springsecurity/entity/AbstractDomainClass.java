@@ -17,6 +17,7 @@ public class AbstractDomainClass {
     private Integer version;
 
     private Date dateCreated;
+
     private Date lastUpdated;
 
     public Long getId() {
