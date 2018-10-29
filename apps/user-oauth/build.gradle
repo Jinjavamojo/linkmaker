@@ -9,6 +9,7 @@ repositories {
 }
 
 dependencies {
+    project(':apps:web-spring')
     compile 'com.vk.api:sdk:0.5.12'
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
     compile group: 'org.json', name: 'json', version: '20160810'

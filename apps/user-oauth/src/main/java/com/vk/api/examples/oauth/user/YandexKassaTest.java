@@ -1,5 +1,6 @@
 package com.vk.api.examples.oauth.user;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -15,6 +16,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thymeleafexamples.springsecurity.yandex.Payment;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,13 +32,18 @@ public class YandexKassaTest {
     private static final Logger LOG = LoggerFactory.getLogger(YandexKassaTest.class);
 
     private static final String YANDEX_KASSA_API = "https://payment.yandex.net/api/v3/payments";
-    private static final String SHOP_ID = "";
-    private static final String PASS = "";
+    private static final String SHOP_ID = "545016";
+    private static final String PASS = "test_M7ykGn7_OvItR9QlxjBhrzaGBQvOeijsJ5YCWD8ClcU";
 
     public static void main(String[] args) throws Exception {
 
         //generateGetPaymentInfo("2362e42c-000f-5000-8000-151677e0ff24");
-        createRequestToGeneratePayment();
+        String requestToGeneratePayment = createRequestToGeneratePayment();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Payment payment = objectMapper.readValue(requestToGeneratePayment, Payment.class);
+        int g = 0;
 
     }
 
@@ -82,7 +89,7 @@ public class YandexKassaTest {
         return provider;
     }
 
-    private static void generateGetPaymentInfo(String paymentId) throws Exception {
+    private static String generateGetPaymentInfo(String paymentId) throws Exception {
         HttpGet post = new HttpGet(YANDEX_KASSA_API + "/" + paymentId);
         CredentialsProvider credentials = generateCredentials(SHOP_ID, PASS);
         HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(credentials).build();
@@ -102,14 +109,14 @@ public class YandexKassaTest {
                 result.append(line);
             }
             JSONObject jsonObj = new JSONObject(result.toString());
-            int g = 0;
-            System.out.println(jsonObj.toString());
+            return jsonObj.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
-    private static void createRequestToGeneratePayment() throws Exception {
+    private static String createRequestToGeneratePayment() throws Exception {
         HttpPost post = new HttpPost(YANDEX_KASSA_API);
 
         CredentialsProvider credentials = generateCredentials(SHOP_ID, PASS);
@@ -138,11 +145,12 @@ public class YandexKassaTest {
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
-            JSONObject jsonObj = new JSONObject(result.toString());
-            int g = 0;
-            System.out.println(jsonObj.toString());
+            //JSONObject jsonObj = new JSONObject(result.toString());
+            return result.toString();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        return null;
     }
 }
