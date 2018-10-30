@@ -16,11 +16,11 @@ public class AbstractDomainClass {
     @Version
     private Integer version;
 
-    @Column(name = "date_created")
-    private Date dateCreated;
+    @Column(name = "db_date_created")
+    private Date dbDateCreated;
 
-    @Column(name = "last_updated")
-    private Date lastUpdated;
+    @Column(name = "db_last_updated")
+    private Date dbLastUpdated;
 
     public Long getId() {
         return id;
@@ -30,12 +30,12 @@ public class AbstractDomainClass {
         this.id = id;
     }
 
-    public void setDateCreated(Date dateCreated) {
-        this.dateCreated = dateCreated;
+    public void setDbDateCreated(Date dbDateCreated) {
+        this.dbDateCreated = dbDateCreated;
     }
 
-    public void setLastUpdated(Date lastUpdated) {
-        this.lastUpdated = lastUpdated;
+    public void setDbLastUpdated(Date dbLastUpdated) {
+        this.dbLastUpdated = dbLastUpdated;
     }
 
     public Integer getVersion() {
@@ -46,20 +46,20 @@ public class AbstractDomainClass {
         this.version = version;
     }
 
-    public Date getDateCreated() {
-        return dateCreated;
+    public Date getDbDateCreated() {
+        return dbDateCreated;
     }
 
-    public Date getLastUpdated() {
-        return lastUpdated;
+    public Date getDbLastUpdated() {
+        return dbLastUpdated;
     }
 
     @PreUpdate
     @PrePersist
     public void updateTimeStamps() {
-        lastUpdated = new Date();
-        if (dateCreated==null) {
-            dateCreated = new Date();
+        dbLastUpdated = new Date();
+        if (dbDateCreated ==null) {
+            dbDateCreated = new Date();
         }
     }
 }

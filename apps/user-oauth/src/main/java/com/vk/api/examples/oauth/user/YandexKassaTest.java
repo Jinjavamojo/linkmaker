@@ -1,6 +1,7 @@
 package com.vk.api.examples.oauth.user;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -40,9 +41,12 @@ public class YandexKassaTest {
         //generateGetPaymentInfo("2362e42c-000f-5000-8000-151677e0ff24");
         String requestToGeneratePayment = createRequestToGeneratePayment();
 
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+        module.addDeserializer(Payment.class, new PaymentDeserializer());
+        mapper.registerModule(module);
 
-        Payment payment = objectMapper.readValue(requestToGeneratePayment, Payment.class);
+        Payment readValue = mapper.readValue(requestToGeneratePayment, Payment.class);
         int g = 0;
 
     }
@@ -146,6 +150,7 @@ public class YandexKassaTest {
                 result.append(line);
             }
             //JSONObject jsonObj = new JSONObject(result.toString());
+            //System.out.println(jsonObj);
             return result.toString();
         } catch (IOException e) {
             e.printStackTrace();

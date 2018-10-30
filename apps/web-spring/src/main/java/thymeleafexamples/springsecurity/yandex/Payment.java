@@ -1,6 +1,7 @@
 package thymeleafexamples.springsecurity.yandex;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import thymeleafexamples.springsecurity.entity.AbstractDomainClass;
 
 import javax.persistence.*;
@@ -41,6 +42,9 @@ public class Payment extends AbstractDomainClass {
     private PaymentMethod paymentMethod;
 
     @Embedded
+    private Recipient recipient;
+
+    @Embedded
     @AttributeOverrides(
             {
                     @AttributeOverride(name = "value", column = @Column(name = "refunded_amount_value")),
@@ -48,8 +52,16 @@ public class Payment extends AbstractDomainClass {
             })
     private Amount refundedAmount;
 
+    @Column(name = "test")
     private Boolean test;
 
+    public Recipient getRecipient() {
+        return recipient;
+    }
+
+    public void setRecipient(Recipient recipient) {
+        this.recipient = recipient;
+    }
 
     public String getYandexPaymentId() {
         return yandexPaymentId;
