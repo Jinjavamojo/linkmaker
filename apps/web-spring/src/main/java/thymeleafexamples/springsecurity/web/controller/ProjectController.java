@@ -43,6 +43,6 @@ public class ProjectController {
     public String show(@PathVariable("id") Long id, Model model) {
         Project byId = projectService.findById(id);
         model.addAttribute("project", byId);
-        return "edit_project";
+        return "project";
     }
 }

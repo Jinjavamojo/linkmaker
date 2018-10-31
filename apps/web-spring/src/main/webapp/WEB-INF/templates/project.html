@@ -3,6 +3,7 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"-->
@@ -16,19 +17,17 @@
 <body>
 <div th:replace="~{user/header :: header}">Header</div>
 <div class="container">
-    <div class="text-left" th:if="${not #lists.isEmpty(projects)}">
-
-        <h1>Projects</h1>
-
         <div id="content" class="lead">
-            <div>
+            <form action="#" th:action="@{/project}" th:object="${project}" method="post">
+            </form>
+            <div class="project-flex-container">
                 <div>Name</div>
+                <input type="text" th:field="*{rows[__${rowStat.index}__].seedsPerCell}" th:errorclass="fieldError" />
                 <div th:text="${project.name}"></div>
             </div>
         </div>
 
         <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
-    </div>
 </div>
 
 </body>
