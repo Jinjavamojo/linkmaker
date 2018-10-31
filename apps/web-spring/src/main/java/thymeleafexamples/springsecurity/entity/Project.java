@@ -1,6 +1,7 @@
 package thymeleafexamples.springsecurity.entity;
 
 
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -25,9 +26,9 @@ public class Project extends AbstractDomainClass {
     @Column(name = "payment_link")
     private String paymentLink;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotBlank(message="{validation.project.user.notBlank}")
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @NotBlank(message="{validation.project.price.notBlank}")

@@ -9,7 +9,7 @@ import java.util.List;
 @Table(name = "users")
 public class User extends AbstractDomainClass {
 
-	@Column(name = "username")
+	@Column(name = "username", unique = true)
 	private String userName;
 
 	@Column(name = "password")

@@ -6,18 +6,30 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.unbescape.html.HtmlEscape;
 import thymeleafexamples.springsecurity.entity.Project;
+import thymeleafexamples.springsecurity.entity.User;
+import thymeleafexamples.springsecurity.service.ProjectService;
+import thymeleafexamples.springsecurity.service.UserService;
 
 /**
  * Application home page and login.
  */
 @Controller
 public class MainController {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ProjectService projectService;
 
     @RequestMapping("/")
     public String root(Locale locale) {
@@ -26,11 +38,19 @@ public class MainController {
 
     @ModelAttribute("projects")
     public List<Project> populateSeedStarters() {
-        Project project = new Project();
-        project.setName("123");
-        List<Project> list = new ArrayList<>();
-        list.add(project);
-        return list;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal == null || (principal instanceof String && principal.toString().equals("anonymousUser"))) {
+            return new ArrayList<>();
+        }
+        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        List<Project> userProjects = projectService.getUserProjects(username);
+        int g = 0;
+//        User byUserName = userService.findByUserName(username);
+//        Project project = new Project();
+//        project.setName("123");
+//        List<Project> list = new ArrayList<>();
+//        list.add(project);
+        return userProjects;
     }
 
     /** Home page. */
