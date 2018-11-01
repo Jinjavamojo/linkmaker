@@ -38,14 +38,15 @@ public class MainController {
         return "redirect:/index.html";
     }
 
-    @RequestMapping(value="/project", params={"save"})
+    @RequestMapping(value="/projects", params={"save"})
     public String saveProject(final Project project, final BindingResult bindingResult, final ModelMap model) {
         if (bindingResult.hasErrors()) {
             return "projects";
         }
         // this.seedStarterService.add(seedStarter);
         model.clear();
-        return "redirect:/project";
+//        "@{${'/projects/edit/' + project.id}}"
+        return "redirect:/projects/edit000/" + project.getId();
     }
 
     @ModelAttribute("projects")

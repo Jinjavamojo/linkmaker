@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.service.ProjectService;
 
@@ -36,11 +37,11 @@ public class ProjectController {
 
 
 
-    @GetMapping(value = "/edit/{id}")
+    @RequestMapping(value = "/edit/{id}",method = RequestMethod.POST)
     public String show(@PathVariable("id") Long id, Model model) {
         Project byId = projectService.findById(id);
         model.addAttribute("project", byId);
         model.addAttribute("name", byId.getName());
-        return "project";
+        return "projects";
     }
 }

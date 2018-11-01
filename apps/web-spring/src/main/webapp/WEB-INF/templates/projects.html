@@ -18,7 +18,8 @@
 <div th:replace="~{user/header :: header}">Header</div>
 <div class="container">
         <div id="content" class="lead">
-            <form action="#" th:action="@{/project}" th:object="${project}" method="post">
+            <form action="#" th:action="@{'/projects/edit/' + ${project.id}}" th:object="${project}" method="post">
+                <input style="display:none" type="text" th:field="*{id}"/>
                 <div class="project-flex-container">
                     <div class="start-column-flex-item">Name</div>
                     <input type="text" th:field="*{name}" th:errorclass="fieldError" />
@@ -28,6 +29,8 @@
                     <div class="start-column-flex-item">Project description</div>
                     <textarea style="resize: none;" name="projectDescription" rows="5" cols="40" th:field="*{projectDescription}">.</textarea>
                 </div>
+
+
 
                 <div class="submit">
                     <button type="submit" name="save" th:text="Save">Save</button>
