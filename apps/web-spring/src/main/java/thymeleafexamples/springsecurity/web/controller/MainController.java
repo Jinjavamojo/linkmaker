@@ -11,6 +11,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.unbescape.html.HtmlEscape;
@@ -34,6 +36,16 @@ public class MainController {
     @RequestMapping("/")
     public String root(Locale locale) {
         return "redirect:/index.html";
+    }
+
+    @RequestMapping(value="/project", params={"save"})
+    public String saveProject(final Project project, final BindingResult bindingResult, final ModelMap model) {
+        if (bindingResult.hasErrors()) {
+            return "projects";
+        }
+        // this.seedStarterService.add(seedStarter);
+        model.clear();
+        return "redirect:/project";
     }
 
     @ModelAttribute("projects")

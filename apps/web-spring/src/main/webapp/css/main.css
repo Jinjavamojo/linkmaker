@@ -28,3 +28,8 @@ flex-direction: row;
 
 .project-flex-container .flex-item {
 }
+
+.start-column-flex-item {
+width:250px;
+
+}
