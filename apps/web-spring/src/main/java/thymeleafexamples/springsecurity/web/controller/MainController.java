@@ -14,7 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.unbescape.html.HtmlEscape;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.entity.User;
@@ -38,15 +41,24 @@ public class MainController {
         return "redirect:/index.html";
     }
 
-    @RequestMapping(value="/projects", params={"save"})
+    @RequestMapping(value = "/projects/edit/{id}",method = RequestMethod.GET)
+    public String show(@PathVariable("id") Long id, Model model) {
+        Project byId = projectService.findById(id);
+        model.addAttribute("project", byId);
+        model.addAttribute("name", byId.getName());
+        return "projects";
+    }
+
+    @RequestMapping(value="/saveme", method = RequestMethod.POST, params={"save"})
     public String saveProject(final Project project, final BindingResult bindingResult, final ModelMap model) {
         if (bindingResult.hasErrors()) {
-            return "projects";
+            //return "projects";
         }
         // this.seedStarterService.add(seedStarter);
         model.clear();
 //        "@{${'/projects/edit/' + project.id}}"
-        return "redirect:/projects/edit000/" + project.getId();
+        return "index";
+        //return "redirect:/index";
     }
 
     @ModelAttribute("projects")

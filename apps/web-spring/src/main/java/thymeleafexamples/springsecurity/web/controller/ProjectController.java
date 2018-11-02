@@ -37,11 +37,11 @@ public class ProjectController {
 
 
 
-    @RequestMapping(value = "/edit/{id}",method = RequestMethod.POST)
-    public String show(@PathVariable("id") Long id, Model model) {
-        Project byId = projectService.findById(id);
-        model.addAttribute("project", byId);
-        model.addAttribute("name", byId.getName());
-        return "projects";
-    }
+//    @RequestMapping(value = "/edit/{id}",method = RequestMethod.POST)
+//    public String show(@PathVariable("id") Long id, Model model) {
+//        Project byId = projectService.findById(id);
+//        model.addAttribute("project", byId);
+//        model.addAttribute("name", byId.getName());
+//        return "projects";
+//    }
 }

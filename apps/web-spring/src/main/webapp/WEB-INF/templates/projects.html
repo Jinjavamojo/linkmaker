@@ -18,7 +18,8 @@
 <div th:replace="~{user/header :: header}">Header</div>
 <div class="container">
         <div id="content" class="lead">
-            <form action="#" th:action="@{'/projects/edit/' + ${project.id}}" th:object="${project}" method="post">
+            <!--@{'/projects/edit/' + ${project.id}}-->
+            <form action="#" th:action="@{/saveme}" th:object="${project}" method="post">
                 <input style="display:none" type="text" th:field="*{id}"/>
                 <div class="project-flex-container">
                     <div class="start-column-flex-item">Name</div>
