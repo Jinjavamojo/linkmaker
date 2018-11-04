@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,31 +51,29 @@ public class MainController {
     }
 
     @RequestMapping(value="/saveme", method = RequestMethod.POST, params={"save"})
-    public String saveProject(final Project project, final BindingResult bindingResult, final ModelMap model) {
+    public String saveProject(final @Valid Project project, final BindingResult bindingResult, final ModelMap model) {
         if (bindingResult.hasErrors()) {
-            //return "projects";
+            return "projects";
         }
+        boolean save = projectService.save(project);
         // this.seedStarterService.add(seedStarter);
         model.clear();
 //        "@{${'/projects/edit/' + project.id}}"
-        return "index";
+        return "redirect:/projects/edit/" + project.getId();
         //return "redirect:/index";
     }
 
     @ModelAttribute("projects")
     public List<Project> populateSeedStarters() {
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal == null || (principal instanceof String && principal.toString().equals("anonymousUser"))) {
-            return new ArrayList<>();
-        }
-        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-        List<Project> userProjects = projectService.getUserProjects(username);
-        int g = 0;
-//        User byUserName = userService.findByUserName(username);
-//        Project project = new Project();
-//        project.setName("123");
-//        List<Project> list = new ArrayList<>();
-//        list.add(project);
+//        if (SecurityContextHolder.getContext().getAuthentication() == null) {
+//            return new ArrayList<>();
+//        }
+//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//        if (principal == null || (principal instanceof String && principal.toString().equals("anonymousUser"))) {
+//            return new ArrayList<>();
+//        }
+//        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+        List<Project> userProjects = projectService.getUserProjects();
         return userProjects;
     }
 

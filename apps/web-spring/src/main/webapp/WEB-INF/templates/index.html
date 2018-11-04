@@ -18,16 +18,16 @@
 <div class="container">
     <div class="text-left" th:if="${not #lists.isEmpty(projects)}">
 
-        <h1>Projects</h1>
+        <h1>Проекты</h1>
 
         <div id="content" class="lead">
             <table class="table table-striped">
                 <tr>
-                    <th>Name</th>
-                    <th>Price</th>
-                    <th>Payment link</th>
-                    <th>Project start date</th>
-                    <th>Autopayment available</th>
+                    <th>Название</th>
+                    <th>Стоимость</th>
+                    <th>Ссылка на оплату</th>
+                    <th>Дата начала проекта</th>
+                    <th>Есть автоплатеж</th>
                 </tr>
                 <tr th:each="project : ${projects}">
                     <td th:text="${project.name}"></td>

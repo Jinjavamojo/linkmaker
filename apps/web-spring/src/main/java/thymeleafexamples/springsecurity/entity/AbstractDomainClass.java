@@ -14,6 +14,7 @@ public class AbstractDomainClass {
     Long id;
 
     @Version
+    @Column(name = "version", nullable = false, columnDefinition = "int default 0")
     private Integer version;
 
     @Column(name = "db_date_created")

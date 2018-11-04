@@ -11,7 +11,7 @@ public interface ProjectService {
 
     Project findById(Long id);
 
-    List<Project> getUserProjects(String userName);
+    List<Project> getUserProjects();
 
-    //void save(CrmUser crmUser);
+    boolean save(Project project);
 }

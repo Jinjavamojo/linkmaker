@@ -4,14 +4,17 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.MessageSource;
+import org.springframework.context.annotation.*;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
@@ -20,6 +23,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
 import java.util.Properties;
@@ -44,6 +48,11 @@ public class AppConfig implements WebMvcConfigurer {
 
 	private Logger logger = Logger.getLogger(getClass().getName());
 
+//	@Bean
+//	public HttpSession session() {
+//		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+//		return attr.getRequest().getSession(true); // true == allow create
+//	}
 
 	
 	@Bean
@@ -108,6 +117,30 @@ public class AppConfig implements WebMvcConfigurer {
 		return props;				
 	}
 
+//	@Bean
+//	@Scope(value = WebApplicationContext.SCOPE_SESSION,
+//			proxyMode = ScopedProxyMode.TARGET_CLASS)
+//	public SessionAttr sessionAttr() {
+//		return new TodoList();
+//	}
+
+
+
+
+	@Bean
+	public MessageSource messageSource() {
+		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+		messageSource.setBasename("classpath:messages");
+		messageSource.setDefaultEncoding("windows-1251");
+		return messageSource;
+	}
+
+	@Bean
+	public LocalValidatorFactoryBean getValidator() {
+		LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+		bean.setValidationMessageSource(messageSource());
+		return bean;
+	}
 	
 	@Bean
 	public LocalSessionFactoryBean sessionFactory(){
@@ -132,7 +165,7 @@ public class AppConfig implements WebMvcConfigurer {
 		txManager.setSessionFactory(sessionFactory);
 
 		return txManager;
-	}	
+	}
 	
 
 }

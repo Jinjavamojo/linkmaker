@@ -24,8 +24,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Project> getUserProjects(String userName) {
-        return projectDao.getUserProjects(userName);
+    public List<Project> getUserProjects() {
+        return projectDao.getUserProjects();
+    }
+
+    @Override
+    @Transactional
+    public boolean save(Project project) {
+        return projectDao.save(project);
+
     }
 
     //void save(CrmUser crmUser);

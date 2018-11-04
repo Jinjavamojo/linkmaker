@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -22,19 +22,21 @@
             <form action="#" th:action="@{/saveme}" th:object="${project}" method="post">
                 <input style="display:none" type="text" th:field="*{id}"/>
                 <div class="project-flex-container">
-                    <div class="start-column-flex-item">Name</div>
+                    <div class="start-column-flex-item">Имя</div>
                     <input type="text" th:field="*{name}" th:errorclass="fieldError" />
+                    <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name33Error</div>
+
                     <!--<div th:text="${project.name}"></div>-->
                 </div>
                 <div class="project-flex-container">
-                    <div class="start-column-flex-item">Project description</div>
+                    <div class="start-column-flex-item">Описание проекта</div>
                     <textarea style="resize: none;" name="projectDescription" rows="5" cols="40" th:field="*{projectDescription}">.</textarea>
                 </div>
 
 
 
                 <div class="submit">
-                    <button type="submit" name="save" th:text="Save">Save</button>
+                    <button type="submit" name="save" th:text="Save">Сохранить</button>
                 </div>
             </form>
 

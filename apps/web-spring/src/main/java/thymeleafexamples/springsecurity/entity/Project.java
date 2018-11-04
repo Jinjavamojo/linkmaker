@@ -27,11 +27,11 @@ public class Project extends AbstractDomainClass {
     private String paymentLink;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @NotBlank(message="{validation.project.user.notBlank}")
+    //@NotBlank(message="{validation.project.user.notBlank}")
     @JoinColumn(name = "user_id")
     private User user;
 
-    @NotBlank(message="{validation.project.price.notBlank}")
+    //@NotBlank(message="{validation.project.price.notBlank}")
     @Column(name = "price")
     private Double price;
 

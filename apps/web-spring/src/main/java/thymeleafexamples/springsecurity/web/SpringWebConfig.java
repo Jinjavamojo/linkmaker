@@ -79,6 +79,7 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
         templateResolver.setPrefix("/WEB-INF/templates/");
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode(TemplateMode.HTML);
+        templateResolver.setCharacterEncoding("UTF-8");
         // Template cache is true by default. Set to false if you want
         // templates to be automatically updated when modified.
         templateResolver.setCacheable(true);
@@ -98,6 +99,7 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
     public ThymeleafViewResolver viewResolver(){
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
         viewResolver.setTemplateEngine(templateEngine());
+        viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
     }
 
