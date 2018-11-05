@@ -28,6 +28,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import thymeleafexamples.springsecurity.service.UserService;
 
@@ -50,6 +51,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
+                .antMatchers("/pay/**").anonymous()
                 .antMatchers("/error.html").anonymous()
                 //.antMatchers("/projects.html").hasAnyRole("EMPLOYEE","ADMIN")
                 .antMatchers("/index.html").hasAnyRole("EMPLOYEE","ADMIN")
@@ -72,6 +74,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403.html");
+                //.and()
+                //.addFilterBefore(new LinkHandleFilter(),BasicAuthenticationFilter.class);
 
     }
 

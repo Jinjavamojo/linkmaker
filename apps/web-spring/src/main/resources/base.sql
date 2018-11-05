@@ -2,7 +2,6 @@ delete from users_roles;
 delete from roles;
 delete from users;
 
-SET client_encoding = 'WIN1252';
 
 INSERT INTO roles (id, name)
 VALUES
@@ -27,3 +26,13 @@ insert into projects(id,name,user_id) values(-2, 'admin_project_2',-3);
 
 insert into projects(id,name,user_id) values(-3, 'emp_project_1',-1);
 insert into projects(id,name,user_id) values(-4, 'emp_project_2',-1);
+
+SHOW client_encoding;
+SHOW server_encoding;
+
+UPDATE pg_database SET datistemplate = FALSE WHERE datname = 'template1';
+DROP DATABASE template1;
+CREATE DATABASE template1 WITH TEMPLATE = template0 ENCODING = 'UNICODE';
+UPDATE pg_database SET datistemplate = TRUE WHERE datname = 'template1';
+
+set PGCLIENTENCODING=UTF8

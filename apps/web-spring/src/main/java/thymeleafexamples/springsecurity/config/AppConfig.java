@@ -77,7 +77,7 @@ public class AppConfig implements WebMvcConfigurer {
 		securityDataSource.setJdbcUrl(env.getProperty("jdbc.url"));
 		securityDataSource.setUser(env.getProperty("jdbc.username"));
 		securityDataSource.setPassword(env.getProperty("jdbc.password"));
-		
+
 		// set connection pool props
 		securityDataSource.setInitialPoolSize(
 		getIntProperty("connection.pool.initialPoolSize"));
@@ -113,6 +113,7 @@ public class AppConfig implements WebMvcConfigurer {
 		props.setProperty("hibernate.show_sql", env.getProperty("hibernate.show_sql"));
 		props.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
 		props.setProperty("hibernate.format_sql", env.getProperty("hibernate.format_sql"));
+		props.setProperty("hibernate.connection.characterEncoding", env.getProperty("hibernate.connection.characterEncoding"));
 
 		return props;				
 	}
@@ -131,7 +132,7 @@ public class AppConfig implements WebMvcConfigurer {
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
 		messageSource.setBasename("classpath:messages");
-		messageSource.setDefaultEncoding("windows-1251");
+		messageSource.setDefaultEncoding("utf-8");
 		return messageSource;
 	}
 
