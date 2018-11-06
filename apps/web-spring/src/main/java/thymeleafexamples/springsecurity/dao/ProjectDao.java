@@ -8,6 +8,8 @@ public interface ProjectDao {
 
     Project findById(Long id);
 
+    Project getProjectByName(String name);
+
     List<Project> getUserProjects();
 
     boolean save(Project project);

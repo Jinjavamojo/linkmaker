@@ -35,5 +35,11 @@ public class ProjectServiceImpl implements ProjectService {
 
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public Project getProjectByName(String name) {
+        return projectDao.getProjectByName(name);
+    }
+
     //void save(CrmUser crmUser);
 }

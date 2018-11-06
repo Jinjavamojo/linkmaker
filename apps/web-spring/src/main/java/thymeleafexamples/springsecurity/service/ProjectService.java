@@ -14,4 +14,6 @@ public interface ProjectService {
     List<Project> getUserProjects();
 
     boolean save(Project project);
+
+    Project getProjectByName(String name);
 }

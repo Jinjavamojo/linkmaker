@@ -29,6 +29,14 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
+    public Project getProjectByName(String name) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query<Project> query = currentSession.createQuery("from Project as p where p.name = :projectname", Project.class);
+        query.setParameter("projectname", name);
+        return query.getSingleResult();
+    }
+
+    @Override
     public List<Project> getUserProjects() {
         Session currentSession = sessionFactory.getCurrentSession();
         User user = (User)httpSession.getAttribute("user");
@@ -46,6 +54,7 @@ public class ProjectDaoImpl implements ProjectDao {
         Session currentSession = sessionFactory.getCurrentSession();
         Project newProject = currentSession.get(Project.class, project.getId());
         newProject.setName(project.getName());
+        newProject.setProjectDescription(project.getProjectDescription());
         currentSession.update(newProject);
         //currentSession.update(project1);
         return true;
