@@ -8,7 +8,7 @@ subprojects {
 	//version '0.5.12'
 
 	tasks.withType(JavaCompile) {
-		options.encoding = 'US-ASCII'
+		options.encoding = 'UTF-8'
 	}
 	sourceCompatibility = 1.8
 	targetCompatibility = 1.8

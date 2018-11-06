@@ -29,7 +29,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.filter.CharacterEncodingFilter;
 import thymeleafexamples.springsecurity.service.UserService;
 
 @Configuration
@@ -49,6 +51,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
+        CharacterEncodingFilter filter = new CharacterEncodingFilter();
+        filter.setEncoding("UTF-8");
+        filter.setForceEncoding(true);
         http
                 .authorizeRequests()
                 .antMatchers("/pay/**").anonymous()
@@ -76,6 +81,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/403.html");
                 //.and()
                 //.addFilterBefore(new LinkHandleFilter(),BasicAuthenticationFilter.class);
+        http.addFilterBefore(filter, CsrfFilter.class);
+
 
     }
 

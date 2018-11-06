@@ -60,6 +60,7 @@ public class SpringWebApplicationInitializer extends AbstractAnnotationConfigDis
         final CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
         encodingFilter.setEncoding(CHARACTER_ENCODING);
         encodingFilter.setForceEncoding(true);
+        encodingFilter.setForceResponseEncoding(true);
         return new Filter[] { encodingFilter };
     }
 
