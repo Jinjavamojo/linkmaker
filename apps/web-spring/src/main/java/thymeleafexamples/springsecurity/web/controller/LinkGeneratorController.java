@@ -4,30 +4,21 @@ import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
 import com.vk.api.sdk.exceptions.ApiException;
 import com.vk.api.sdk.exceptions.ClientException;
-import com.vk.api.sdk.httpclient.HttpTransportClient;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
-import thymeleafexamples.springsecurity.component.YandexKassa;
+import thymeleafexamples.springsecurity.service.PaymentService;
+import thymeleafexamples.springsecurity.yandex.YandexKassaComponent;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.entity.VkUser;
 import thymeleafexamples.springsecurity.service.ProjectService;
@@ -36,12 +27,7 @@ import thymeleafexamples.springsecurity.yandex.Payment;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.List;
-
-import static org.apache.http.HttpHeaders.USER_AGENT;
 
 @Controller
 @Scope(WebApplicationContext.SCOPE_REQUEST)
@@ -50,6 +36,9 @@ public class LinkGeneratorController {
 
     @Autowired
     private ProjectService projectService;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @Autowired
     private Environment env;
@@ -61,7 +50,7 @@ public class LinkGeneratorController {
     private VKService vkService;
 
     @Autowired
-    private YandexKassa kassa;
+    private YandexKassaComponent kassa;
 
     @RequestMapping(value = "/info/*", method = RequestMethod.GET)
     public ModelAndView getInfo(HttpServletRequest request, final ModelMap model) {
@@ -79,7 +68,15 @@ public class LinkGeneratorController {
             vkService.saveUserIfNotExists(vkUser);
 
             Payment paymentFromRequest = kassa.createPaymentFromRequest("https://yandex.ru", "payment1/" + vkUserId);
-            int g = 0;
+            if (paymentFromRequest != null) {
+                paymentFromRequest.setVkUser(vkUser);
+                paymentService.savePayment(paymentFromRequest);
+                return new ModelAndView("redirect:" + env.getProperty("yandexKassaPaymentURL") + paymentFromRequest.getYandexPaymentId());
+            } else {
+                model.addAttribute("info", "Error while redirecting");
+                return new ModelAndView("payInfo", model);
+            }
+
             //response.setContentType("text/html;charset=utf-8");
             //response.setStatus(HttpServletResponse.SC_OK);
             //response.getWriter().println(getInfoPage(user));

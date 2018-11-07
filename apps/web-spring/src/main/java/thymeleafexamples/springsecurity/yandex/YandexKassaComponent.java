@@ -1,4 +1,4 @@
-package thymeleafexamples.springsecurity.component;
+package thymeleafexamples.springsecurity.yandex;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -30,7 +30,7 @@ import java.util.UUID;
 
 @Component
 @PropertySource({"classpath:app.properties"})
-public class YandexKassa {
+public class YandexKassaComponent {
 
     @Autowired
     private Environment env;

@@ -13,8 +13,9 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @Entity
 @Table(name = "payments")
-public class Payment extends AbstractDomainClass {
+public class Payment {
 
+    @Id
     @Column(name = "yandex_payment_id")
     private String yandexPaymentId;
 

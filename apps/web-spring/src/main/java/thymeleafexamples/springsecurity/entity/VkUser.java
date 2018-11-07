@@ -1,5 +1,6 @@
 package thymeleafexamples.springsecurity.entity;
 
+import org.hibernate.annotations.Cascade;
 import thymeleafexamples.springsecurity.yandex.Payment;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class VkUser {
     private String lastname;
 
     @OneToMany (mappedBy = "vkUser")
+    @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
 
     public List<Payment> getPayments() {

@@ -33,7 +33,14 @@ public class ProjectDaoImpl implements ProjectDao {
         Session currentSession = sessionFactory.getCurrentSession();
         Query<Project> query = currentSession.createQuery("from Project as p where p.name = :projectname", Project.class);
         query.setParameter("projectname", name);
-        return query.getSingleResult();
+        List<Project> list = query.list();
+        if (list.size() > 1) {
+            throw new RuntimeException(String.format("Project with name = %s is more than 1",name));
+        }
+        if (list.size() == 0) {
+            return null;
+        }
+        return list.get(0);
     }
 
     @Override

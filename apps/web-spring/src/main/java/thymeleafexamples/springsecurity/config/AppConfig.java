@@ -18,6 +18,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.context.WebApplicationContext;
@@ -32,7 +33,6 @@ import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import thymeleafexamples.springsecurity.PaymentDeserializer;
 import thymeleafexamples.springsecurity.Utils;
-import thymeleafexamples.springsecurity.vk.VKPrefs;
 import thymeleafexamples.springsecurity.yandex.Payment;
 
 import javax.servlet.http.HttpSession;
@@ -44,6 +44,7 @@ import java.util.logging.Logger;
 @Configuration
 @EnableWebMvc
 @EnableTransactionManagement
+@EnableScheduling
 @ComponentScan(basePackages="thymeleafexamples.springsecurity")
 @PropertySource("classpath:persistence-postgres.properties")
 public class AppConfig implements WebMvcConfigurer {
