@@ -3,6 +3,8 @@ package thymeleafexamples.springsecurity.yandex;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import thymeleafexamples.springsecurity.entity.AbstractDomainClass;
+import thymeleafexamples.springsecurity.entity.User;
+import thymeleafexamples.springsecurity.entity.VkUser;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -54,6 +56,18 @@ public class Payment extends AbstractDomainClass {
 
     @Column(name = "test")
     private Boolean test;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "vk_user")
+    private VkUser vkUser;
+
+    public VkUser getVkUser() {
+        return vkUser;
+    }
+
+    public void setVkUser(VkUser vkUser) {
+        this.vkUser = vkUser;
+    }
 
     public Recipient getRecipient() {
         return recipient;

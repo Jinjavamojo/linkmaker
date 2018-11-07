@@ -1,6 +1,14 @@
 package thymeleafexamples.springsecurity.config;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.vk.api.sdk.client.VkApiClient;
+import com.vk.api.sdk.httpclient.HttpTransportClient;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -22,6 +30,10 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
+import thymeleafexamples.springsecurity.PaymentDeserializer;
+import thymeleafexamples.springsecurity.Utils;
+import thymeleafexamples.springsecurity.vk.VKPrefs;
+import thymeleafexamples.springsecurity.yandex.Payment;
 
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
@@ -35,10 +47,6 @@ import java.util.logging.Logger;
 @ComponentScan(basePackages="thymeleafexamples.springsecurity")
 @PropertySource("classpath:persistence-postgres.properties")
 public class AppConfig implements WebMvcConfigurer {
-
-	//https://www.boraji.com/spring-mvc-5-hello-world-example-with-thymeleaf-template
-	//WebMvcConfigurer interface provides the default methods to customize the java-based configuration for Spring  MVC application.
-
 
 	@Autowired
 	private Environment env;
@@ -54,6 +62,31 @@ public class AppConfig implements WebMvcConfigurer {
 //		return attr.getRequest().getSession(true); // true == allow create
 //	}
 
+	@Bean
+	@Scope(value="session")
+	public VkApiClient vkApiClient() {
+		return new VkApiClient(new HttpTransportClient());
+	}
+
+
+
+	@Bean
+	public ObjectMapper objectMapper() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(Payment.class, new PaymentDeserializer());
+		mapper.registerModule(module);
+		return mapper;
+	}
+
+	@Bean
+	public CredentialsProvider yandexCredentialsProvider() {
+		CredentialsProvider provider = new BasicCredentialsProvider();
+
+		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(env.getProperty("shopId"), env.getProperty("pass"));
+		provider.setCredentials(AuthScope.ANY, credentials);
+		return provider;
+	}
 	
 	@Bean
 	public DataSource securityDataSource() {
@@ -89,7 +122,7 @@ public class AppConfig implements WebMvcConfigurer {
 				getIntProperty("connection.pool.maxPoolSize"));
 		
 		securityDataSource.setMaxIdleTime(
-				getIntProperty("connection.pool.maxIdleTime"));
+				getIntProperty( "connection.pool.maxIdleTime"));
 				
 		return securityDataSource;
 	}
@@ -120,7 +153,7 @@ public class AppConfig implements WebMvcConfigurer {
 
 //	@Bean
 //	@Scope(value = WebApplicationContext.SCOPE_SESSION,
-//			proxyMode = ScopedProxyMode.TARGET_CLASS)
+//			proxyMode = ScopedProxyMode.TARGET_CLASS) //TODO WHAT IS PROXY MODE?
 //	public SessionAttr sessionAttr() {
 //		return new TodoList();
 //	}
@@ -142,6 +175,11 @@ public class AppConfig implements WebMvcConfigurer {
 		bean.setValidationMessageSource(messageSource());
 		return bean;
 	}
+
+	@Bean
+	public String yandexCreatePaymentTemplate() {
+		return Utils.readLineByLineJava8("requests/generate_payment_template.json");
+	}
 	
 	@Bean
 	public LocalSessionFactoryBean sessionFactory(){
@@ -151,7 +189,7 @@ public class AppConfig implements WebMvcConfigurer {
 		
 		// set the properties
 		sessionFactory.setDataSource(securityDataSource());
-		sessionFactory.setPackagesToScan(env.getProperty("hiberante.packagesToScan"));
+		sessionFactory.setPackagesToScan(env.getProperty("hibernate.packagesToScan"));
 		sessionFactory.setHibernateProperties(getHibernateProperties());
 		
 		return sessionFactory;
