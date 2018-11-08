@@ -29,7 +29,23 @@
                 </div>
                 <div class="project-flex-container">
                     <div class="start-column-flex-item">Описание проекта</div>
-                    <textarea style="resize: none;" name="projectDescription" rows="5" cols="40" th:field="*{projectDescription}">.</textarea>
+                    <textarea style="resize: none;" class="form-control margin-bottom-20" name="projectDescription" rows="5" cols="40" th:field="*{projectDescription}">.</textarea>
+                </div>
+                <div class="project-flex-container">
+                    <div class="start-column-flex-item">Возможен автоплатеж</div>
+                    <input type="checkbox" class="form-control margin-bottom-20" name="active" th:checked="*{autoPaymentAvailable}"/>
+                </div>
+
+                <div class="project-flex-container">
+                    <div class="start-column-flex-item">Дата начала</div>
+                    <div>
+                        <label for="birthdate" th:text="*{projectStartDate}">Birth date</label>
+                        <label class="input">
+                            <i class="icon-append fa fa-calendar"></i>
+                            <input type="date" name="date" id="birthdate" class="form-control margin-bottom-20" th:value="${#dates.format(project.projectStartDate,'yyyy/MM/dd')}" th:field="*{projectStartDate}"/>
+                        </label>
+                        <h3 th:text="${#dates.format(project.projectStartDate,'yyyy/MM/dd')}"></h3>
+                    </div>
                 </div>
 
                 <div class="submit">
