@@ -63,7 +63,7 @@ public class SpringWebConfig implements WebMvcConfigurer, ApplicationContextAwar
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
-        resourceBundleMessageSource.setBasename("Messages");
+        resourceBundleMessageSource.setBasename("messages");
         return resourceBundleMessageSource;
     }
 

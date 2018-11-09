@@ -19,15 +19,15 @@ public class ProjectController {
 
     //@RequestMapping("/projects")
     //public String projects() {
-    //   return "/projects.html";
+    //   return "/project.html";
     //}
-//    @RequestMapping("/projects.html")
+//    @RequestMapping("/project.html")
 //    public String root(Locale locale) {
-//        return "redirect:/projects.html";
+//        return "redirect:/project.html";
 //    }
 
 //    @ModelAttribute("projects")
-//    public List<Project> populateSeedStarters() {
+//    public List<Project> listProjects() {
 //        Project project = new Project();
 //        project.setName("123");
 //        List<Project> list = new ArrayList<>();

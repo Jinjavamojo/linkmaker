@@ -24,6 +24,7 @@ margin:auto
 .project-flex-container {
 display: flex;
 flex-direction: row;
+margin-bottom:10px;
 }
 
 .project-flex-container .flex-item {

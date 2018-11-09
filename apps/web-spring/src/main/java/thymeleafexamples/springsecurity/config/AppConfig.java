@@ -24,10 +24,12 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -38,6 +40,7 @@ import thymeleafexamples.springsecurity.yandex.Payment;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
+import java.util.Locale;
 import java.util.Properties;
 import java.util.logging.Logger;
 
@@ -168,6 +171,13 @@ public class AppConfig implements WebMvcConfigurer {
 		messageSource.setBasename("classpath:messages");
 		messageSource.setDefaultEncoding("utf-8");
 		return messageSource;
+	}
+
+	@Bean(name="localeResolver")
+	public LocaleResolver localeResolver(){
+		SessionLocaleResolver resolver = new SessionLocaleResolver();
+		resolver.setDefaultLocale(new Locale("ru", "RU"));
+		return resolver;
 	}
 
 	@Bean

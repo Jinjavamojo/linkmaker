@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import thymeleafexamples.springsecurity.dao.ProjectDao;
-import thymeleafexamples.springsecurity.dao.UserDao;
 import thymeleafexamples.springsecurity.entity.Project;
 
 import java.util.List;
@@ -30,7 +29,14 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional
-    public boolean save(Project project) {
+    public boolean update(Project project) {
+        return projectDao.update(project);
+
+    }
+
+    @Override
+    @Transactional
+    public Long save(Project project) {
         return projectDao.save(project);
 
     }

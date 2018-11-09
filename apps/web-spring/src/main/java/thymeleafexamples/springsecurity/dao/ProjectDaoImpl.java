@@ -57,17 +57,26 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public boolean save(Project project) {
+    public boolean update(Project project) {
         Session currentSession = sessionFactory.getCurrentSession();
         Project newProject = currentSession.get(Project.class, project.getId());
         newProject.setName(project.getName());
         newProject.setProjectDescription(project.getProjectDescription());
+        newProject.setProjectStartDate(project.getProjectStartDate());
+        newProject.setAutoPaymentAvailable(project.getAutoPaymentAvailable());
         currentSession.update(newProject);
-        //currentSession.update(project1);
         return true;
-        //Project new = currentSession.get(Project.class, project.getId());
+    }
 
-
-
+    @Override
+    public Long save(Project project) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        User user = (User)httpSession.getAttribute("user");
+        if (user == null) {
+            throw new RuntimeException("No session");
+        }
+        project.setUser(user);
+        currentSession.save(project);
+        return project.getId();
     }
 }

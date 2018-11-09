@@ -24,7 +24,7 @@
                 <input style="display:none" type="text" th:field="*{id}"/>
                 <div class="project-flex-container">
                     <div class="start-column-flex-item">Имя</div>
-                    <input type="text" th:field="*{name}" th:errorclass="fieldError" />
+                    <input class="form-control margin-bottom-20"  type="text" th:field="*{name}" th:errorclass="fieldError" />
                     <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">NameError</div>
                 </div>
                 <div class="project-flex-container">
@@ -32,25 +32,36 @@
                     <textarea style="resize: none;" class="form-control margin-bottom-20" name="projectDescription" rows="5" cols="40" th:field="*{projectDescription}">.</textarea>
                 </div>
                 <div class="project-flex-container">
-                    <div class="start-column-flex-item">Возможен автоплатеж</div>
-                    <input type="checkbox" class="form-control margin-bottom-20" name="active" th:checked="*{autoPaymentAvailable}"/>
+                    <div class = "start-column-flex-item" th:for="${#ids.next('autoPaymentAvailable')}" th:text="#{project.autoPaymentAvailable}">autopayment</div>
+                    <input type="checkbox" th:field="*{autoPaymentAvailable}" />
                 </div>
+                <!--<div class="project-flex-container">-->
+                    <!---->
+                    <!--<div class="start-column-flex-item">Возможен автоплатеж</div>-->
+                    <!--<input type="checkbox" class="form-control margin-bottom-20" name="active" th:checked="*{autoPaymentAvailable}"/>-->
+                <!--</div>-->
 
                 <div class="project-flex-container">
                     <div class="start-column-flex-item">Дата начала</div>
                     <div>
-                        <label for="birthdate" th:text="*{projectStartDate}">Birth date</label>
+                        <!--<label for="birthdate" th:text="*{projectStartDate}">Birth date</label>-->
                         <label class="input">
                             <i class="icon-append fa fa-calendar"></i>
                             <input type="date" name="date" id="birthdate" class="form-control margin-bottom-20" th:value="${#dates.format(project.projectStartDate,'yyyy/MM/dd')}" th:field="*{projectStartDate}"/>
                         </label>
-                        <h3 th:text="${#dates.format(project.projectStartDate,'yyyy/MM/dd')}"></h3>
+                        <!--<h3 th:text="${#dates.format(project.projectStartDate,'yyyy/MM/dd')}"></h3>-->
                     </div>
                 </div>
-
-                <div class="submit">
-                    <button type="submit" name="save" th:text="Сохранить">Сохранить</button>
+                <div class="project-flex-container">
+                    <div class="start-column-flex-item">Ссылка на оплату</div>
+                    <div th:text="@{${baseUrl} + ${'/pay/' + project.name}}">link</div>
                 </div>
+
+                <div class="submit project-flex-container">
+                    <button class="start-column-flex-item" type="submit" name="save" th:text="Сохранить">Сохранить</button>
+                    <div th:if="${saved} == true" class="alert alert-success col-xs-offset-1 col-xs-10">Проект сохранен</div>
+                </div>
+
             </form>
 
         </div>

@@ -1,6 +1,5 @@
 package thymeleafexamples.springsecurity.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -8,8 +7,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -21,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import org.unbescape.html.HtmlEscape;
 import thymeleafexamples.springsecurity.entity.Project;
-import thymeleafexamples.springsecurity.entity.User;
 import thymeleafexamples.springsecurity.service.ProjectService;
 import thymeleafexamples.springsecurity.service.UserService;
 
@@ -42,37 +38,75 @@ public class MainController {
         return "redirect:/index.html";
     }
 
-    @RequestMapping(value = "/projects/edit/{id}",method = RequestMethod.GET)
-    public String show(@PathVariable("id") Long id, Model model) {
+    @RequestMapping(value = "/project/new",method = RequestMethod.GET)
+    public String showNew(Model model, HttpServletRequest request) {
+        model.addAttribute("project", new Project());
+        return "newProject";
+    }
+
+    @RequestMapping(value="/newsave", method = RequestMethod.POST, params={"save"})
+    public ModelAndView saveNewProject(final @Valid Project project, final BindingResult bindingResult, final ModelMap model, HttpServletRequest request) {
+        if (bindingResult.hasErrors()) {
+            //return "projects";
+        }
+        Long save = projectService.save(project);
+        // this.seedStarterService.add(seedStarter);
+        model.clear();
+        String contextPath = request.getServletContext().getContextPath();
+        //model.put("baseUrl",baseUrl);
+        //request.set
+        //model.addAttribute("baseUrl", baseUrl);
+        String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
+
+        //model.addAttribute("name", project.getName());
+        //model.addAttribute("baseUrl", baseUrl);
+        model.addAttribute("saved", true);
+//        "@{${'/projects/edit/' + project.id}}"
+        return new ModelAndView("redirect:project/edit/" +  save, model);
+        //return "redirect:/projects/edit/" + project.getId();
+        //return "redirect:/index";
+    }
+
+    @RequestMapping(value = "/project/edit/{id}",method = RequestMethod.GET)
+    public String show(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+        String contextPath = request.getServletContext().getContextPath();
+        String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
         Project byId = projectService.findById(id);
         model.addAttribute("project", byId);
         model.addAttribute("name", byId.getName());
-        return "projects";
+        model.addAttribute("baseUrl", baseUrl);
+        //model.addAttribute("saved",true);
+        if (request.getParameter("saved") != null) {
+            model.addAttribute("saved", request.getParameter("saved"));
+        }
+        return "project";
     }
 
     @RequestMapping(value="/saveme", method = RequestMethod.POST, params={"save"})
-    public String saveProject(final @Valid Project project, final BindingResult bindingResult, final ModelMap model) {
+    public ModelAndView saveProject(final @Valid Project project, final BindingResult bindingResult, final ModelMap model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            return "projects";
+            return new ModelAndView("redirect:project/edit/" +  project.getId(), model); //TODO
         }
-        boolean save = projectService.save(project);
+        boolean save = projectService.update(project);
         // this.seedStarterService.add(seedStarter);
         model.clear();
+        String contextPath = request.getServletContext().getContextPath();
+        //model.put("baseUrl",baseUrl);
+        //request.set
+        //model.addAttribute("baseUrl", baseUrl);
+        String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
+
+        //model.addAttribute("name", project.getName());
+        //model.addAttribute("baseUrl", baseUrl);
+        model.addAttribute("saved", true);
 //        "@{${'/projects/edit/' + project.id}}"
-        return "redirect:/projects/edit/" + project.getId();
+        return new ModelAndView("redirect:project/edit/" +  project.getId(), model);
+        //return "redirect:/projects/edit/" + project.getId();
         //return "redirect:/index";
     }
 
     @ModelAttribute("projects")
-    public List<Project> populateSeedStarters() {
-//        if (SecurityContextHolder.getContext().getAuthentication() == null) {
-//            return new ArrayList<>();
-//        }
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        if (principal == null || (principal instanceof String && principal.toString().equals("anonymousUser"))) {
-//            return new ArrayList<>();
-//        }
-//        String username = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
+    public List<Project> listProjects() {
         List<Project> userProjects = projectService.getUserProjects();
         return userProjects;
     }

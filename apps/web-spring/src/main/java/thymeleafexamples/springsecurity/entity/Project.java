@@ -2,6 +2,8 @@ package thymeleafexamples.springsecurity.entity;
 
 
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -18,6 +20,7 @@ public class Project extends AbstractDomainClass {
     private String projectDescription;
 
     @Column(name = "project_startDate")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date projectStartDate;
 
     @Column(name = "autopayment_available")

@@ -12,5 +12,7 @@ public interface ProjectDao {
 
     List<Project> getUserProjects();
 
-    boolean save(Project project);
+    boolean update(Project project);
+
+    Long save(Project project);
 }
