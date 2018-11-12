@@ -10,10 +10,15 @@
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
 $( document ).ready(function() {
-$( "#myDiv" ).children()
-    <!--console.log( "ready!" );-->
+$( "#paid_users" ).addClass('active');
+$( $( "#left_side_menu" ).children() ).each(function( index ) {
+    if (this.id != 'paid_users') {
+    $(this).removeClass('active');
+    }
 });
-</script></head>
+});
+</script>
+</head>
 <body>
 <div th:replace="~{user/header :: header}">Header</div>
 <div style="display:flex; flex-direction:row">

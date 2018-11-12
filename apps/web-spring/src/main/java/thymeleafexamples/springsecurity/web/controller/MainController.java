@@ -11,12 +11,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.unbescape.html.HtmlEscape;
+import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.service.ProjectService;
 import thymeleafexamples.springsecurity.service.UserService;
@@ -25,6 +23,7 @@ import thymeleafexamples.springsecurity.service.UserService;
  * Application home page and login.
  */
 @Controller
+@SessionAttributes("sessionAttr")
 public class MainController {
 
     @Autowired
@@ -68,23 +67,33 @@ public class MainController {
     }
 
     @RequestMapping(value = "/paidUsers",method = RequestMethod.GET)
-    public String showPaidUsers() {
+    public String showPaidUsers(ModelAndView model, SessionAttr sessionAttr) {
         return "paidUsers";
     }
 
+    @ModelAttribute
+    public SessionAttr sessionAttr(){
+        return new SessionAttr();
+    }
+
     @RequestMapping(value = "/project/edit/{id}",method = RequestMethod.GET)
-    public String show(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
+    public ModelAndView show(@PathVariable("id") Long id, @ModelAttribute("sessionAttr") SessionAttr sessionAttr, ModelAndView model, HttpServletRequest request) {
         String contextPath = request.getServletContext().getContextPath();
         String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
         Project byId = projectService.findById(id);
-        model.addAttribute("project", byId);
-        model.addAttribute("name", byId.getName());
-        model.addAttribute("baseUrl", baseUrl);
+        ModelMap m = new ModelMap();
+
+        model.addObject("project", byId);
+        //model.addObject("sessionAttr", new SessionAttr());
+        sessionAttr.currentProjectId = id;
+        model.setViewName("project");
+        model.addObject("name", byId.getName());
+        model.addObject("baseUrl", baseUrl);
         //model.addAttribute("saved",true);
         if (request.getParameter("saved") != null) {
-            model.addAttribute("saved", request.getParameter("saved"));
+            model.addObject("saved", request.getParameter("saved"));
         }
-        return "project";
+        return model;
     }
 
     @RequestMapping(value="/saveme", method = RequestMethod.POST, params={"save"})

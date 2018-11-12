@@ -2,6 +2,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head th:replace="~{parts/imports :: imports}">
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+$( document ).ready(function() {
+$( "#main_info" ).addClass('active');
+$( $( "#left_side_menu" ).children() ).each(function( index ) {
+    if (this.id != 'main_info') {
+    $(this).removeClass('active');
+    }
+});
+    <!--console.log( "ready!" );-->
+});
+</script>
 </head>
 <body>
 <div th:replace="~{user/header :: header}">Header</div>
