@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.thymeleaf.org ">
+
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+$( document ).ready(function() {
+$( "#myDiv" ).children()
+    <!--console.log( "ready!" );-->
+});
+</script></head>
+<body>
+<div th:replace="~{user/header :: header}">Header</div>
+<div style="display:flex; flex-direction:row">
+    <div th:replace="~{parts/menu :: menu}">Parts</div>
+    <div id="content" class="lead">
+        <!--@{'/projects/edit/' + ${project.id}}-->
+        OKAY!
+
+    </div>
+
+    <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
+</div>
+
+</body>
+</html>

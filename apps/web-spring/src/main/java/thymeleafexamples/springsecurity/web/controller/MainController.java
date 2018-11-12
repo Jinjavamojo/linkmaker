@@ -67,6 +67,11 @@ public class MainController {
         //return "redirect:/index";
     }
 
+    @RequestMapping(value = "/paidUsers",method = RequestMethod.GET)
+    public String showPaidUsers() {
+        return "paidUsers";
+    }
+
     @RequestMapping(value = "/project/edit/{id}",method = RequestMethod.GET)
     public String show(@PathVariable("id") Long id, Model model, HttpServletRequest request) {
         String contextPath = request.getServletContext().getContextPath();
