@@ -6,6 +6,7 @@ import java.util.Locale;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -67,8 +68,10 @@ public class MainController {
     }
 
     @RequestMapping(value = "/paidUsers",method = RequestMethod.GET)
-    public String showPaidUsers(ModelAndView model, SessionAttr sessionAttr) {
-        return "paidUsers";
+    public ModelAndView showPaidUsers(ModelAndView model, SessionAttr sessionAttr) {
+        model.addObject("activeTab","paid_users");
+        model.setViewName("paidUsers");
+        return model;
     }
 
     @ModelAttribute
@@ -76,15 +79,20 @@ public class MainController {
         return new SessionAttr();
     }
 
+    @RequestMapping(value = "/project/edit/",method = RequestMethod.GET)
+    public ModelAndView getProjectWithoutId(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, ModelAndView model, HttpServletRequest request){
+        return getProjectById(sessionAttr.currentProjectId,sessionAttr,model,request);
+    }
+
     @RequestMapping(value = "/project/edit/{id}",method = RequestMethod.GET)
-    public ModelAndView show(@PathVariable("id") Long id, @ModelAttribute("sessionAttr") SessionAttr sessionAttr, ModelAndView model, HttpServletRequest request) {
+    public ModelAndView getProjectById(@PathVariable("id") Long id, @ModelAttribute("sessionAttr") SessionAttr sessionAttr, ModelAndView model, HttpServletRequest request) {
         String contextPath = request.getServletContext().getContextPath();
         String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
         Project byId = projectService.findById(id);
-        ModelMap m = new ModelMap();
 
         model.addObject("project", byId);
-        //model.addObject("sessionAttr", new SessionAttr());
+        model.addObject("activeTab","main_info");
+        //model.addObject("sessionAttr", sessionAttr);
         sessionAttr.currentProjectId = id;
         model.setViewName("project");
         model.addObject("name", byId.getName());
@@ -123,6 +131,12 @@ public class MainController {
     public List<Project> listProjects() {
         List<Project> userProjects = projectService.getUserProjects();
         return userProjects;
+    }
+
+    @ModelAttribute("activeTab")
+    public String activeTab(HttpServletRequest request) {
+        String activeTab = (String) request.getSession().getAttribute("activeTab");
+        return StringUtils.isEmpty(activeTab) ? "main_info" : activeTab;
     }
 
     @RequestMapping("/index.html")

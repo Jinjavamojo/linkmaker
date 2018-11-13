@@ -10,6 +10,10 @@ import java.util.Date;
 
 @Entity
 @Table(name = "projects")
+//@NamedQueries({
+//        @NamedQuery(name=Project.FIND_ALL, query="select s from Singer s"),
+//        @NamedQuery(name=Project.COUNT_ALL, query="select count(s) from Singer s")
+//})
 public class Project extends AbstractDomainClass {
 
     @NotBlank(message="{validation.project.name.notBlank}")
