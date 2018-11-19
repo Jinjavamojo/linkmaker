@@ -89,6 +89,10 @@ public class MainController {
         String contextPath = request.getServletContext().getContextPath();
         String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
         Project byId = projectService.findById(id);
+        if (byId == null) {
+            model.setViewName("404");
+            return model;
+        }
 
         model.addObject("project", byId);
         model.addObject("activeTab","main_info");
