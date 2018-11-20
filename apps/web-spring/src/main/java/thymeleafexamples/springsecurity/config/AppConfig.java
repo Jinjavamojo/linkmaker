@@ -10,6 +10,14 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.hibernate.SessionFactory;
+import org.hibernate.boot.Metadata;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
+import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
+import org.hibernate.boot.spi.MetadataImplementor;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.tool.hbm2ddl.SchemaExport;
+import org.hibernate.tool.schema.TargetType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
@@ -19,6 +27,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.config.Task;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.context.WebApplicationContext;
@@ -40,8 +49,8 @@ import thymeleafexamples.springsecurity.yandex.Payment;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.util.Locale;
-import java.util.Properties;
+import java.util.*;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 @Configuration
@@ -191,6 +200,30 @@ public class AppConfig implements WebMvcConfigurer {
 	public String yandexCreatePaymentTemplate() {
 		return Utils.readLineByLineJava8("requests/generate_payment_template.json");
 	}
+
+
+//	@Bean
+//	public void createSchemaWithHibernate5() {
+//		Map map = new HashMap();
+//		map.putAll(getHibernateProperties());
+//		map.put("jdbc.url",env.getProperty("jdbc.url"));
+//		map.put("jdbc.user",env.getProperty("jdbc.user"));
+//		map.put("jdbc.password",env.getProperty("jdbc.password"));
+//		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder() //
+//                .configure("persistence-postgres.properties")
+//				.applySettings(map)
+//				.build();
+//
+//		Metadata metadata = new MetadataSources(serviceRegistry) //
+//				.buildMetadata();
+//
+//		new SchemaExport() //
+//				.setOutputFile("db-schema.hibernate5.ddl") //
+//				.create(EnumSet.of(TargetType.SCRIPT), metadata);
+//
+//		metadata.buildSessionFactory().close();
+//		logger.log(Level.INFO,"createSchemaWithHibernate5");
+//	}
 	
 	@Bean
 	public LocalSessionFactoryBean sessionFactory(){
