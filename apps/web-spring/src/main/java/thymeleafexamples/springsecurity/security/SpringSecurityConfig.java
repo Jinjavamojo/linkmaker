@@ -56,7 +56,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setForceEncoding(true);
         http
                 .authorizeRequests()
-                .antMatchers("/pay/**").anonymous()
+                .antMatchers("/pay/**").hasAnyRole("ANONYMOUS","EMPLOYEE","ADMIN")
                 .antMatchers("/error.html").anonymous()
                 .antMatchers("/index.html").hasAnyRole("EMPLOYEE","ADMIN")
                 .antMatchers("/project/**").hasAnyRole("EMPLOYEE","ADMIN")

@@ -27,6 +27,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Component
 @PropertySource({"classpath:app.properties"})
@@ -44,6 +46,8 @@ public class YandexKassaComponent {
     @Autowired
     private String yandexCreatePaymentTemplate;
 
+    private Logger logger = Logger.getLogger(getClass().getName());
+
     public String generateGetPaymentInfo(String paymentId) throws Exception {
         HttpGet post = new HttpGet(env.getProperty("yandexKassaURL") + "/" + paymentId);
         HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(yandexCredentialsProvider).build();
@@ -51,7 +55,7 @@ public class YandexKassaComponent {
         HttpResponse response = client.execute(post);
 
         int statusCode = response.getStatusLine().getStatusCode();
-        System.out.println(statusCode);
+        //System.out.println(statusCode);
         try {
             // Print out the response message
             //System.out.println(EntityUtils.toString(response.getEntity()));
@@ -66,7 +70,7 @@ public class YandexKassaComponent {
             //return jsonObj.toString();
             return "";
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.toString());
         }
         return null;
     }
@@ -100,14 +104,15 @@ public class YandexKassaComponent {
                 }
                 if (HttpServletResponse.SC_OK == statusCode) {
                     Payment readValue = objectMapper.readValue(result.toString(), Payment.class);
+                    logger.log(Level.INFO,String.format("Payment %s is created", readValue.getYandexPaymentId()));
                     return readValue;
 
                 } else {
-                    //TODO LOG IT!
+                    logger.log(Level.SEVERE, result.toString());
                 }
                 return null;
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.log(Level.SEVERE, e.toString());
             }
 
         return null;

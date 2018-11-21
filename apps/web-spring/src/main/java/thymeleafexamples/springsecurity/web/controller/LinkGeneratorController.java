@@ -15,8 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
+import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.service.PaymentService;
 import thymeleafexamples.springsecurity.yandex.YandexKassaComponent;
 import thymeleafexamples.springsecurity.entity.Project;
@@ -28,10 +30,13 @@ import thymeleafexamples.springsecurity.yandex.Payment;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 @Controller
 @Scope(WebApplicationContext.SCOPE_REQUEST)
 @PropertySource({"classpath:app.properties"})
+@SessionAttributes("sessionAttr")
 public class LinkGeneratorController {
 
     @Autowired
@@ -52,8 +57,10 @@ public class LinkGeneratorController {
     @Autowired
     private YandexKassaComponent kassa;
 
+    private Logger logger = Logger.getLogger(getClass().getName());
+
     @RequestMapping(value = "/info/*", method = RequestMethod.GET)
-    public ModelAndView getInfo(HttpServletRequest request, final ModelMap model) {
+    public ModelAndView getInfo(HttpServletRequest request, final ModelMap model, SessionAttr sessionAttr) {
         try {
             UserActor actor = new UserActor(Integer.parseInt(request.getParameter("user")), request.getParameter("token"));
             List<UserXtrCounters> getUsersResponse = vkApiClient.users().get(actor).userIds(request.getParameter("user")).execute();
@@ -67,7 +74,9 @@ public class LinkGeneratorController {
 
             vkService.saveUserIfNotExists(vkUser);
 
-            Payment paymentFromRequest = kassa.createPaymentFromRequest("https://yandex.ru", "payment1/" + vkUserId);
+            String clientMessage = String.format("Оплата курса: '%s', Пользователь: %s %s",sessionAttr.projectName, user.getLastName(), user.getFirstName());
+            Payment paymentFromRequest = kassa.createPaymentFromRequest("https://yandex.ru", clientMessage);
+            sessionAttr.clear();
             if (paymentFromRequest != null) {
                 paymentFromRequest.setVkUser(vkUser);
                 paymentService.savePayment(paymentFromRequest);
@@ -85,28 +94,29 @@ public class LinkGeneratorController {
             //response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             //response.getWriter().println("error");
             //response.setContentType("text/html;charset=utf-8");
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.toString());
+            sessionAttr.clear();
         }
+        sessionAttr.clear();
         //response.sendRedirect("/info?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId());
         return new ModelAndView("redirect:" /*+ format*/);
     }
 
     @RequestMapping(value = "/get_code/*", method = RequestMethod.GET)
-    public ModelAndView getCode(HttpServletRequest request, final ModelMap model) {
+    public ModelAndView getCode(HttpServletRequest request, final ModelMap model,SessionAttr sessionAttr) {
         try {
-            String baseUrl = StringUtils.substringBefore(request.getRequestURL().toString(), "/get_code/");
-            String project = StringUtils.substringAfter(request.getRequestURL().toString(), "/get_code/");
+            //String baseUrl = StringUtils.substringBefore(request.getRequestURL().toString(), "/get_code/");
+            //String project = StringUtils.substringAfter(request.getRequestURL().toString(), "/get_code/");
             //baseUrl = ""
-            String redirectUri = generateRedirectUri(baseUrl, project);
-            UserAuthResponse authResponse = vkApiClient.oauth().userAuthorizationCodeFlow(Integer.valueOf(env.getProperty("clientId")), env.getProperty("clientSecret"), redirectUri, request.getParameter("code")).execute();
-            String s = baseUrl + "/info/" + project + "?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId();
+            //String redirectUri = generateRedirectUri(baseUrl, project);
+            UserAuthResponse authResponse = vkApiClient.oauth().userAuthorizationCodeFlow(Integer.valueOf(env.getProperty("clientId")), env.getProperty("clientSecret"), sessionAttr.generateRedirectUri, request.getParameter("code")).execute();
+            String s = sessionAttr.baseUrl + "/info/" + sessionAttr.projectName + "?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId();
             return new ModelAndView("redirect:" + s);
             //response.sendRedirect("/info?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId());
 
-        } catch (ApiException e) {
-            e.printStackTrace();
-        } catch (ClientException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.toString());
+            sessionAttr.clear();
         }
         //response.sendRedirect("/info?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId());
         return new ModelAndView("redirect:" /*+ format*/); //todo error
@@ -118,7 +128,7 @@ public class LinkGeneratorController {
 //    }
 
     @RequestMapping(value = "/pay/*", method = RequestMethod.GET)
-    public ModelAndView pay(HttpServletRequest request, HttpServletResponse response, final ModelMap model) {
+    public ModelAndView pay(HttpServletRequest request, HttpServletResponse response, final ModelMap model, SessionAttr sessionAttr) {
         String projectName = StringUtils.substringAfter(request.getRequestURL().toString(), "/pay/");
         if (StringUtils.isEmpty(projectName)) {
             model.addAttribute("info", "Empty project");
@@ -132,9 +142,11 @@ public class LinkGeneratorController {
 
         }
 
-        String s = StringUtils.substringBefore(request.getRequestURL().toString(), "/pay/");
-        String redirectLink = generateRedirectUri(s, projectName);//s + "/get_code/" + projectName + "&scope=groups&response_type=code";
-        String vkRedirectUrlStr = String.format("https://oauth.vk.com/authorize?client_id=%sdisplay=page&redirect_uri=%s&scope=groups&response_type=code", env.getProperty("clientId"), redirectLink);
+        String baseUrl = StringUtils.substringBefore(request.getRequestURL().toString(), "/pay/");
+        sessionAttr.generateRedirectUri = generateRedirectUri(baseUrl, projectName);//s + "/get_code/" + projectName + "&scope=groups&response_type=code";
+        sessionAttr.baseUrl = baseUrl;
+        sessionAttr.projectName = projectName;
+        String vkRedirectUrlStr = String.format("https://oauth.vk.com/authorize?client_id=%sdisplay=page&redirect_uri=%s&scope=groups&response_type=code", env.getProperty("clientId"), sessionAttr.generateRedirectUri);
         return new ModelAndView("redirect:" + vkRedirectUrlStr);
 
         //HttpGet request2 = new HttpGet(format);
