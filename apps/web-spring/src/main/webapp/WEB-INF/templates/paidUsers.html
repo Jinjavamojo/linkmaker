@@ -24,8 +24,40 @@ $( $( "#left_side_menu" ).children() ).each(function( index ) {
 <div style="display:flex; flex-direction:row">
     <div th:replace="~{parts/menu :: menu}">Parts</div>
     <div id="content" class="lead">
-        <!--@{'/projects/edit/' + ${project.id}}-->
-        OKAY!
+        <div class="containter">
+            <div class="card">
+                <div class="card-block">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Имя</th>
+                            <th>Фамилия</th>
+                            <th>Сумма платежей</th>
+                            <th>Дата оплаты</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="vk_user  :${vk_users}">
+                            <td th:text="${vk_user.firstName}"></td>
+                            <td th:text="${vk_user.lastName}"></td>
+                            <td th:text="${vk_user.paymentsSum}"></td>
+                            <td th:text="'дата оплаты'"></td>
+                            <!--<td th:text="${vk_user.}"></td>-->
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <ul th:if="${totalPages} > 1" class="nav nav-pills">
+                        <li class="nav-item" th:each="i : ${#numbers.sequence(0,totalPages-1)}">
+                            <a th:href="@{${'/paidUsers/page/' +i}}" th:text = "${i}" class="nav-link"></a>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </div>
 
     </div>
 

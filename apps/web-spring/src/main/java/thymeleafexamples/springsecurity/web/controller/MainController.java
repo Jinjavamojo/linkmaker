@@ -17,8 +17,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.unbescape.html.HtmlEscape;
 import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.entity.Project;
+import thymeleafexamples.springsecurity.entity.VkUser;
 import thymeleafexamples.springsecurity.service.ProjectService;
 import thymeleafexamples.springsecurity.service.UserService;
+import thymeleafexamples.springsecurity.service.VKService;
 
 /**
  * Application home page and login.
@@ -26,6 +28,10 @@ import thymeleafexamples.springsecurity.service.UserService;
 @Controller
 @SessionAttributes("sessionAttr")
 public class MainController {
+
+
+    @Autowired
+    private VKService vkService;
 
     @Autowired
     private UserService userService;
@@ -69,8 +75,31 @@ public class MainController {
 
     @RequestMapping(value = "/paidUsers",method = RequestMethod.GET)
     public ModelAndView showPaidUsers(ModelAndView model, SessionAttr sessionAttr) {
+        return getPaidUsersView(0, model,sessionAttr);
+    }
+
+    @RequestMapping(value = "/paidUsers/page/{page}",method = RequestMethod.GET)
+    public ModelAndView showPaidUsers(@PathVariable("page") int page, ModelAndView model, SessionAttr sessionAttr) {
+        return getPaidUsersView(page, model,sessionAttr);
+    }
+
+    private ModelAndView getPaidUsersView(int page, ModelAndView model, SessionAttr sessionAttr) {
         model.addObject("activeTab","paid_users");
         model.setViewName("paidUsers");
+
+        Long currentProjectId = sessionAttr.currentProjectId;
+        if (currentProjectId == null) {
+            throw new RuntimeException("currentProjectId is null");
+        }
+        Long paidUsersCount = vkService.getPaidUsersCount(currentProjectId);
+        Long pages = paidUsersCount / 10;
+        if (paidUsersCount % 10  > 0) {
+            pages++;
+        }
+
+        List<VkUser> userPagination = vkService.getPaidUsers(page,currentProjectId);
+        model.addObject("vk_users",userPagination);
+        model.addObject("totalPages",pages);
         return model;
     }
 

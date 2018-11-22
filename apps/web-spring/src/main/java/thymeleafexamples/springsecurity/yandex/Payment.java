@@ -3,6 +3,7 @@ package thymeleafexamples.springsecurity.yandex;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import thymeleafexamples.springsecurity.entity.AbstractDomainClass;
+import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.entity.User;
 import thymeleafexamples.springsecurity.entity.VkUser;
 
@@ -61,6 +62,19 @@ public class Payment {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vk_user")
     private VkUser vkUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "project")
+    //TODO NULL OR NOT NULL? HOW WE PLAN TO IMPORT DATAS?
+    private Project project;
+
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
 
     public VkUser getVkUser() {
         return vkUser;

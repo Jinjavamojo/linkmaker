@@ -33,12 +33,13 @@
         refunded_amount_currency varchar(255),
         refunded_amount_value float8,
         test boolean,
+        project bigserial not null,
         vk_user int8,
         primary key (yandex_payment_id)
     );
 
     create table projects (
-       id  bigserial not null,
+        id  bigserial not null,
         db_date_created timestamp,
         db_last_updated timestamp,
         version int default 0 not null,
@@ -117,3 +118,8 @@
        add constraint users_roles_user_id_constraint
        foreign key (user_id)
        references users;
+
+    alter table payments
+    add constraint payments_project_constraint
+       foreign key (project)
+    references projects

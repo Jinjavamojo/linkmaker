@@ -4,7 +4,6 @@ import org.hibernate.annotations.Cascade;
 import thymeleafexamples.springsecurity.yandex.Payment;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,11 +28,22 @@ public class VkUser {
     private String firstName;
 
     @Column(name = "last_name")
-    private String lastname;
+    private String lastName;
 
-    @OneToMany (mappedBy = "vkUser")
+    @OneToMany (mappedBy = "vkUser",fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();
+
+    @Transient
+    private Double paymentsSum = 0D;
+
+    public Double getPaymentsSum() {
+        return paymentsSum;
+    }
+
+    public void setPaymentsSum(Double paymentsSum) {
+        this.paymentsSum = paymentsSum;
+    }
 
     public List<Payment> getPayments() {
         return payments;
@@ -83,11 +93,11 @@ public class VkUser {
         this.firstName = firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 }

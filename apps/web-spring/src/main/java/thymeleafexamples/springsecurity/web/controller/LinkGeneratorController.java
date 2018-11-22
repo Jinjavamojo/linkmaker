@@ -2,8 +2,6 @@ package thymeleafexamples.springsecurity.web.controller;
 
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
-import com.vk.api.sdk.exceptions.ApiException;
-import com.vk.api.sdk.exceptions.ClientException;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.users.UserXtrCounters;
 import org.apache.commons.lang3.StringUtils;
@@ -69,7 +67,7 @@ public class LinkGeneratorController {
             Long vkUserId = Long.valueOf(user.getId().toString());
             VkUser vkUser = new VkUser();
             vkUser.setVkUserId(vkUserId);
-            vkUser.setLastname(user.getLastName());
+            vkUser.setLastName(user.getLastName());
             vkUser.setFirstName(user.getFirstName());
 
             vkService.saveUserIfNotExists(vkUser);

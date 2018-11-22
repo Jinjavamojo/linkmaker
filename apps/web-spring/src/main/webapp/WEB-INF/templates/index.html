@@ -18,17 +18,14 @@
 <body>
 <div th:replace="~{user/header :: header}">Header</div>
 <div class="container">
+    <div class="project-flex-container">
+        <h1 class="start-column-flex-item">Проекты</h1>
+        <a th:href="@{/project/new}" class="btn btn-success">
+            <i class="fa fa-arrow-circle-o-left"></i>
+            <div th:text="#{addNewProject}"> </div>
+        </a>
+    </div>
     <div class="text-left" th:if="${not #lists.isEmpty(projects)}">
-
-        <div class="project-flex-container">
-            <h1 class="start-column-flex-item">Проекты</h1>
-            <a th:href="@{/project/new}" class="btn btn-success">
-                <i class="fa fa-arrow-circle-o-left"></i>
-                <div th:text="#{addNewProject}"> </div>
-            </a>
-        </div>
-
-
         <div id="content" class="lead">
             <table class="table table-striped">
                 <tr>

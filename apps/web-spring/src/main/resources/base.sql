@@ -21,11 +21,7 @@ VALUES
 (-3, -1);
 
 
-insert into projects(id,name,user_id) values(-1, 'admin_project_1',-3);
-insert into projects(id,name,user_id) values(-2, 'pr',-3);
 
-insert into projects(id,name,user_id) values(-3, 'emp_project_1',-1);
-insert into projects(id,name,user_id) values(-4, 'emp_project_2',-1);
 
 SHOW client_encoding;
 SHOW server_encoding;
