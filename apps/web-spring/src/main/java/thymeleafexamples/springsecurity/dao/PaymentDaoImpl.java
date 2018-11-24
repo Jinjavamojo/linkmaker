@@ -4,6 +4,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.yandex.Payment;
@@ -15,6 +16,9 @@ public class PaymentDaoImpl implements PaymentDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Value("${paymentsCountFor1Query}")
+    private int paymentsCount;
 
     @Override
     public Payment getPaymentById(String id) {
@@ -29,6 +33,14 @@ public class PaymentDaoImpl implements PaymentDao {
             return null;
         }
         return list.get(0);
+    }
+
+    public List<Payment> getPendingPayments() {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query<Payment> query = currentSession.createQuery("from Payment as p where p.paymentStatus = 'PENDING' order by p.createdAt", Payment.class);
+        query.setMaxResults(paymentsCount);
+        List<Payment> list = query.list();
+        return list;
     }
 
     @Override

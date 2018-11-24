@@ -5,11 +5,20 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import org.apache.commons.lang3.StringUtils;
 import thymeleafexamples.springsecurity.yandex.*;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.TimeZone;
+import java.util.logging.Logger;
 
 public class PaymentDeserializer extends StdDeserializer<Payment> {
+
+    private Logger logger = Logger.getLogger(getClass().getName());
 
     public PaymentDeserializer() {
         this(null);
@@ -33,7 +42,17 @@ public class PaymentDeserializer extends StdDeserializer<Payment> {
         payment.setYandexPaymentId(node.get("id").asText());
         payment.setPaymentStatus(PaymentStatus.valueOf(node.get("status").asText().toUpperCase()));
         payment.setPaid(node.get("paid").asBoolean());
-        //payment.setCreatedAt();
+
+        try {
+            String createdAt = node.get("created_at").asText();
+            TimeZone tz = TimeZone.getTimeZone("UTC");
+            DateFormat m_ISO8601Local = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+            m_ISO8601Local.setTimeZone(tz);
+            Date date = m_ISO8601Local.parse(createdAt);
+            payment.setCreatedAt(date);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         payment.setDescription(node.get("description").asText());
 
         JsonNode paymentMethodNode = node.get("payment_method");

@@ -12,8 +12,8 @@
 
 <div class="" th:fragment="menu">
     <ul id="left_side_menu" class="nav nav-pills nav-stacked">
-        <li id="main_info"><a th:href="@{${'/project/edit/'}}" th:text="'Main'"></a></li>
-        <li id="paid_users"><a th:href="@{/paidUsers}" th:text="'Paid users'"></a></li>
+        <li id="main_info"><a th:href="@{${'/project/edit/'}}" th:text="#{projectedit.menu.main}"></a></li>
+        <li id="statistic"><a th:href="@{/project/statistic}" th:text="#{projectedit.menu.statistic}"></a></li>
         <li><a href="#">Menu 2</a></li>
         <li><a href="#">Menu 3</a></li>
     </ul>

@@ -73,35 +73,7 @@ public class MainController {
         //return "redirect:/index";
     }
 
-    @RequestMapping(value = "/paidUsers",method = RequestMethod.GET)
-    public ModelAndView showPaidUsers(ModelAndView model, SessionAttr sessionAttr) {
-        return getPaidUsersView(0, model,sessionAttr);
-    }
 
-    @RequestMapping(value = "/paidUsers/page/{page}",method = RequestMethod.GET)
-    public ModelAndView showPaidUsers(@PathVariable("page") int page, ModelAndView model, SessionAttr sessionAttr) {
-        return getPaidUsersView(page, model,sessionAttr);
-    }
-
-    private ModelAndView getPaidUsersView(int page, ModelAndView model, SessionAttr sessionAttr) {
-        model.addObject("activeTab","paid_users");
-        model.setViewName("paidUsers");
-
-        Long currentProjectId = sessionAttr.currentProjectId;
-        if (currentProjectId == null) {
-            throw new RuntimeException("currentProjectId is null");
-        }
-        Long paidUsersCount = vkService.getPaidUsersCount(currentProjectId);
-        Long pages = paidUsersCount / 10;
-        if (paidUsersCount % 10  > 0) {
-            pages++;
-        }
-
-        List<VkUser> userPagination = vkService.getPaidUsers(page,currentProjectId);
-        model.addObject("vk_users",userPagination);
-        model.addObject("totalPages",pages);
-        return model;
-    }
 
     @ModelAttribute
     public SessionAttr sessionAttr(){
@@ -127,7 +99,7 @@ public class MainController {
         model.addObject("activeTab","main_info");
         //model.addObject("sessionAttr", sessionAttr);
         sessionAttr.currentProjectId = id;
-        model.setViewName("project");
+        model.setViewName("project/project");
         model.addObject("name", byId.getName());
         model.addObject("baseUrl", baseUrl);
         //model.addAttribute("saved",true);

@@ -1,6 +1,8 @@
 package thymeleafexamples.springsecurity;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,8 +11,34 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.stream.Stream;
 
+@Component
 public class Utils {
 
+    private static int paymentsCount;
+
+    @Value("${stackTraceLogDepth}")
+    public void setDatabase(int value) {
+        paymentsCount = value;
+    }
+
+    public static String getStackTrace(Exception e) {
+        StackTraceElement[] stackTrace = e.getStackTrace();
+        StringBuilder b = new StringBuilder();
+        for (int i = 0; i < paymentsCount; i++) {
+             b.append("     at ")
+                     .append(stackTrace[i].getClassName())
+                     .append(".")
+                     .append(stackTrace[i].getMethodName())
+                     .append("(")
+                     .append(stackTrace[i].getFileName())
+                     .append(":")
+                     .append(stackTrace[i].getLineNumber())
+                     .append(")")
+                     .append("\n");
+
+        }
+        return b.toString();
+    }
     public static String readLineByLineJava8(String filePath)
     {
         StringBuilder contentBuilder = new StringBuilder();

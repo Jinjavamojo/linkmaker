@@ -10,5 +10,6 @@
     "type": "redirect",
     "return_url": "${redirect_link}"
   },
+  "capture": true,
   "description": "${description}"
 }

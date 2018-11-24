@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.servlet.ModelAndView;
+import thymeleafexamples.springsecurity.Utils;
 import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.service.PaymentService;
 import thymeleafexamples.springsecurity.yandex.YandexKassaComponent;
@@ -92,7 +93,9 @@ public class LinkGeneratorController {
             //response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
             //response.getWriter().println("error");
             //response.setContentType("text/html;charset=utf-8");
+            logger.log(Level.SEVERE, "info section");
             logger.log(Level.SEVERE, e.toString());
+            logger.log(Level.SEVERE, Utils.getStackTrace(e));
             sessionAttr.clear();
         }
         sessionAttr.clear();
@@ -113,7 +116,9 @@ public class LinkGeneratorController {
             //response.sendRedirect("/info?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId());
 
         } catch (Exception e) {
+            logger.log(Level.SEVERE, "getCode section");
             logger.log(Level.SEVERE, e.toString());
+            logger.log(Level.SEVERE, Utils.getStackTrace(e));
             sessionAttr.clear();
         }
         //response.sendRedirect("/info?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId());
