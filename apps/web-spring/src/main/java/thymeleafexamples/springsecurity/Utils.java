@@ -24,7 +24,8 @@ public class Utils {
     public static String getStackTrace(Exception e) {
         StackTraceElement[] stackTrace = e.getStackTrace();
         StringBuilder b = new StringBuilder();
-        for (int i = 0; i < paymentsCount; i++) {
+        int max = stackTrace.length <= paymentsCount ? stackTrace.length : paymentsCount;
+        for (int i = 0; i < max; i++) {
              b.append("     at ")
                      .append(stackTrace[i].getClassName())
                      .append(".")

@@ -10,5 +10,5 @@ public interface PaymentDao {
 
     void savePayment(Payment payment);
 
-    List<Payment> getPendingPayments();
+    void updatePendingPaymentsStatus();
 }

@@ -27,31 +27,31 @@ $( $( "#left_side_menu" ).children() ).each(function( index ) {
     <div style="display:flex; flex-direction:column">
         <ul class="nav nav-tabs">
             <li class="active"><a th:text="#{projectedit.menu.firstTab}" th:href="'#'">1</a></li>
-            <li><a th:text="#{projectedit.menu.secondTab}" th:href="@{/project/statistic/linked}">2</a></li>
+            <li><a th:text="#{projectedit.menu.secondTab}" th:href="@{/project/statistic/unpaid}">2</a></li>
             <li><a href="#">Menu 2</a></li>
             <li><a href="#">Menu 3</a></li>
         </ul>
         <div id="content" class="lead">
+            <h3 th:text="@{'Данные о платежах пользователя:'${userFio}"></h3>
             <div class="containter">
                 <div class="card">
                     <div class="card-block">
                         <table class="table table-hover">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Имя</th>
-                                <th>Фамилия</th>
-                                <th>Сумма платежей</th>
+                                <th>Описание платежа</th>
+                                <th>Создан</th>
+                                <th>Время оплаты</th>
+                                <th>Сумма</th>
+
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="vk_user  :${vk_users}">
-                                <td th:href="@{/project/statistic/paid}">
-                                    <a th:text="${vk_user.vkUserId}"  th:href="@{'https://vk.com/id' + ${vk_user.vkUserId}}">1</a>
-                                </td>
-                                <td th:text="${vk_user.firstName}"></td>
-                                <td th:text="${vk_user.lastName}"></td>
-                                <td th:text="${vk_user.paymentsSum}"></td>
+                            <tr th:each="user_payment  :${user_payments}">
+                                <td th:text="${user_payment.desc}"></td>
+                                <td th:text="${user_payment.createdAt}"></td>
+                                <td th:text="${user_payment.capturedAt}"></td>
+                                <td th:text="${user_payment.amount}"></td>
                                 <!--<td th:text="${vk_user.}"></td>-->
 
                             </tr>
@@ -60,7 +60,7 @@ $( $( "#left_side_menu" ).children() ).each(function( index ) {
 
                         <ul th:if="${totalPages} > 1" class="nav nav-pills">
                             <li class="nav-item" th:each="i : ${#numbers.sequence(0,totalPages-1)}">
-                                <a th:href="@{${'project/statistic/paid/page' +i}}" th:text="${i}" class="nav-link"></a>
+                                <a th:href="@{${'project/paidUsers/page/' +i}}" th:text="${i}" class="nav-link"></a>
                             </li>
 
                         </ul>

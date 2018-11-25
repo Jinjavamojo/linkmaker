@@ -43,6 +43,7 @@ import org.thymeleaf.spring5.SpringTemplateEngine;
 import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import thymeleafexamples.springsecurity.PaymentDeserializer;
+import thymeleafexamples.springsecurity.PaymentDeserializerStatus;
 import thymeleafexamples.springsecurity.Utils;
 import thymeleafexamples.springsecurity.yandex.Payment;
 
@@ -88,6 +89,15 @@ public class AppConfig implements WebMvcConfigurer {
 		ObjectMapper mapper = new ObjectMapper();
 		SimpleModule module = new SimpleModule();
 		module.addDeserializer(Payment.class, new PaymentDeserializer());
+		mapper.registerModule(module);
+		return mapper;
+	}
+
+	@Bean
+	public ObjectMapper paymentDeserializersStatus() {
+		ObjectMapper mapper = new ObjectMapper();
+		SimpleModule module = new SimpleModule();
+		module.addDeserializer(Payment.class, new PaymentDeserializerStatus());
 		mapper.registerModule(module);
 		return mapper;
 	}

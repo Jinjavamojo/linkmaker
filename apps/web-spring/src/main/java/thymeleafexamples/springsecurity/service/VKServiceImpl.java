@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import thymeleafexamples.springsecurity.dao.VKDao;
 import thymeleafexamples.springsecurity.entity.VkUser;
+import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 
 import java.util.List;
 
@@ -35,8 +36,8 @@ public class VKServiceImpl implements VKService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VkUser> getUnpaidUsers(int pageNumber, long projectId) {
-        return vkDao.getUnpaidUsers(pageNumber, projectId);
+    public List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId) {
+        return vkDao.getLinkedUsers(pageNumber, projectId);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class VKServiceImpl implements VKService {
 
     @Override
     @Transactional(readOnly = true)
-    public Long getUnaidUsersCount(Long projectId) {
-        return vkDao.getPaidUsersCount(projectId);
+    public Long getLinkedUserCount(Long projectId) {
+        return vkDao.getLinkedUsersCount(projectId);
     }
 }

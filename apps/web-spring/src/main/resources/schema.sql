@@ -35,6 +35,9 @@
         test boolean,
         project bigserial not null,
         vk_user int8,
+
+        party varchar(255),
+        reason varchar(255),
         primary key (yandex_payment_id)
     );
 

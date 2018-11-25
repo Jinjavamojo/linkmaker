@@ -76,6 +76,14 @@ public class PaymentDeserializer extends StdDeserializer<Payment> {
             payment.setTest(node.get("test").asBoolean());
         }
 
+        if (node.get("cancellation_details") != null) {
+            JsonNode cancellationDetails = node.get("cancellation_details");
+            PaymentCancelationDetails details = new PaymentCancelationDetails();
+            details.setParty(cancellationDetails.get("party").asText());
+            details.setReason(cancellationDetails.get("reason").asText());
+            payment.setPaymentCancelationDetails(details);
+        }
+
         if (node.get("refunded_amount") != null) {
             JsonNode refundedAmountNode = node.get("refunded_amount");
             Amount refundedAmount = new Amount();

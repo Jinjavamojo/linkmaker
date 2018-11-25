@@ -48,6 +48,10 @@
                     <textarea style="resize: none;" class="form-control margin-bottom-20" name="projectDescription" rows="5" cols="40" th:field="*{projectDescription}">.</textarea>
                 </div>
                 <div class="project-flex-container">
+                    <div class="start-column-flex-item">Стоимость</div>
+                    <input class="form-control margin-bottom-20"  type="number" min="1" step="1" th:field="*{price}" th:errorclass="fieldError" />
+                </div>
+                <div class="project-flex-container">
                     <div class = "start-column-flex-item" th:for="${#ids.next('autoPaymentAvailable')}" th:text="#{project.autoPaymentAvailable}">autopayment</div>
                     <input type="checkbox" th:field="*{autoPaymentAvailable}" />
                 </div>

@@ -61,6 +61,7 @@ public class ProjectDaoImpl implements ProjectDao {
         Session currentSession = sessionFactory.getCurrentSession();
         Project newProject = currentSession.get(Project.class, project.getId());
         newProject.setName(project.getName());
+        newProject.setPrice(project.getPrice());
         newProject.setProjectDescription(project.getProjectDescription());
         newProject.setProjectStartDate(project.getProjectStartDate());
         newProject.setAutoPaymentAvailable(project.getAutoPaymentAvailable());

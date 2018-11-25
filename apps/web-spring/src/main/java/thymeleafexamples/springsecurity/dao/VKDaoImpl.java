@@ -13,12 +13,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import thymeleafexamples.springsecurity.entity.Role;
 import thymeleafexamples.springsecurity.entity.VkUser;
+import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 
 import javax.persistence.NoResultException;
 import java.math.BigInteger;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -53,7 +55,7 @@ public class VKDaoImpl implements VKDao {
     public Long getPaidUsersCount(long projectId) {
         String query = "SELECT count(*)" +
                 " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
-                " GROUP BY vk_user.first_name, vk_user.last_name having SUM(case when p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
+                " GROUP BY vk_user.first_name, vk_user.last_name having SUM(case when p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
         BigInteger count = null;
         try {
             count = (BigInteger)sessionFactory.getCurrentSession().createNativeQuery(
@@ -67,10 +69,10 @@ public class VKDaoImpl implements VKDao {
     }
 
     @Override
-    public Long getUnpaidUsers(long projectId) {
+    public Long getLinkedUsersCount(long projectId) {
         String query = "SELECT count(*)" +
                 " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
-                " GROUP BY vk_user.first_name, vk_user.last_name having SUM(case when p.payment_status = 'CANCELED' OR p.payment_status = 'PENDING' THEN p.value ELSE 0 END) > 0";
+                " and (p.payment_status = 'CANCELED' OR p.payment_status = 'PENDING')";
         BigInteger count = null;
         try {
             count = (BigInteger)sessionFactory.getCurrentSession().createNativeQuery(
@@ -84,21 +86,20 @@ public class VKDaoImpl implements VKDao {
     }
 
     @Override
-    public List<VkUser> getUnpaidUsers(int pageNumber, long projectId) {
-        String query = "SELECT first_name, last_name, " +
-                " SUM(case when p.payment_status = 'CANCELED' OR p.payment_status = 'PENDING' THEN p.value ELSE 0 END) " +
+    public List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId) {
+        String query = "SELECT first_name, last_name, p.created_at, vk_user.vkuserid " +
                 " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
-                " GROUP BY vk_user.first_name, vk_user.last_name having SUM(case when p.payment_status = 'CANCELED' OR p.payment_status = 'PENDING' THEN p.value ELSE 0 END) > 0";
-        return getUsersByTemplate(query,pageNumber, projectId);
+                " and (p.payment_status = 'CANCELED' OR p.payment_status = 'PENDING')";
+        return getLinkedUsers(query,pageNumber, projectId);
     }
 
     @Override
     public List<VkUser> getPaidUsers(int pageNumber, long projectId) {
 
-        String query = "SELECT first_name, last_name, " +
-                " SUM(case when p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) " +
+        String query = "SELECT first_name, last_name, vk_user.vkuserid, " +
+                " SUM(case when p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) " +
                 " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
-                " GROUP BY vk_user.first_name, vk_user.last_name having SUM(case when p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
+                " GROUP BY vk_user.first_name, vk_user.last_name, vk_user.vkuserid having SUM(case when p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
         return getUsersByTemplate(query,pageNumber,projectId);
 
 
@@ -136,8 +137,38 @@ public class VKDaoImpl implements VKDao {
             VkUser user = new VkUser();
             user.setFirstName((String)tuple[0]);
             user.setLastName((String)tuple[1]);
-            user.setPaymentsSum((Double) tuple[2]);
+            user.setVkUserId(((BigInteger) tuple[2]).longValue());
+            user.setPaymentsSum((Double) tuple[3]);
             users.add(user);
+        }
+        return users;
+    }
+
+
+    private List<VkUserPaymentDTO> getLinkedUsers(String query, int pageNumber, long projectId) {
+        if (pageNumber < 0) {
+            throw new RuntimeException("Wrong value");
+        }
+        int firstRes = pageNumber * 10;
+        int maxRes = firstRes + 10;
+        List<Object[]> tuples = sessionFactory.getCurrentSession().createNativeQuery(
+                query)
+//                .addEntity("vk_user", VkUser.class )
+//                .addJoin( "p", "vk_user.payments")
+                .setParameter("projectId", projectId)
+                .setMaxResults(maxRes)
+                .setFirstResult(firstRes)
+                .list();
+
+        List<VkUserPaymentDTO> users = new ArrayList<>();
+        for(Object[] tuple : tuples) {
+            String firstName = (String) tuple[0];
+            String lastName = (String) tuple[1];
+            Date paymentDateCreatedAt = (Date) tuple[2];
+
+            Long vkUserId = ((BigInteger) tuple[3]).longValue();
+            VkUserPaymentDTO dto = new VkUserPaymentDTO(firstName,lastName,paymentDateCreatedAt,vkUserId);
+            users.add(dto);
         }
         return users;
     }

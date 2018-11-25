@@ -75,13 +75,16 @@ public class LinkGeneratorController {
 
             String clientMessage = String.format("Оплата курса: '%s', Пользователь: %s %s",sessionAttr.projectName, user.getLastName(), user.getFirstName());
             Payment paymentFromRequest = kassa.createPaymentFromRequest("https://yandex.ru", clientMessage);
-            sessionAttr.clear();
+
             if (paymentFromRequest != null) {
                 paymentFromRequest.setVkUser(vkUser);
+                paymentFromRequest.setProjectName(sessionAttr.projectName);
                 paymentService.savePayment(paymentFromRequest);
+                sessionAttr.clear();
                 return new ModelAndView("redirect:" + env.getProperty("yandexKassaPaymentURL") + paymentFromRequest.getYandexPaymentId());
             } else {
                 model.addAttribute("info", "Error while redirecting");
+                sessionAttr.clear();
                 return new ModelAndView("payInfo", model);
             }
 

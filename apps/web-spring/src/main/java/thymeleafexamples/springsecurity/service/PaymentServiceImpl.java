@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 import thymeleafexamples.springsecurity.dao.PaymentDao;
 import thymeleafexamples.springsecurity.yandex.Payment;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class PaymentServiceImpl implements PaymentService {
@@ -22,5 +24,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void savePayment(Payment payment) {
         paymentDao.savePayment(payment);
+    }
+
+    @Override
+    public void updatePendingPaymentsStatus() {
+        paymentDao.updatePendingPaymentsStatus();
     }
 }

@@ -1,6 +1,7 @@
 package thymeleafexamples.springsecurity.service;
 
 import thymeleafexamples.springsecurity.entity.VkUser;
+import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 
 import java.util.List;
 
@@ -12,11 +13,11 @@ public interface VKService {
 
     List<VkUser> getPaidUsers(int pageNumber, long projectId);
 
-    List<VkUser> getUnpaidUsers(int pageNumber, long projectId);
+    List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
 
     Long getPaidUsersCount(Long projectId);
 
-    Long getUnaidUsersCount(Long projectId);
+    Long getLinkedUserCount(Long projectId);
 
 
 

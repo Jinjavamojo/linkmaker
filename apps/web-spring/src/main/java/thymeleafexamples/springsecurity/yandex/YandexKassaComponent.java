@@ -13,6 +13,8 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -44,21 +46,46 @@ public class YandexKassaComponent {
     private ObjectMapper objectMapper;
 
     @Autowired
+    private ObjectMapper paymentDeserializersStatus;
+
+    @Autowired
     private String yandexCreatePaymentTemplate;
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
-    public String generateGetPaymentInfo(String paymentId) throws Exception {
-        HttpGet post = new HttpGet(env.getProperty("yandexKassaURL") + "/" + paymentId);
-        HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(yandexCredentialsProvider).build();
+    public Payment generateGetPaymentInfo(String paymentId) {
 
-        HttpResponse response = client.execute(post);
 
-        int statusCode = response.getStatusLine().getStatusCode();
-        //System.out.println(statusCode);
         try {
+            HttpGet post = new HttpGet(env.getProperty("yandexKassaURL") + "/" + paymentId);
+            HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(yandexCredentialsProvider).build();
+            HttpResponse response = client.execute(post);
+            int statusCode = response.getStatusLine().getStatusCode();
+            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+            StringBuffer result = new StringBuffer();
+            String line = "";
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+            if (HttpServletResponse.SC_OK == statusCode) {
+                Payment readValue = paymentDeserializersStatus.readValue(result.toString(), Payment.class);
+                return readValue;
+
+            } else {
+                logger.log(Level.SEVERE, EntityUtils.toString(response.getEntity()));
+            }
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.toString());
+            logger.log(Level.SEVERE, Utils.getStackTrace(e));
+        }
+
+        try {
+            HttpGet post = new HttpGet(env.getProperty("yandexKassaURL") + "/" + paymentId);
+            HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(yandexCredentialsProvider).build();
+            HttpResponse response = client.execute(post);
+            int statusCode = response.getStatusLine().getStatusCode();
             // Print out the response message
-            //System.out.println(EntityUtils.toString(response.getEntity()));
+            System.out.println(EntityUtils.toString(response.getEntity()));
             BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
             StringBuffer result = new StringBuffer();
@@ -66,11 +93,16 @@ public class YandexKassaComponent {
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
-            //JSONObject jsonObj = new JSONObject(result.toString());
-            //return jsonObj.toString();
-            return "";
-        } catch (IOException e) {
+            if (HttpServletResponse.SC_OK == statusCode) {
+                Payment readValue = paymentDeserializersStatus.readValue(result.toString(), Payment.class);
+                return readValue;
+
+            } else {
+                logger.log(Level.SEVERE, EntityUtils.toString(response.getEntity()));
+            }
+        } catch (Exception e) {
             logger.log(Level.SEVERE, e.toString());
+            logger.log(Level.SEVERE, Utils.getStackTrace(e));
         }
         return null;
     }

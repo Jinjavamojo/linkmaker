@@ -2,6 +2,8 @@ package thymeleafexamples.springsecurity.yandex;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Cascade;
+import org.springframework.lang.Nullable;
 import thymeleafexamples.springsecurity.entity.AbstractDomainClass;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.entity.User;
@@ -46,6 +48,9 @@ public class Payment {
     private PaymentMethod paymentMethod;
 
     @Embedded
+    private PaymentCancelationDetails paymentCancelationDetails;
+
+    @Embedded
     private Recipient recipient;
 
     @Embedded
@@ -64,9 +69,30 @@ public class Payment {
     private VkUser vkUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @Cascade(org.hibernate.annotations.CascadeType.REFRESH)
     @JoinColumn(name = "project")
     //TODO NULL OR NOT NULL? HOW WE PLAN TO IMPORT DATAS?
     private Project project;
+
+    @Transient
+    @Nullable
+    private String projectName;
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
+    }
+
+    public PaymentCancelationDetails getPaymentCancelationDetails() {
+        return paymentCancelationDetails;
+    }
+
+    public void setPaymentCancelationDetails(PaymentCancelationDetails paymentCancelationDetails) {
+        this.paymentCancelationDetails = paymentCancelationDetails;
+    }
 
     public Project getProject() {
         return project;
