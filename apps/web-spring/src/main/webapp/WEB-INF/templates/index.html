@@ -7,6 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet"
           href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet"
+          href="css/main.css">
     <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"-->
     <!--th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>-->
 
@@ -26,7 +28,41 @@
         </a>
     </div>
     <div class="text-left" th:if="${not #lists.isEmpty(projects)}">
+
         <div id="content" class="lead">
+            <div th:each="project : ${projects}" style="display:flex;flex-direction:column">
+
+                <a style="display:block" th:href="@{${'/project/edit/' + project.id}}">
+                    <div class="rcorners4">
+                        <div id="top-panel-id">
+                            <div class="vk-icon"></div>
+                            <div class="money-div">
+                                <div class="money-icon"></div>
+                                <div class="money-value">:25500р</div>
+                            </div>
+                            <div class="people-div">
+                                <div class="people-icon-views"></div>
+                                <div class="people-views-value">:40</div>
+
+                                <div class="people-icon-paid"></div>
+                                <div class="people-paid-value">:4</div>
+                            </div>
+
+
+                        </div>
+                        <div id="middle-panel-id">
+                            <div class="project-text">
+                                Онлайн курс по повышению уверенности в себе:"Возрождение 2.0"</div>
+
+                        </div>
+                        <div id="bottom-panel-id">
+                            <!--<div class="people-icon"></div>-->
+                        </div>
+
+                    </div>
+                </a>
+
+            </div>
             <table class="table table-striped">
                 <tr>
                     <th th:text="#{project.name}">.</th>

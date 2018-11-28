@@ -38,3 +38,176 @@ width:250px;
 .inline {
      display:inline;
 }
+
+
+.rcorners4 {
+    border-radius: 15px;
+    padding-top:15px;
+    padding-bottom:15px;
+    padding-left:5px;
+    height: 150px;
+	display:flex;
+	border:1px solid gray;
+	flex-direction:column;
+	margin-bottom:10px;
+}
+
+.rcorners4:hover {
+	background-color:gray;
+}
+
+a .rcorners4  {
+color:black;
+text-decoration:none;
+}
+
+a:hover {
+color:black;
+text-decoration:none;
+}
+a:link {
+color:black;
+text-decoration:none;
+}
+a:visited {
+color:black;
+text-decoration:none;
+}
+a:active {
+color:black;
+text-decoration:none;
+}
+
+/*a:hover .rcorners4:hover {
+color:black;
+text-decoration:none;
+}*/
+
+
+
+#top-panel-id {
+	width:100%;
+	height:20%;
+	display:flex;
+	flex-direction:row;
+	align-items: flex-end;
+	//justify-content:space-between;
+}
+#middle-panel-id {
+	width:100%;
+	height:60%;
+	display:flex;
+	flex-direction:row;
+	align-items:center;
+	align-content:center;
+}
+#bottom-panel-id {
+	width:100%;
+	height:20%;
+}
+
+.people-div {
+	display:flex;
+	flex-direction:row;
+	margin-right:20px;
+	align-items: flex-end;
+}
+.vk-icon {
+background-image: url(images/vk.png);
+ width:30px;
+ height:30px;
+ background-position: center;
+ background-size: cover;
+ margin-right:20px;
+}
+.people-icon-views {
+background-image: url(images/views.png);
+ width:30px;
+ height:20px;
+ background-position: center;
+ background-size: cover;
+}
+
+.people-icon-paid {
+background-image: url(images/views.png);
+ width:30px;
+ height:20px;
+ background-position: center;
+ background-size: cover;
+}
+.people-views-value{
+margin-right:20px;
+}
+.people-paid-value {
+margin-right:20px;
+}
+
+.money-icon {
+background-image: url(images/money-bag.png);
+
+ width:30px;
+ height:30px;
+ background-position: center;
+ background-size: cover;
+}
+
+.money-value {
+margin-right:20px;
+}
+
+.money-div {
+	display:flex;
+	flex-direction:row;
+	align-items: flex-end;
+
+}
+
+@font-face {
+	font-family: 'Gnuolane Free Cyrillic';
+	src: url('GnuolaneFreeCyrillic.eot');
+	src: local('Gnuolane Free Cyrillic'), local('GnuolaneFreeCyrillic'),
+		url('GnuolaneFreeCyrillic.eot?#iefix') format('embedded-opentype'),
+		url('GnuolaneFreeCyrillic.woff') format('woff'),
+		url('GnuolaneFreeCyrillic.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+.project-text {
+//font-family: 'Kautiva Cyrillic';
+//font-weight: normal;
+//font-style: normal;
+}
+
+@font-face {
+	font-family: 'Kautiva Cyrillic1';
+	src: url('KautivaCyrillicBlack.eot');
+	src: local('Kautiva Cyrillic Black'), local('KautivaCyrillicBlack'),
+		url('fonts/KautivaCyrillicBlack.eot?#iefix') format('embedded-opentype'),
+		url('fonts/KautivaCyrillicBlack.woff') format('woff'),
+		url('fonts/KautivaCyrillicBlack.ttf') format('truetype');
+	font-weight: 900;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Kautiva Cyrillic2';
+	src: url('KautivaCyrillicBold.eot');
+	src: local('Kautiva Cyrillic Bold'), local('KautivaCyrillicBold'),
+		url('fonts/KautivaCyrillicBold.eot?#iefix') format('embedded-opentype'),
+		url('KautivaCyrillicBold.woff') format('woff'),
+		url('KautivaCyrillicBold.ttf') format('truetype');
+	font-weight: bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Kautiva Cyrillic';
+	src: url('KautivaCyrillicBook.eot');
+	src: local('Kautiva Cyrillic Book'), local('KautivaCyrillicBook'),
+		url('fonts/KautivaCyrillicBook.eot?#iefix') format('embedded-opentype'),
+		url('fonts/KautivaCyrillicBook.woff') format('woff'),
+		url('fonts/KautivaCyrillicBook.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
