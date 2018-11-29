@@ -56,7 +56,7 @@ public class PaymentDaoImpl implements PaymentDao {
         List<Payment> list = query.list();
         for (Payment payment : list) {
             Payment updatedPayment = yandexKassaComponent.generateGetPaymentInfo(payment.getYandexPaymentId());
-            if (updatedPayment.getPaymentStatus() != PaymentStatus.PENDING) {
+            if (updatedPayment != null && updatedPayment.getPaymentStatus() != PaymentStatus.PENDING) {
                 payment.setPaymentStatus(updatedPayment.getPaymentStatus());
                 payment.setCapturedAt(updatedPayment.getCapturedAt());
                 sessionFactory.getCurrentSession().update(payment);
