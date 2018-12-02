@@ -54,18 +54,30 @@ public class PaymentDaoImpl implements PaymentDao {
         Query<Payment> query = currentSession.createQuery("from Payment as p where p.paymentStatus = 'PENDING' order by p.createdAt", Payment.class);
         query.setMaxResults(paymentsCount);
         List<Payment> list = query.list();
-        for (Payment payment : list) {
-            Payment updatedPayment = yandexKassaComponent.generateGetPaymentInfo(payment.getYandexPaymentId());
+
+        list.forEach(p -> {
+            Payment updatedPayment = yandexKassaComponent.generateGetPaymentInfo(p.getYandexPaymentId());
             if (updatedPayment != null && updatedPayment.getPaymentStatus() != PaymentStatus.PENDING) {
-                payment.setPaymentStatus(updatedPayment.getPaymentStatus());
-                payment.setCapturedAt(updatedPayment.getCapturedAt());
-                sessionFactory.getCurrentSession().update(payment);
+                p.setPaymentStatus(updatedPayment.getPaymentStatus());
+                p.setCapturedAt(updatedPayment.getCapturedAt());
+                sessionFactory.getCurrentSession().update(p);
                 logger.log(Level.INFO, String.format("payment with id=%s set status=%s", updatedPayment.getYandexPaymentId(), updatedPayment.getPaymentStatus()));
             } else {
                 //logger.log(Level.INFO, String.format("payments with id=%s no status changing", updatedPayment.getYandexPaymentId(), updatedPayment.getPaymentStatus()));
             }
-
-        }
+        });
+//        for (Payment payment : list) {
+//            Payment updatedPayment = yandexKassaComponent.generateGetPaymentInfo(payment.getYandexPaymentId());
+//            if (updatedPayment != null && updatedPayment.getPaymentStatus() != PaymentStatus.PENDING) {
+//                payment.setPaymentStatus(updatedPayment.getPaymentStatus());
+//                payment.setCapturedAt(updatedPayment.getCapturedAt());
+//                sessionFactory.getCurrentSession().update(payment);
+//                logger.log(Level.INFO, String.format("payment with id=%s set status=%s", updatedPayment.getYandexPaymentId(), updatedPayment.getPaymentStatus()));
+//            } else {
+//                //logger.log(Level.INFO, String.format("payments with id=%s no status changing", updatedPayment.getYandexPaymentId(), updatedPayment.getPaymentStatus()));
+//            }
+//
+//        }
     }
 
     @Override
