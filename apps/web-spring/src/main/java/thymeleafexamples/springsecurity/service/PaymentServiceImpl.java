@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import thymeleafexamples.springsecurity.dao.PaymentDao;
 import thymeleafexamples.springsecurity.yandex.Payment;
+import thymeleafexamples.springsecurity.yandex.PaymentStatus;
 
 import java.util.List;
 
@@ -29,5 +30,10 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public void updatePendingPaymentsStatus() {
         paymentDao.updatePendingPaymentsStatus();
+    }
+
+    @Override
+    public void setPaymentStatus(PaymentStatus status, String yandexId) {
+        paymentDao.setPaymentStatus(status, yandexId);
     }
 }

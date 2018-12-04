@@ -21,6 +21,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import thymeleafexamples.springsecurity.Utils;
+import thymeleafexamples.springsecurity.service.PaymentService;
 import thymeleafexamples.springsecurity.yandex.Payment;
 
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +32,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Component
 @PropertySource({"classpath:app.properties"})
@@ -38,6 +40,9 @@ public class YandexKassaComponent {
 
     @Autowired
     private Environment env;
+
+    @Autowired
+    private PaymentService paymentService;
 
     @Autowired
     private CredentialsProvider yandexCredentialsProvider;
@@ -61,47 +66,30 @@ public class YandexKassaComponent {
             HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(yandexCredentialsProvider).build();
             HttpResponse response = client.execute(post);
             int statusCode = response.getStatusLine().getStatusCode();
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-            if (HttpServletResponse.SC_OK == statusCode) {
-                Payment readValue = paymentDeserializersStatus.readValue(result.toString(), Payment.class);
-                return readValue;
+            if (statusCode != 404) {
+                try (BufferedReader buffer = new BufferedReader(new InputStreamReader(response.getEntity().getContent()))) {
+                    String collect = buffer.lines().collect(Collectors.joining("\n"));
+                    if (HttpServletResponse.SC_OK == statusCode) {
+                        Payment readValue = paymentDeserializersStatus.readValue(collect, Payment.class);
+                        return readValue;
+
+                    } else {
+                        logger.log(Level.SEVERE, String.valueOf(statusCode));
+                        logger.log(Level.SEVERE, EntityUtils.toString(response.getEntity()));
+                    }
+                }
+//                BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+//                StringBuffer result = new StringBuffer();
+//                String line = "";
+//                while ((line = rd.readLine()) != null) {
+//                    result.append(line);
+//                }
 
             } else {
-                logger.log(Level.SEVERE, String.valueOf(statusCode));
-                logger.log(Level.SEVERE, EntityUtils.toString(response.getEntity()));
+                paymentService.setPaymentStatus(PaymentStatus.NOT_FOUND,paymentId);
             }
+
         } catch (IOException e) {
-            logger.log(Level.SEVERE, e.toString());
-            logger.log(Level.SEVERE, Utils.getStackTrace(e));
-        }
-
-        try {
-            HttpGet post = new HttpGet(env.getProperty("yandexKassaURL") + "/" + paymentId);
-            HttpClient client = HttpClientBuilder.create().setDefaultCredentialsProvider(yandexCredentialsProvider).build();
-            HttpResponse response = client.execute(post);
-            int statusCode = response.getStatusLine().getStatusCode();
-            // Print out the response message
-            System.out.println(EntityUtils.toString(response.getEntity()));
-            BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-            if (HttpServletResponse.SC_OK == statusCode) {
-                Payment readValue = paymentDeserializersStatus.readValue(result.toString(), Payment.class);
-                return readValue;
-
-            } else {
-                logger.log(Level.SEVERE, EntityUtils.toString(response.getEntity()));
-            }
-        } catch (Exception e) {
             logger.log(Level.SEVERE, e.toString());
             logger.log(Level.SEVERE, Utils.getStackTrace(e));
         }

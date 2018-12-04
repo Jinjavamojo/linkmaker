@@ -97,4 +97,14 @@ public class PaymentDaoImpl implements PaymentDao {
             currentSession.save(payment);
         }
     }
+
+    @Override
+    public void setPaymentStatus(PaymentStatus status, String yandexId) {
+        Session currentSession = sessionFactory.getCurrentSession();
+        Query<Payment> query = currentSession.createQuery("from Payment as p where p.yandexPaymentId = :paymentId", Payment.class);
+        query.setParameter("paymentId", yandexId);
+        Payment payment = query.uniqueResult();
+        payment.setPaymentStatus(status);
+        currentSession.update(payment);
+    }
 }
