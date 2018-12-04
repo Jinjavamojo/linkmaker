@@ -14,7 +14,6 @@ import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
@@ -28,6 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -72,6 +72,7 @@ public class YandexKassaComponent {
                 return readValue;
 
             } else {
+                logger.log(Level.SEVERE, String.valueOf(statusCode));
                 logger.log(Level.SEVERE, EntityUtils.toString(response.getEntity()));
             }
         } catch (IOException e) {
