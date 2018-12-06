@@ -53,9 +53,29 @@ public class VKDaoImpl implements VKDao {
 
     @Override
     public Long getPaidUsersCount(long projectId) {
-        String query = "SELECT count(*)" +
-                " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
-                " GROUP BY vk_user.first_name, vk_user.last_name having SUM(case when p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
+        String query = "select count(*) from (" +
+                "            SELECT \n" +
+                "        vk_user.first_name\n" +
+                "        last_name,\n" +
+                "        vk_user.vkuserid\n" +
+                "    FROM\n" +
+                "        vk_users vk_user\n" +
+                "    INNER JOIN\n" +
+                "        payments p\n" +
+                "            ON p.vk_user = vk_user.vkuserid\n" +
+                "    where\n" +
+                "        p.project = :projectId\n" +
+                "    GROUP BY\n" +
+                "        vk_user.first_name,\n" +
+                "        vk_user.last_name,\n" +
+                "        vk_user.vkuserid\n" +
+                "    having\n" +
+                "        SUM(case\n" +
+                "            when p.payment_status = 'WAITING_FOR_CAPTURE'\n" +
+                "            OR p.payment_status = 'SUCCEEDED' THEN p.value\n" +
+                "            ELSE 0\n" +
+                "        END) > 0 limit 10\n" +
+                ")  as t\n";
         BigInteger count = null;
         try {
             count = (BigInteger)sessionFactory.getCurrentSession().createNativeQuery(
