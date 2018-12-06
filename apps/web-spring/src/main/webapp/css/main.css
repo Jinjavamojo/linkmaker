@@ -248,7 +248,23 @@ margin-right:20px;
     text-decoration: none;
     display: block;
 }
+.dropdown-content div {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
 
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+
+#txt-icon {
+background-image: url(images/txt.png);
+ width:30px;
+ height:30px;
+ background-position: center;
+ background-size: cover;
+ margin-right:20px;
+}

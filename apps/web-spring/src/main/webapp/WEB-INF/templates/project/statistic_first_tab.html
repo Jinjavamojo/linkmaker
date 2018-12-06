@@ -70,7 +70,7 @@ $( $( "#left_side_menu" ).children() ).each(function( index ) {
                     <div class="dropdown">
                         <div onclick="myFunction()" class="dropbtn">Dropdown</div>
                         <div id="myDropdown" class="dropdown-content">
-                            <a href="#home">Home</a>
+                            <div class="txt-icon" id="txt-report"></div>
                             <a href="#about">About</a>
                             <a href="#contact">Contact</a>
                         </div>
@@ -83,10 +83,22 @@ $( $( "#left_side_menu" ).children() ).each(function( index ) {
 
     </div>
 
-    <script>
+    <script th:inline="javascript">
     function myFunction() {
         document.getElementById("myDropdown").classList.toggle("show");
     }
+
+    $("txt-report").click(function(){
+        $.post("download/txt",
+        {
+            name: "Donald Duck",
+            city: "Duckburg"
+        },
+        function(data, status){
+            alert("Data: " + data + "\nStatus: " + status);
+        });
+    })
+
 
     window.onclick = function(event) {
         if (!event.target.matches('.dropbtn')) {
