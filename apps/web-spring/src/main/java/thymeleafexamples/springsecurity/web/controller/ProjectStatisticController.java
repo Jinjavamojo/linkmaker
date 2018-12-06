@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.entity.VkUser;
 import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
+import thymeleafexamples.springsecurity.report.ReportUtils;
 import thymeleafexamples.springsecurity.service.VKService;
 
 import java.util.List;
@@ -83,6 +84,7 @@ public class ProjectStatisticController {
         List<VkUser> userPagination = vkService.getPaidUsers(page,currentProjectId);
         model.addObject("vk_users",userPagination);
         model.addObject("totalPages",pages);
+        model.addObject("report_types", ReportUtils.getTypes());
         return model;
     }
 

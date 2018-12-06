@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -81,16 +82,20 @@ public class MainController {
     }
 
     @RequestMapping(value = "/project/edit/",method = RequestMethod.GET)
-    public ModelAndView getProjectWithoutId(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, ModelAndView model, HttpServletRequest request){
-        return getProjectById(sessionAttr.currentProjectId,sessionAttr,model,request);
+    public ModelAndView getProjectWithoutId(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpSession httpSession, ModelAndView model, HttpServletRequest request){
+        return getProjectById(sessionAttr.currentProjectId,httpSession,sessionAttr,model,request);
     }
 
     @RequestMapping(value = "/project/edit/{id}",method = RequestMethod.GET)
-    public ModelAndView getProjectById(@PathVariable("id") Long id, @ModelAttribute("sessionAttr") SessionAttr sessionAttr, ModelAndView model, HttpServletRequest request) {
+    public ModelAndView getProjectById(@PathVariable("id") Long id, HttpSession httpSession, @ModelAttribute("sessionAttr") SessionAttr sessionAttr, ModelAndView model, HttpServletRequest request) {
         String contextPath = request.getServletContext().getContextPath();
         String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
         Project byId = projectService.findById(id);
         if (byId == null) {
+            model.setViewName("404");
+            return model;
+        }
+        if (httpSession.getAttribute("userId") == null || byId.getUser().getId() != httpSession.getAttribute("userId")) {
             model.setViewName("404");
             return model;
         }

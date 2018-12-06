@@ -33,7 +33,7 @@ public class Project extends AbstractDomainClass {
     @Column(name = "payment_link")
     private String paymentLink;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     //@NotBlank(message="{validation.project.user.notBlank}")
     @JoinColumn(name = "user_id")
     private User user;
