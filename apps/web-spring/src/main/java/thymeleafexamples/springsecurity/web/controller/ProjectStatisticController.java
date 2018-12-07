@@ -70,6 +70,7 @@ public class ProjectStatisticController {
     private ModelAndView getPaidUsersView(int page, ModelAndView model, SessionAttr sessionAttr) {
         model.addObject("activeTab","statistic");
         model.setViewName("project/statistic_first_tab");
+        model.addObject("base","web-spring"); //TODO REPLACE BY PROPERTY
 
         Long currentProjectId = sessionAttr.currentProjectId;
         if (currentProjectId == null) {
