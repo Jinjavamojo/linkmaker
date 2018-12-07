@@ -51,6 +51,14 @@ public class MainController {
         return "newProject";
     }
 
+    @RequestMapping(value = "/report",method = RequestMethod.POST)
+    public ModelAndView showNew(ModelAndView model,  HttpServletRequest request) {
+        String name = request.getParameter("name");
+        model.setViewName("404");
+        return model;
+    }
+
+
     @RequestMapping(value="/newsave", method = RequestMethod.POST, params={"save"})
     public ModelAndView saveNewProject(final @Valid Project project, final BindingResult bindingResult, final ModelMap model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
