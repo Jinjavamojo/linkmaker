@@ -82,7 +82,7 @@ public class ProjectStatisticController {
             pages++;
         }
 
-        List<VkUser> userPagination = vkService.getPaidUsers(page,currentProjectId);
+        List<VkUserPaymentDTO> userPagination = vkService.getPaidUsers(page,currentProjectId);
         model.addObject("vk_users",userPagination);
         model.addObject("totalPages",pages);
         model.addObject("report_types", ReportUtils.getTypes());

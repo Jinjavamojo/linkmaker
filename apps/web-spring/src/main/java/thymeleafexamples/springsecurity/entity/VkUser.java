@@ -30,6 +30,12 @@ public class VkUser {
     @Column(name = "last_name")
     private String lastName;
 
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    @Column(name = "email")
+    private String email;
+
     @OneToMany (mappedBy = "vkUser",fetch = FetchType.LAZY)
     @Cascade(org.hibernate.annotations.CascadeType.PERSIST)
     private List<Payment> payments = new ArrayList<>();

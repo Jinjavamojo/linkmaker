@@ -48,7 +48,7 @@ create table projects (
     autopayment_available boolean,
     name varchar(255),
     payment_link varchar(255),
-    price float8,
+    price float8 not null,
     project_description text,
     project_startDate timestamp,
     user_id int8,
@@ -87,6 +87,8 @@ create table vk_users (
         alias varchar(255),
         first_action_date timestamp,
         first_name varchar(255),
+        email varchar(255),
+        phone_number varchar(30),
         last_action_date timestamp,
         last_name varchar(255),
 primary key (vkUserId)

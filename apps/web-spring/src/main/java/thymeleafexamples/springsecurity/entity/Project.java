@@ -6,6 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
@@ -39,6 +40,7 @@ public class Project extends AbstractDomainClass {
     private User user;
 
     //@NotBlank(message="{validation.project.price.notBlank}")
+    @NotNull(message = "{validation.project.price.notBlank}")
     @Column(name = "price")
     private Double price;
 

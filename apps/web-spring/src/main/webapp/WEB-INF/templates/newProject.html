@@ -37,6 +37,13 @@
                 </div>
 
                 <div class="project-flex-container">
+                    <div class="start-column-flex-item">Стоимость</div>
+                    <input class="form-control margin-bottom-20"  type="number" min="1" step="1" th:field="*{price}" th:errorclass="fieldError" />
+                    <div th:if="${#fields.hasErrors('price')}" th:errors="*{price}">NameError</div>
+
+                </div>
+
+                <div class="project-flex-container">
                     <div class="start-column-flex-item">Дата начала</div>
                     <div>
                         <!--<label for="birthdate" th:text="*{projectStartDate}">Birth date</label>-->

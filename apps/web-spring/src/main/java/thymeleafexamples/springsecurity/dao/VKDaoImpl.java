@@ -9,6 +9,7 @@ import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import thymeleafexamples.springsecurity.entity.Role;
@@ -53,29 +54,35 @@ public class VKDaoImpl implements VKDao {
 
     @Override
     public Long getPaidUsersCount(long projectId) {
-        String query = "select count(*) from (" +
-                "            SELECT \n" +
-                "        vk_user.first_name\n" +
-                "        last_name,\n" +
-                "        vk_user.vkuserid\n" +
-                "    FROM\n" +
-                "        vk_users vk_user\n" +
-                "    INNER JOIN\n" +
-                "        payments p\n" +
-                "            ON p.vk_user = vk_user.vkuserid\n" +
-                "    where\n" +
-                "        p.project = :projectId\n" +
-                "    GROUP BY\n" +
-                "        vk_user.first_name,\n" +
-                "        vk_user.last_name,\n" +
-                "        vk_user.vkuserid\n" +
-                "    having\n" +
-                "        SUM(case\n" +
-                "            when p.payment_status = 'WAITING_FOR_CAPTURE'\n" +
-                "            OR p.payment_status = 'SUCCEEDED' THEN p.value\n" +
-                "            ELSE 0\n" +
-                "        END) > 0 limit 10\n" +
-                ")  as t\n";
+//        String query = "select count(*) from (" +
+//                "            SELECT \n" +
+//                "        vk_user.first_name\n" +
+//                "        last_name,\n" +
+//                "        vk_user.vkuserid\n" +
+//                "    FROM\n" +
+//                "        vk_users vk_user\n" +
+//                "    INNER JOIN\n" +
+//                "        payments p\n" +
+//                "            ON p.vk_user = vk_user.vkuserid\n" +
+//                "    where\n" +
+//                "        p.project = :projectId\n" +
+//                "    GROUP BY\n" +
+//                "        vk_user.first_name,\n" +
+//                "        vk_user.last_name,\n" +
+//                "        vk_user.vkuserid\n" +
+//                "    having\n" +
+//                "        SUM(case\n" +
+//                "            when p.payment_status = 'WAITING_FOR_CAPTURE'\n" +
+//                "            OR p.payment_status = 'SUCCEEDED' THEN p.value\n" +
+//                "            ELSE 0\n" +
+//                "        END) > 0" +
+//                ")  as t\n";
+
+        String query = "SELECT count(*)" +
+                "FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid " +
+                "JOIN projects pr on pr.id = p.project where p.project = :projectId " +
+                "and (p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED') " +
+                "and p.value = pr.price";
         BigInteger count = null;
         try {
             count = (BigInteger)sessionFactory.getCurrentSession().createNativeQuery(
@@ -114,30 +121,28 @@ public class VKDaoImpl implements VKDao {
     }
 
     @Override
-    public List<VkUser> getPaidUsers(int pageNumber, long projectId) {
+    public List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId) {
 
-        String query = "SELECT first_name, last_name, vk_user.vkuserid, " +
-                " SUM(case when p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) " +
-                " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
-                " GROUP BY vk_user.first_name, vk_user.last_name, vk_user.vkuserid having SUM(case when p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
-        return getUsersByTemplate(query,pageNumber,projectId);
-
-
-//        String quetyStr = String.format()"select first_name, last_name from vk_users limit %s offset %s";
-//        this.jdbcTemplate.query(
-//                "select first_name, last_name from vk_users",
-//                new RowMapper<VkUser>() {
-//                    public VkUser mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                        VkUser user = new VkUser();
-//                        user.setFirstName(rs.getString("first_name"));
-//                        user.setLastName(rs.getString("last_name"));
-//                        return user;
-//                    }
-//                });
+        String query = "SELECT first_name, last_name, vk_user.vkuserid, vk_user.phone_number, vk_user.email " +
+        "FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid " +
+        "JOIN projects pr on pr.id = p.project where p.project = :projectId " +
+        "and (p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED') " +
+        "and p.value = pr.price";
+        return getUsersByTemplate(query, pageNumber, projectId);
     }
 
+//    @Override
+//    public List<VkUser> getPaidUsers(int pageNumber, long projectId) {
+//
+//        String query = "SELECT first_name, last_name, vk_user.vkuserid, " +
+//                " SUM(case when p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) " +
+//                " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
+//                " GROUP BY vk_user.first_name, vk_user.last_name, vk_user.vkuserid having SUM(case when p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
+//        return getUsersByTemplate(query,pageNumber,projectId);
+    //}
 
-    private List<VkUser> getUsersByTemplate(String query, int pageNumber, long projectId) {
+
+    private List<VkUserPaymentDTO> getUsersByTemplate(String query, @Nullable Integer pageNumber, long projectId) {
         if (pageNumber < 0) {
             throw new RuntimeException("Wrong value");
         }
@@ -152,13 +157,16 @@ public class VKDaoImpl implements VKDao {
                 .setFirstResult(firstRes)
                 .list();
 
-        List<VkUser> users = new ArrayList<>();
+        List<VkUserPaymentDTO> users = new ArrayList<>();
         for(Object[] tuple : tuples) {
-            VkUser user = new VkUser();
+            VkUserPaymentDTO user = new VkUserPaymentDTO();
             user.setFirstName((String)tuple[0]);
             user.setLastName((String)tuple[1]);
             user.setVkUserId(((BigInteger) tuple[2]).longValue());
-            user.setPaymentsSum((Double) tuple[3]);
+            user.setUserPhoneNumber((String)tuple[3]);
+            user.setUserEmail((String)tuple[4]);
+
+            //user.setPaymentsSum((Double) tuple[3]);
             users.add(user);
         }
         return users;

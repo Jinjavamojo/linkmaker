@@ -1,14 +1,28 @@
 package thymeleafexamples.springsecurity.web.controller;
 
+import java.io.*;
+import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.function.Consumer;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -19,6 +33,7 @@ import org.unbescape.html.HtmlEscape;
 import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.entity.VkUser;
+import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 import thymeleafexamples.springsecurity.service.ProjectService;
 import thymeleafexamples.springsecurity.service.UserService;
 import thymeleafexamples.springsecurity.service.VKService;
@@ -30,6 +45,9 @@ import thymeleafexamples.springsecurity.service.VKService;
 @SessionAttributes("sessionAttr")
 public class MainController {
 
+
+    @Autowired
+    private ServletContext servletContext; //TODO WHAT IS THIS?
 
     @Autowired
     private VKService vkService;
@@ -51,18 +69,68 @@ public class MainController {
         return "newProject";
     }
 
-    @RequestMapping(value = "/report",method = RequestMethod.POST)
-    public ModelAndView showNew(ModelAndView model,  HttpServletRequest request) {
-        String name = request.getParameter("name");
-        model.setViewName("404");
-        return model;
+    //@RequestMapping(value = "/project/statistic/paid/report/txt",method = RequestMethod.GET)
+    //@RequestMapping(value = "/project/statistic/paid/report/xlsx",method = RequestMethod.GET)
+
+
+    //StreamingResponseBodyExample
+    @RequestMapping(value = "/project/statistic/paid/report/txt",method = RequestMethod.GET)
+    public void report(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpServletResponse response, HttpServletRequest request) {
+        MediaType mediaType = MediaType.TEXT_PLAIN;//MediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
+        //System.out.println("fileName: " + fileName);
+        System.out.println("mediaType: " + MediaType.TEXT_PLAIN);
+        try {
+
+            //List<VkUserPaymentDTO> paidUsers = vkService.getPaidUsers();
+            OutputStream fout= response.getOutputStream();
+            OutputStream bos = new BufferedOutputStream(fout);
+            OutputStreamWriter       outputwriter       = new OutputStreamWriter(bos);
+            outputwriter.write("rfefefe\n");
+            outputwriter.write("2rfefefe2\n");
+
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" +"text.txt");
+            MediaType mediaType1 = MediaType.parseMediaType("application/octet-stream");
+            //response.setContentType("application/download");
+            response.setContentType(mediaType1.toString());
+            outputwriter.flush();
+            outputwriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
+
+    //JUST FOR TEST AJAX
+    /*@RequestMapping(value = "/project/statistic/report",method = RequestMethod.POST)
+    public void report(ModelAndView model, HttpServletResponse response, HttpServletRequest request) {
+        MediaType mediaType = MediaType.TEXT_PLAIN;//MediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
+        //System.out.println("fileName: " + fileName);
+        System.out.println("mediaType: " + MediaType.TEXT_PLAIN);
+        try {
+            OutputStream fout= response.getOutputStream();
+            OutputStream bos = new BufferedOutputStream(fout);
+            OutputStreamWriter       outputwriter       = new OutputStreamWriter(bos);
+            outputwriter.write("rfefefe\n");
+            outputwriter.write("2rfefefe2\n");
+
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" +"text.txt");
+            MediaType mediaType1 = MediaType.parseMediaType("application/octet-stream");
+            //response.setContentType("application/download");
+            response.setContentType(mediaType1.toString());
+            outputwriter.flush();
+            outputwriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }*/
+
+
     @RequestMapping(value="/newsave", method = RequestMethod.POST, params={"save"})
-    public ModelAndView saveNewProject(final @Valid Project project, final BindingResult bindingResult, final ModelMap model, HttpServletRequest request) {
+    public String saveNewProject(final @Valid Project project, final BindingResult bindingResult, final ModelMap model, HttpServletRequest request) {
         if (bindingResult.hasErrors()) {
-            //return "projects";
+            return "newProject";
+            //new ModelAndView("/newsave" , model);
         }
         Long save = projectService.save(project);
         // this.seedStarterService.add(seedStarter);
@@ -73,12 +141,12 @@ public class MainController {
         //model.addAttribute("baseUrl", baseUrl);
         String baseUrl = String.format("%s://%s:%d%s",request.getScheme(),  request.getServerName(), request.getServerPort(),contextPath);
 
-        //model.addAttribute("name", project.getName());
+        //model.addAttribute("nam98/e", project.getName());
         //model.addAttribute("baseUrl", baseUrl);
-        model.addAttribute("saved", true);
+        //model.addAttribute("saved", true);
 //        "@{${'/projects/edit/' + project.id}}"
-        return new ModelAndView("redirect:project/edit/" +  save, model);
-        //return "redirect:/projects/edit/" + project.getId();
+        //return new ModelAndView("redirect:project/edit/" +  save, model);
+        return "redirect:/project/edit/" + project.getId();
         //return "redirect:/index";
     }
 

@@ -34,7 +34,7 @@ task startTom(dependsOn: ['stopTom','deployWar']) << {
     }
 }
 
-task deployWar(type: Copy, dependsOn: ['undeploy','war']) {
+task deployWar(type: Copy, dependsOn: ['war']) {
     from war.archivePath
     into tomcat_webapps
 }
@@ -48,7 +48,7 @@ task ech() << {
     println "$project.name"
 }
 
-task redeploy(type: Copy,  dependsOn: ['undeploy','war']) {
+task redeploy(type: Copy,  dependsOn: ['war']) {
     from war.archivePath
     into tomcat_webapps
 }

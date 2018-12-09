@@ -30,7 +30,7 @@ public class VKServiceImpl implements VKService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VkUser> getPaidUsers(int pageNumber, long projectId) {
+    public List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId) {
         return vkDao.getPaidUsers(pageNumber, projectId);
     }
 

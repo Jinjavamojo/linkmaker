@@ -11,7 +11,7 @@ public interface VKDao {
 
     VkUser getUserById(Long id);
 
-    List<VkUser> getPaidUsers(int pageNumber, long projectId);
+    List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId);
     List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
 
     Long getPaidUsersCount(long projectId);

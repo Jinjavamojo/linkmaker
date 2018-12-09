@@ -11,7 +11,7 @@ public interface VKService {
 
     void saveUserIfNotExists(VkUser user);
 
-    List<VkUser> getPaidUsers(int pageNumber, long projectId);
+    List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId);
 
     List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
 

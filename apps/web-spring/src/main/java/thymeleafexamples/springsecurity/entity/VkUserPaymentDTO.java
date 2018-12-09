@@ -19,6 +19,9 @@ public class VkUserPaymentDTO {
         this.lastName = lastName;
     }
 
+    public VkUserPaymentDTO() {
+    }
+
     public Long getVkUserId() {
         return vkUserId;
     }
@@ -44,6 +47,26 @@ public class VkUserPaymentDTO {
     private String lastName;
 
     private Date createdAt;
+
+    private String userEmail;
+
+    private String userPhoneNumber;
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public void setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
+    }
 
     public String getFirstName() {
         return firstName;
