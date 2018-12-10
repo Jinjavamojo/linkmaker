@@ -4,6 +4,7 @@ import java.io.*;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.InputStreamResource;
@@ -83,7 +86,7 @@ public class MainController {
     public void report(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpServletResponse response, HttpServletRequest request) {
         MediaType mediaType = MediaType.TEXT_PLAIN;//MediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
         //System.out.println("fileName: " + fileName);
-        System.out.println("mediaType: " + MediaType.TEXT_PLAIN);
+        //System.out.println("mediaType: " + MediaType.TEXT_PLAIN);
         try {
 
             OutputStream fout= response.getOutputStream();
@@ -107,6 +110,39 @@ public class MainController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @RequestMapping(value = "/project/statistic/paid/report/xlsx",method = RequestMethod.GET)
+    public void reportXLSX(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpServletResponse response, HttpServletRequest request) {
+        try {
+            Workbook book = new HSSFWorkbook();
+            Sheet sheet = book.createSheet("test");
+
+            Row row = sheet.createRow(0);
+            Cell name = row.createCell(0);
+            name.setCellValue("John");
+
+            Cell birthdate = row.createCell(1);
+
+            DataFormat format = book.createDataFormat();
+            CellStyle dateStyle = book.createCellStyle();
+            dateStyle.setDataFormat(format.getFormat("dd.mm.yyyy"));
+            birthdate.setCellStyle(dateStyle);
+
+
+            // Нумерация лет начинается с 1900-го
+            birthdate.setCellValue(new Date(110, 10, 10));
+
+            // Меняем размер столбца
+            sheet.autoSizeColumn(1);
+
+            // Записываем всё в файл
+            //book.write(new FileOutputStream(file));
+            book.close();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        //System.out.println("fileName: " + fileName);
     }
 
 
