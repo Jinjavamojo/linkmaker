@@ -19,6 +19,8 @@ public interface VKService {
 
     Long getLinkedUserCount(Long projectId);
 
+    List<String> getPaidUserIds(long projectId);
 
 
-    }
+
+}

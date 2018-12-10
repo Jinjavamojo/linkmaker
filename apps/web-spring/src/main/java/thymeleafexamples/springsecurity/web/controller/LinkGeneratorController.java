@@ -3,6 +3,7 @@ package thymeleafexamples.springsecurity.web.controller;
 import com.vk.api.sdk.actions.Account;
 import com.vk.api.sdk.client.VkApiClient;
 import com.vk.api.sdk.client.actors.UserActor;
+import com.vk.api.sdk.exceptions.OAuthException;
 import com.vk.api.sdk.objects.UserAuthResponse;
 import com.vk.api.sdk.objects.account.Info;
 import com.vk.api.sdk.objects.account.UserSettings;
@@ -16,6 +17,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,6 +41,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static com.sun.org.apache.xalan.internal.xsltc.compiler.Constants.REDIRECT_URI;
 
 @Controller
 @Scope(WebApplicationContext.SCOPE_SESSION)
@@ -69,27 +74,20 @@ public class LinkGeneratorController {
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
-    @RequestMapping(value = "/info/*", method = RequestMethod.GET)
-    public ModelAndView getInfo(HttpServletRequest request, final ModelMap model) {
+    public ModelAndView saveVKUserAndRedirectToYandexPaymentLink(UserActor userActor, final ModelMap model, @Nullable String email) {
         try {
-            UserActor actor = new UserActor(Integer.parseInt(request.getParameter("user")), request.getParameter("token"));
-            List<UserXtrCounters> getUsersResponse = vkApiClient.users().get(actor).userIds(request.getParameter("user")).execute();
+
+            //get vk user
+            List<UserXtrCounters> getUsersResponse = vkApiClient.users().get(userActor).userIds(String.valueOf(userActor.getId())).execute();
             UserXtrCounters user = getUsersResponse.get(0);
-
-            Account account = vkApiClient.account();
-            AccountGetInfoQuery info = account.getInfo(actor);
-            //Info execute = info.execute();
-
             Long vkUserId = Long.valueOf(user.getId().toString());
+
+            //save vk user
             VkUser vkUser = new VkUser();
             vkUser.setVkUserId(vkUserId);
             vkUser.setLastName(user.getLastName());
             vkUser.setFirstName(user.getFirstName());
-
-            Account account2 = vkApiClient.account();
-            AccountGetProfileInfoQuery profileInfo = account2.getProfileInfo(actor);
-            //UserSettings execute2 = profileInfo.execute();
-
+            vkUser.setEmail(email);
             vkService.saveUserIfNotExists(vkUser);
 
             String clientMessage = String.format("Оплата курса: '%s', Пользователь: %s %s",projectName, user.getLastName(), user.getFirstName());
@@ -106,46 +104,37 @@ public class LinkGeneratorController {
                 clearSessionAttrs();
                 return new ModelAndView("payInfo", model);
             }
-
-            //response.setContentType("text/html;charset=utf-8");
-            //response.setStatus(HttpServletResponse.SC_OK);
-            //response.getWriter().println(getInfoPage(user));
-
         } catch (Exception e) {
-            //response.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            //response.getWriter().println("error");
-            //response.setContentType("text/html;charset=utf-8");
             logger.log(Level.SEVERE, "info section");
             logger.log(Level.SEVERE, e.toString());
             logger.log(Level.SEVERE, Utils.getStackTrace(e));
             clearSessionAttrs();
-
         }
         finally {
             clearSessionAttrs();
         }
-        //response.sendRedirect("/info?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId());
         return new ModelAndView("redirect:" /*+ format*/);
     }
 
     @RequestMapping(value = "/get_code/*", method = RequestMethod.GET)
     public ModelAndView getCode(HttpServletRequest request, final ModelMap model) {
         try {
-            //String baseUrl = StringUtils.substringBefore(request.getRequestURL().toString(), "/get_code/");
-            //String project = StringUtils.substringAfter(request.getRequestURL().toString(), "/get_code/");
-            //baseUrl = ""
-            //String redirectUri = generateRedirectUri(baseUrl, project);
-            UserAuthResponse authResponse = vkApiClient.oauth().userAuthorizationCodeFlow(Integer.valueOf(env.getProperty("clientId")), env.getProperty("clientSecret"), generateRedirectUri, request.getParameter("code")).execute();
-            String token = authResponse.getAccessToken();
-            String s = baseUrl + "/info/" + projectName + "?token=" + token + "&user=" + authResponse.getUserId();// + "&accessToken=" + env.getProperty("accessToken");
-            RestTemplate restTemplate = new RestTemplate();
+            try {
+                UserAuthResponse authResponse = vkApiClient.oauth()
+                        .userAuthorizationCodeFlow(Integer.valueOf(env.getProperty("clientId")), env.getProperty("clientSecret"), generateRedirectUri, request.getParameter("code"))
+                        .execute();
 
-            //String format2 = String.format("https://api.vk.com/method/account.getProfileInfo&access_token=%s&v=5.92", accessToken);
-            //ResponseEntity<String> response = restTemplate.getForEntity(format2, String.class);
-            return new ModelAndView("redirect:" + s);
-            //response.sendRedirect("/info?token=" + authResponse.getAccessToken() + "&user=" + authResponse.getUserId());
+                UserActor actor = new UserActor(authResponse.getUserId(), authResponse.getAccessToken());
+                String email = authResponse.getEmail();
+                return saveVKUserAndRedirectToYandexPaymentLink(actor,model,email);
+            } catch (OAuthException e) {
+                e.getRedirectUri();
+            }
+            return new ModelAndView("redirect:" + "");
 
         } catch (Exception e) {
+
+            //TODO USER OUPUT
             logger.log(Level.SEVERE, "getCode section");
             logger.log(Level.SEVERE, e.toString());
             logger.log(Level.SEVERE, Utils.getStackTrace(e));
@@ -175,11 +164,41 @@ public class LinkGeneratorController {
 
         }
 
+
+
+
         baseUrl = StringUtils.substringBefore(request.getRequestURL().toString(), "/pay/");
+        //generateRedirectUri="https://oauth.vk.com/blank.html";
         generateRedirectUri = generateRedirectUri(baseUrl, projectName);//s + "/get_code/" + projectName + "&scope=groups&response_type=code";
         //{"error":"invalid_scope","error_description":"standalone applications should use blank.html as redirect_uri to access messages"}
         String scope = "email,notify";
-        String vkRedirectUrlStr = String.format("https://oauth.vk.com/authorize?client_id=%sdisplay=page&redirect_uri=%s&scope=%s&response_type=code", env.getProperty("clientId"), generateRedirectUri, scope);
+        String vkRedirectUrlStr = String.format("https://oauth.vk.com/authorize?client_id=%s&display=page&redirect_uri=%s&scope=%s&response_type=code", env.getProperty("clientId"), generateRedirectUri, scope);
+
+//        try {
+//            CloseableHttpClient client = HttpClients.createDefault();
+//            HttpPost httpPost = new HttpPost(vkRedirectUrlStr);
+//
+//            String json = "{ id :1, name : John }";
+//            StringEntity entity = new StringEntity(json);
+//            httpPost.setEntity(entity);
+//            httpPost.setHeader("Accept", "application/json");
+//            httpPost.setHeader("Content-type", "application/json");
+//
+//            CloseableHttpResponse closeablehttpresponse = client.execute(httpPost);
+//            try (BufferedReader buffer = new BufferedReader(new InputStreamReader(closeablehttpresponse.getEntity().getContent()))) {
+//                String collect = buffer.lines().collect(Collectors.joining("\n"));
+//                int g = 0;
+//            }
+//            //int g = 0;
+//            //response.getEntity().getContent()
+//            //assertThat(response.getStatusLine().getStatusCode(), equalTo(200));
+//            client.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        //String format2 = String.format("https://api.vk.com/method/account.getProfileInfo&access_token=%s&v=5.92", accessToken);
+        //ResponseEntity<String> response = restTemplate.getForEntity(format2, String.class);
         return new ModelAndView("redirect:" + vkRedirectUrlStr);
 
         //HttpGet request2 = new HttpGet(format);

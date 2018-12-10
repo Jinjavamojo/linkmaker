@@ -16,12 +16,6 @@ VALUES
 (-3, -1);
 
 
-insert into projects(id,name,user_id) values(-1, 'admin_project_1',-3);
-insert into projects(id,name,user_id) values(-2, 'pr',-3);
-
-insert into projects(id,name,user_id) values(-3, 'emp_project_1',-1);
-insert into projects(id,name,user_id) values(-4, 'emp_project_2',-1);
-
 insert into vk_users(vkuserid, last_name,first_name) values (-200,'Тестовый','Тест');
 insert into projects(id,name,user_id,price) values(-200, 'Курс за 10000',-3,10000);
 

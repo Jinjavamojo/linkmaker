@@ -1,6 +1,7 @@
 package thymeleafexamples.springsecurity.dao;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -48,7 +49,11 @@ public class VKDaoImpl implements VKDao {
     public void saveUserIfNotExists(VkUser user) {
         VkUser userById = getUserById(user.getVkUserId());
         if (userById == null) {
-            sessionFactory.getCurrentSession().saveOrUpdate(user);
+            sessionFactory.getCurrentSession().save(user);
+        } else {
+            String resultEmail = StringUtils.isNotEmpty(user.getEmail()) ? user.getEmail() : userById.getEmail();
+            userById.setEmail(resultEmail);
+            sessionFactory.getCurrentSession().update(userById);
         }
     }
 
@@ -129,6 +134,21 @@ public class VKDaoImpl implements VKDao {
         "and (p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED') " +
         "and p.value = pr.price";
         return getUsersByTemplate(query, pageNumber, projectId);
+    }
+
+    @Override
+    public List<String> getPaidUserIds(long projectId) {
+
+        String query = "SELECT CAST(vk_user.vkuserid AS varchar(255)) " +
+                "FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid " +
+                "JOIN projects pr on pr.id = p.project where p.project = :projectId " +
+                "and p.payment_status = 'SUCCEEDED' " +
+                "and p.value = pr.price";
+        List<String> res = sessionFactory.getCurrentSession().createNativeQuery(
+                query)
+                .setParameter("projectId", projectId)
+                .list();
+        return res;
     }
 
 //    @Override

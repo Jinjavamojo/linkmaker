@@ -3,6 +3,7 @@ package thymeleafexamples.springsecurity.dao;
 import thymeleafexamples.springsecurity.entity.VkUser;
 import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 
+import java.math.BigInteger;
 import java.util.List;
 
 public interface VKDao {
@@ -13,6 +14,8 @@ public interface VKDao {
 
     List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId);
     List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
+
+    List<String> getPaidUserIds(long projectId);
 
     Long getPaidUsersCount(long projectId);
 

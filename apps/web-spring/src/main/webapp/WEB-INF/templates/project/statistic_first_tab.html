@@ -52,9 +52,6 @@ $( $( "#left_side_menu" ).children() ).each(function( index ) {
                                 </td>
                                 <td th:text="${vk_user.firstName}"></td>
                                 <td th:text="${vk_user.lastName}"></td>
-                                <td th:text="${vk_user.paymentsSum}"></td>
-                                <!--<td th:text="${vk_user.}"></td>-->
-
                             </tr>
                             </tbody>
                         </table>
@@ -69,12 +66,10 @@ $( $( "#left_side_menu" ).children() ).each(function( index ) {
                     </div>
 
                     <div class="dropdown">
-                        <div onclick="myFunction()" class="dropbtn">Dropdown</div>
+                        <div onclick="myFunction()" class="dropbtn">Сохранить отчет</div>
                         <div id="myDropdown" class="dropdown-content">
-                            <div id="txt_download">test_me</div>
                             <div id="txt_download2" onclick="location.href='paid/report/txt';">txt</div>
                             <div id="txt_download3" onclick="location.href='paid/report/xlsx';">xlsx</div>
-                            <a href="#home" >Home</a>
                         </div>
                     </div>
 

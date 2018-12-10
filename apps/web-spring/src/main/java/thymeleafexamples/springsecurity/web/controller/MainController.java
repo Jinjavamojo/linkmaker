@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -30,6 +32,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.unbescape.html.HtmlEscape;
+import thymeleafexamples.springsecurity.Utils;
 import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.entity.Project;
 import thymeleafexamples.springsecurity.entity.VkUser;
@@ -44,6 +47,8 @@ import thymeleafexamples.springsecurity.service.VKService;
 @Controller
 @SessionAttributes("sessionAttr")
 public class MainController {
+
+    private Logger logger = Logger.getLogger(getClass().getName());
 
 
     @Autowired
@@ -81,16 +86,21 @@ public class MainController {
         System.out.println("mediaType: " + MediaType.TEXT_PLAIN);
         try {
 
-            //List<VkUserPaymentDTO> paidUsers = vkService.getPaidUsers();
             OutputStream fout= response.getOutputStream();
             OutputStream bos = new BufferedOutputStream(fout);
-            OutputStreamWriter       outputwriter       = new OutputStreamWriter(bos);
-            outputwriter.write("rfefefe\n");
-            outputwriter.write("2rfefefe2\n");
-
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" +"text.txt");
+            OutputStreamWriter outputwriter  = new OutputStreamWriter(bos);
+            List<String> paidUserIds = vkService.getPaidUserIds(sessionAttr.currentProjectId);
+            paidUserIds.forEach(
+                    id -> {
+                        try {
+                            outputwriter.write(id + "\n");
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+            );
+            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" +"paid_user_ids.txt");
             MediaType mediaType1 = MediaType.parseMediaType("application/octet-stream");
-            //response.setContentType("application/download");
             response.setContentType(mediaType1.toString());
             outputwriter.flush();
             outputwriter.close();
