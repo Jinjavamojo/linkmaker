@@ -21,4 +21,6 @@ public interface VKDao {
 
     Long getLinkedUsersCount(long projectId);
 
+    List<VkUserPaymentDTO> getAllPaidUsers(long projectId);
+
 }

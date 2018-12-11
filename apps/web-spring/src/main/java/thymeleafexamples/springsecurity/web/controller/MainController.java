@@ -82,68 +82,7 @@ public class MainController {
 
 
     //StreamingResponseBodyExample
-    @RequestMapping(value = "/project/statistic/paid/report/txt",method = RequestMethod.GET)
-    public void report(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpServletResponse response, HttpServletRequest request) {
-        MediaType mediaType = MediaType.TEXT_PLAIN;//MediaTypeUtils.getMediaTypeForFileName(this.servletContext, fileName);
-        //System.out.println("fileName: " + fileName);
-        //System.out.println("mediaType: " + MediaType.TEXT_PLAIN);
-        try {
 
-            OutputStream fout= response.getOutputStream();
-            OutputStream bos = new BufferedOutputStream(fout);
-            OutputStreamWriter outputwriter  = new OutputStreamWriter(bos);
-            List<String> paidUserIds = vkService.getPaidUserIds(sessionAttr.currentProjectId);
-            paidUserIds.forEach(
-                    id -> {
-                        try {
-                            outputwriter.write(id + "\n");
-                        } catch (IOException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }
-            );
-            response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" +"paid_user_ids.txt");
-            MediaType mediaType1 = MediaType.parseMediaType("application/octet-stream");
-            response.setContentType(mediaType1.toString());
-            outputwriter.flush();
-            outputwriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @RequestMapping(value = "/project/statistic/paid/report/xlsx",method = RequestMethod.GET)
-    public void reportXLSX(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpServletResponse response, HttpServletRequest request) {
-        try {
-            Workbook book = new HSSFWorkbook();
-            Sheet sheet = book.createSheet("test");
-
-            Row row = sheet.createRow(0);
-            Cell name = row.createCell(0);
-            name.setCellValue("John");
-
-            Cell birthdate = row.createCell(1);
-
-            DataFormat format = book.createDataFormat();
-            CellStyle dateStyle = book.createCellStyle();
-            dateStyle.setDataFormat(format.getFormat("dd.mm.yyyy"));
-            birthdate.setCellStyle(dateStyle);
-
-
-            // Нумерация лет начинается с 1900-го
-            birthdate.setCellValue(new Date(110, 10, 10));
-
-            // Меняем размер столбца
-            sheet.autoSizeColumn(1);
-
-            // Записываем всё в файл
-            //book.write(new FileOutputStream(file));
-            book.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        //System.out.println("fileName: " + fileName);
-    }
 
 
 

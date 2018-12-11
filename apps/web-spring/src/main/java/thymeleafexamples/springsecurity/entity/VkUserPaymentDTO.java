@@ -12,13 +12,6 @@ public class VkUserPaymentDTO {
         this.createdAt = createdAt;
     }
 
-    public VkUserPaymentDTO(String firstName, String lastName, Long vkUserId,Date lastPaymentDate ) {
-        this.vkUserId = vkUserId;
-        this.lastPaymentDate = lastPaymentDate;
-        this.firstName = firstName;
-        this.lastName = lastName;
-    }
-
     public VkUserPaymentDTO() {
     }
 
@@ -39,8 +32,11 @@ public class VkUserPaymentDTO {
     }
 
     private Long vkUserId;
+    private String vkUserIdString;
 
     private Date lastPaymentDate;
+
+    private Date paymentCapturedAt;
 
     private String firstName;
 
@@ -54,6 +50,14 @@ public class VkUserPaymentDTO {
 
     public String getUserEmail() {
         return userEmail;
+    }
+
+    public Date getPaymentCapturedAt() {
+        return paymentCapturedAt;
+    }
+
+    public void setPaymentCapturedAt(Date paymentCapturedAt) {
+        this.paymentCapturedAt = paymentCapturedAt;
     }
 
     public void setUserEmail(String userEmail) {
@@ -90,5 +94,13 @@ public class VkUserPaymentDTO {
 
     public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getVkUserIdString() {
+        return vkUserIdString;
+    }
+
+    public void setVkUserIdString(String vkUserIdString) {
+        this.vkUserIdString = vkUserIdString;
     }
 }

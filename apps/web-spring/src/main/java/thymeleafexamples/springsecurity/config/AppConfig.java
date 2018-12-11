@@ -10,14 +10,6 @@ import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.Metadata;
-import org.hibernate.boot.MetadataSources;
-import org.hibernate.boot.registry.StandardServiceRegistry;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.boot.spi.MetadataImplementor;
-import org.hibernate.dialect.Dialect;
-import org.hibernate.tool.hbm2ddl.SchemaExport;
-import org.hibernate.tool.schema.TargetType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.MessageSource;
@@ -27,31 +19,22 @@ import org.springframework.core.env.Environment;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.config.Task;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
-import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
-import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
-import org.thymeleaf.spring5.SpringTemplateEngine;
-import org.thymeleaf.spring5.templateresolver.SpringResourceTemplateResolver;
-import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import thymeleafexamples.springsecurity.PaymentDeserializer;
 import thymeleafexamples.springsecurity.PaymentDeserializerStatus;
 import thymeleafexamples.springsecurity.Utils;
+import thymeleafexamples.springsecurity.report.ReportGenerator;
 import thymeleafexamples.springsecurity.yandex.Payment;
 
-import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import java.beans.PropertyVetoException;
-import java.util.*;
-import java.util.logging.Level;
+import java.util.Locale;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 @Configuration
@@ -109,6 +92,12 @@ public class AppConfig implements WebMvcConfigurer {
 		UsernamePasswordCredentials credentials = new UsernamePasswordCredentials(env.getProperty("shopId"), env.getProperty("pass"));
 		provider.setCredentials(AuthScope.ANY, credentials);
 		return provider;
+	}
+
+	@Bean
+	public ReportGenerator reportGenerator() {
+		ReportGenerator reportGenerator = new ReportGenerator();
+		return reportGenerator;
 	}
 	
 	@Bean

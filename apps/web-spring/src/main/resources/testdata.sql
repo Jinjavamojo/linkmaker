@@ -17,7 +17,18 @@ VALUES
 
 
 insert into vk_users(vkuserid, last_name,first_name) values (-200,'Тестовый','Тест');
+insert into vk_users(vkuserid, email, first_name,last_name) values (-100, 'rgerger@gerger.ru', 'twest', 'tttt');
+insert into vk_users(vkuserid, email, first_name,last_name) values (-300, 'fgyjt@aaa.ru', 'dfjuy', 'xxx');
+insert into vk_users(vkuserid, email, first_name,last_name) values (-400, 'gbbb@eery123.ru', 'rr45', 'fhafe');
+
 insert into projects(id,name,user_id,price) values(-200, 'Курс за 10000',-3,10000);
 
 insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
 ('2388a8e6-000f-5000-8000-16c78ee8a222a','RUB',10000,true,-200,-200, 'SUCCEEDED');
+
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
+('2388a8e6-000f-5000-8000-16c78ee8a2x2a','RUB',10000,true,-200,-300, 'SUCCEEDED');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
+('2388a8e6-000f-5000-8000-16c78ee8a2z2a','RUB',10000,true,-200,-400, 'SUCCEEDED');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
+('2388a8e6-000f-5000-8000-16c78ee8aaz2a','RUB',10000,true,-200,-100, 'SUCCEEDED');

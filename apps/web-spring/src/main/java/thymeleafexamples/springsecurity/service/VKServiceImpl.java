@@ -48,6 +48,12 @@ public class VKServiceImpl implements VKService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<VkUserPaymentDTO> getAllPaidUsers(long projectId) {
+        return vkDao.getAllPaidUsers(projectId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Long getPaidUsersCount(Long projectId) {
         return vkDao.getPaidUsersCount(projectId);
     }

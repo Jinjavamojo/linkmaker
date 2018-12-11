@@ -21,6 +21,7 @@ public interface VKService {
 
     List<String> getPaidUserIds(long projectId);
 
+    List<VkUserPaymentDTO> getAllPaidUsers(long projectId);
 
 
 }
