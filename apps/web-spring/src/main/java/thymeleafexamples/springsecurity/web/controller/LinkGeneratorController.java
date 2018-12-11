@@ -38,6 +38,8 @@ import thymeleafexamples.springsecurity.yandex.Payment;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -70,7 +72,6 @@ public class LinkGeneratorController {
     private String baseUrl;
     private String projectName;
     private String generateRedirectUri;
-    //private String accessToken;
 
     private Logger logger = Logger.getLogger(getClass().getName());
 
@@ -90,7 +91,7 @@ public class LinkGeneratorController {
             vkUser.setEmail(email);
             vkService.saveUserIfNotExists(vkUser);
 
-            String clientMessage = String.format("Оплата курса: '%s', Пользователь: %s %s",projectName, user.getLastName(), user.getFirstName());
+            String clientMessage = String.format("Оплата курса: '%s', Покупатель: %s %s",projectName, user.getLastName(), user.getFirstName());
             Payment paymentFromRequest = kassa.createPaymentFromRequest("https://yandex.ru", clientMessage);
 
             if (paymentFromRequest != null) {
@@ -144,33 +145,25 @@ public class LinkGeneratorController {
         return new ModelAndView("redirect:" /*+ format*/); //todo error
     }
 
-//    @RequestMapping(value = "/redirect", method = RequestMethod.GET)
-//    public ModelAndView method() {
-//        return new ModelAndView("redirect:" + projectUrl);
-//    }
-
     @RequestMapping(value = "/pay/*", method = RequestMethod.GET)
     public ModelAndView pay(HttpServletRequest request, HttpServletResponse response, final ModelMap model) {
-        projectName = StringUtils.substringAfter(request.getRequestURL().toString(), "/pay/");
-        if (StringUtils.isEmpty(projectName)) {
-            model.addAttribute("info", "Empty project");
-            return new ModelAndView("payInfo", model);
+        try {
+            projectName = StringUtils.substringAfter(URLDecoder.decode(request.getRequestURL().toString(),"UTF-8"), "/pay/");
+            if (StringUtils.isEmpty(projectName)) {
+                model.addAttribute("info", "Empty project");
+                return new ModelAndView("payInfo", model);
+            }
+            Project projectByName = projectService.getProjectByName(projectName);
+            if (projectByName == null) {
+                model.addAttribute("info", "Project doesn't exists");
+                return new ModelAndView("payInfo", model);
+            }
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
         }
-        Project projectByName = projectService.getProjectByName(projectName);
-        if (projectByName == null) {
-            model.addAttribute("info", "Project doesn't exists");
-            return new ModelAndView("payInfo", model);
-
-
-        }
-
-
-
 
         baseUrl = StringUtils.substringBefore(request.getRequestURL().toString(), "/pay/");
-        //generateRedirectUri="https://oauth.vk.com/blank.html";
-        generateRedirectUri = generateRedirectUri(baseUrl, projectName);//s + "/get_code/" + projectName + "&scope=groups&response_type=code";
-        //{"error":"invalid_scope","error_description":"standalone applications should use blank.html as redirect_uri to access messages"}
+        generateRedirectUri = baseUrl + "/get_code/";
         String scope = "email,notify";
         String vkRedirectUrlStr = String.format("https://oauth.vk.com/authorize?client_id=%s&display=page&redirect_uri=%s&scope=%s&response_type=code", env.getProperty("clientId"), generateRedirectUri, scope);
 
@@ -235,9 +228,5 @@ public class LinkGeneratorController {
         baseUrl = null;
         projectName = null;
         generateRedirectUri = null;
-    }
-
-    private String generateRedirectUri(String baseRequestUri, String projectName) {
-        return baseRequestUri + "/get_code/" + projectName;
     }
 }
