@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<head>
-    <title>Bootstrap Example</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-</head>
-<body>
-
-<div class="" th:fragment="menu">
-    <ul id="left_side_menu" class="nav nav-pills nav-stacked">
-        <li id="main_info"><a th:href="@{${'/project/edit/'}}" th:text="#{projectedit.menu.main}"></a></li>
-        <li id="statistic"><a th:href="@{/project/statistic/paid}" th:text="#{projectedit.menu.statistic}"></a></li>
-        <li><a href="#">Menu 2</a></li>
-        <li><a href="#">Menu 3</a></li>
-    </ul>
+<div class="menu-container" th:fragment="menu">
+    <div class="menu-item">
+        <img th:src="@{/css/menu/office.png}"  th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
+        <div id="projects_info">
+            <a th:href="@{${'/index/'}}" th:text="#{projectedit.menu.projects}"></a>
+        </div>
+    </div>
+    <div class="menu-item">
+        <img th:src="@{/css/menu/statistic.png}" th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
+        <div id="main_info">
+            <a th:href="@{${'/project/edit/'}}" th:text="#{projectedit.menu.main}"></a>
+        </div>
+    </div>
+    <div class="menu-item">
+        <img th:src="@{/css/menu/statistic.png}" th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
+        <div id="statistic">
+            <a th:href="@{/project/statistic/paid}" th:text="#{projectedit.menu.statistic}"></a>
+        </div>
+    </div>
 </div>
-
-</body>
 </html>

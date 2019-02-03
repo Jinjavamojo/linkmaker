@@ -2,88 +2,85 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://www.thymeleaf.org ">
 
+<!--<head th:replace="~{parts/imports :: imports}">-->
+<!--</head>-->
 <head>
-    <meta charset="utf-8"/>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet"
-          href="css/main.css">
-    <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"-->
-    <!--th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>-->
-
-    <title>
-        Projects
-    </title>
-
+    <meta charset="utf-8" />
+    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/css/main.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script th:src="@{/js/header.js}"></script>
 </head>
 <body>
 <div th:replace="~{user/header :: header}">Header</div>
-<div class="container">
-    <div class="project-flex-container">
-        <h1 class="start-column-flex-item">Проекты</h1>
-        <a th:href="@{/project/new}" class="btn btn-success">
-            <i class="fa fa-arrow-circle-o-left"></i>
-            <div th:text="#{addNewProject}"> </div>
-        </a>
-    </div>
-    <div class="text-left" th:if="${not #lists.isEmpty(projects)}">
+<div class="main-content" th:if="${not #lists.isEmpty(projects)}">
 
-        <div id="content" class="lead">
-            <div th:each="project : ${projects}" style="display:flex;flex-direction:column">
+    <div style="width:25%"></div>
+    <div style="width:50%">
+        <div class="project-buttons">
+            <a style="display:flex" th:href="@{/project/new}">
+                <div class="add-project-button">
+                </div>
+            </a>
 
-                <a style="display:block" th:href="@{${'/project/edit/' + project.id}}">
-                    <div class="rcorners4">
-                        <div id="top-panel-id">
-                            <div class="vk-icon"></div>
-                            <div class="money-div">
-                                <div class="money-icon"></div>
-                                <div class="money-value">:25500р</div>
-                            </div>
-                            <div class="people-div">
-                                <div class="people-icon-views"></div>
-                                <div class="people-views-value">:40</div>
-
-                                <div class="people-icon-paid"></div>
-                                <div class="people-paid-value">:4</div>
-                            </div>
-
-
-                        </div>
-                        <div id="middle-panel-id">
-                            <div class="project-text">
-                                Онлайн курс по повышению уверенности в себе:"Возрождение 2.0"</div>
-
-                        </div>
-                        <div id="bottom-panel-id">
-                            <!--<div class="people-icon"></div>-->
-                        </div>
-
-                    </div>
-                </a>
-
-            </div>
-            <table class="table table-striped">
-                <tr>
-                    <th th:text="#{project.name}">.</th>
-                    <th th:text="#{project.price}">.</th>
-                    <th th:text="#{project.link}">.</th>
-                    <th th:text="#{project.startDate}">.</th>
-                    <th th:text="#{project.autoPayment}">.</th>
-                </tr>
-                <tr th:each="project : ${projects}">
-                    <td><a th:href="@{${'/project/edit/' + project.id}}" th:text="${project.name}">1</a></td>
-                    <td th:text="${project.price}"></td>
-                    <td th:text="${project.paymentLink}"></td>
-                    <td th:text="${project.projectStartDate}"></td>
-                    <td th:text="${project.autoPaymentAvailable}? 'да' : 'нет'"></td>
-                </tr>
-            </table>
+            <div class="search-project-button"></div>
         </div>
+        <div class="projects-list" th:each="project : ${projects}">
 
-        <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
+            <a style="display:block" th:href="@{${'/project/edit/' + project.id}}">
+                <div class="project">
+                    <div class="project-name">
+                        <img src="css/images/vk_icon.png" height="30" width="30"/>
+                        <!--<div class="project-name-icon"></div>-->
+                        <div class="project-name-value" th:text="${project.name}"></div>
+                    </div>
+                    <div class="project-pre-stats">
+                        <div class="project-column-data">
+                            <div class="clicks-label project-column-data-value" th:text="${project.uniqueClicksCount}"></div>
+                            <div class="clicks-value project-column-data-text">переходы</div>
+                        </div>
+                        <div class="project-column-data">
+                            <div class="paid-label project-column-data-value" th:text="${project.paidCount}"></div>
+                            <div class="paid-value project-column-data-text">оплатили</div>
+                        </div>
+                        <div class="project-column-data">
+                            <div class="project-money-label project-column-data-value" th:text="${project.totalMoneyOfProject}"></div>
+                            <div class="project-money-value project-column-data-text">сумма</div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!--<table class="table table-striped">-->
+            <!--<tr>-->
+                <!--<th th:text="#{project.name}">.</th>-->
+                <!--<th th:text="#{project.price}">.</th>-->
+                <!--<th th:text="#{project.link}">.</th>-->
+                <!--<th th:text="#{project.startDate}">.</th>-->
+                <!--<th th:text="#{project.autoPayment}">.</th>-->
+            <!--</tr>-->
+            <!--<tr th:each="project : ${projects}">-->
+                <!--<td><a th:href="@{${'/project/edit/' + project.id}}" th:text="${project.name}">1</a></td>-->
+                <!--<td th:text="${project.price}"></td>-->
+                <!--<td th:text="${project.paymentLink}"></td>-->
+                <!--<td th:text="${project.projectStartDate}"></td>-->
+                <!--<td th:text="${project.autoPaymentAvailable}? 'да' : 'нет'"></td>-->
+            <!--</tr>-->
+        <!--</table>-->
     </div>
+    <div style="width:25%"></div>
+
+
+    <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
 </div>
+    <!--<div class="project-flex-container">-->
+        <!--<a th:href="@{/project/new}" class="btn btn-success">-->
+            <!--<i class="fa fa-arrow-circle-o-left"></i>-->
+            <!--<div th:text="#{addNewProject}"> </div>-->
+        <!--</a>-->
+    <!--</div>-->
+
 
 </body>
 </html>

@@ -44,6 +44,39 @@ public class Project extends AbstractDomainClass {
     @Column(name = "price")
     private Double price;
 
+    @Transient
+    private int uniqueClicksCount = 0;
+
+    @Transient
+    private int paidCount = 0;
+
+    @Transient
+    private double totalMoneyOfProject = 0d;
+
+    public int getUniqueClicksCount() {
+        return uniqueClicksCount;
+    }
+
+    public void setUniqueClicksCount(int uniqueClicksCount) {
+        this.uniqueClicksCount = uniqueClicksCount;
+    }
+
+    public int getPaidCount() {
+        return paidCount;
+    }
+
+    public void setPaidCount(int paidCount) {
+        this.paidCount = paidCount;
+    }
+
+    public double getTotalMoneyOfProject() {
+        return totalMoneyOfProject;
+    }
+
+    public void setTotalMoneyOfProject(double totalMoneyOfProject) {
+        this.totalMoneyOfProject = totalMoneyOfProject;
+    }
+
     public String getProjectDescription() {
         return projectDescription;
     }

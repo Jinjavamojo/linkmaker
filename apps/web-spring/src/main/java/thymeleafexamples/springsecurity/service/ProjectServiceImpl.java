@@ -28,6 +28,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<Project> getUserProjectsWithAdditionalInfo() {
+        return projectDao.getUserProjectsWithAdditionalInfo();
+    }
+
+    @Override
     @Transactional
     public boolean update(Project project) {
         return projectDao.update(project);

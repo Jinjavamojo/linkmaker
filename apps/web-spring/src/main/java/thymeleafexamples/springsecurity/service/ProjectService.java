@@ -13,6 +13,8 @@ public interface ProjectService {
 
     List<Project> getUserProjects();
 
+    List<Project> getUserProjectsWithAdditionalInfo();
+
     boolean update(Project project);
 
     Long save(Project project);

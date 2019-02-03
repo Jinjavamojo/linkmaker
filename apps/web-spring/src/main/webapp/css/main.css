@@ -1,6 +1,8 @@
 body {
     font-family: sans;
     font-size: 1em;
+    background-color: #F6F7FF;
+    margin:0;
 }
 
 p.error {
@@ -13,27 +15,102 @@ div.logout {
 }
 
 .loginbox {
+    left:0;
+    right:0;
+    top:50px;
+    position:absolute;
+    margin:auto
+}
 
-left:0;
-right:0;
-top:50px;
-position:absolute;
-margin:auto
+.header {
+    background-color: white;
+    border-bottom: 1px solid #D6D6D6;
+}
+.main-content {
+    display: flex;
+    justify-content:center;
+    flex-direction:row;
+    margin-top:75px;
+
+}
+.header-content {
+    margin:5px;
+    background-color: white;
+    display: flex;
+    justify-content:center;
+    flex-direction:row;
+}
+
+.header .center-panel {
+    width:60%;
+    display: flex;
+    justify-content:space-between;
+    flex-direction:row;
+}
+.left-logo {
+    display: flex;
+    justify-content:flex-start;
+    flex-direction:row;
+}
+.menu-dropdown {
+    width:30px;
+    height:30px;
+    background-size: 10px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(../css/header/dropdown_arrow.png);
+    cursor: pointer;
+
+}
+
+.right-user-info-panel {
+    display: flex;
+    justify-content:flex-end;
+    flex-direction:row;
+    align-items:center;
+}
+.money {
+    font-size:14px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 25px;
+    border: 1px solid #D6D6D6;
+    display: flex;
+    justify-content:center;
+    flex-direction:row;
+    margin-right:50px;
+    align-items:center;
+
+}
+
+.amount {
+    font-family: MyWebFont;
+    align-items: center;
+    display:flex;
+    font-size:16px;
+    padding:2px;
+}
+.user-name {
+
+    font-size:14px;
+    font-family: MyWebFont;
+    font-weight:bold;
+    align-items: center;
+    display:flex;
+    margin-right:10px;
+}
+
+@font-face {
+  font-family: 'MyWebFont';
+  src: url('fonts/ofont_ru_Roboto.ttf');
 }
 
 .project-flex-container {
-display: flex;
-flex-direction: row;
-margin-bottom:10px;
+    display: flex;
+    flex-direction: row;
+    margin-bottom:10px;
 }
 
-.project-flex-container .flex-item {
-}
-
-.start-column-flex-item {
-width:250px;
-
-}
 
 .inline {
      display:inline;
@@ -57,31 +134,26 @@ width:250px;
 }
 
 a .rcorners4  {
-color:black;
-text-decoration:none;
+    color:black;
+    text-decoration:none;
 }
 
 a:hover {
-color:black;
-text-decoration:none;
+    color:black;
+    text-decoration:none;
 }
 a:link {
-color:black;
-text-decoration:none;
+    color:black;
+    text-decoration:none;
 }
 a:visited {
-color:black;
-text-decoration:none;
+    color:black;
+    text-decoration:none;
 }
 a:active {
-color:black;
-text-decoration:none;
+    color:black;
+    text-decoration:none;
 }
-
-/*a:hover .rcorners4:hover {
-color:black;
-text-decoration:none;
-}*/
 
 
 
@@ -113,46 +185,46 @@ text-decoration:none;
 	align-items: flex-end;
 }
 .vk-icon {
-background-image: url(images/vk.png);
- width:30px;
- height:30px;
- background-position: center;
- background-size: cover;
- margin-right:20px;
+    background-image: url(images/vk.png);
+     width:30px;
+     height:30px;
+     background-position: center;
+     background-size: cover;
+     margin-right:20px;
 }
 .people-icon-views {
-background-image: url(images/views.png);
- width:30px;
- height:20px;
- background-position: center;
- background-size: cover;
+        background-image: url(images/views.png);
+     width:30px;
+     height:20px;
+     background-position: center;
+     background-size: cover;
 }
 
 .people-icon-paid {
-background-image: url(images/views.png);
- width:30px;
- height:20px;
- background-position: center;
- background-size: cover;
+    background-image: url(images/views.png);
+     width:30px;
+     height:20px;
+     background-position: center;
+     background-size: cover;
 }
 .people-views-value{
-margin-right:20px;
+    margin-right:20px;
 }
 .people-paid-value {
-margin-right:20px;
+    margin-right:20px;
 }
 
 .money-icon {
-background-image: url(images/money-bag.png);
+    background-image: url(images/money-bag.png);
 
- width:30px;
- height:30px;
- background-position: center;
- background-size: cover;
+     width:30px;
+     height:30px;
+     background-position: center;
+     background-size: cover;
 }
 
 .money-value {
-margin-right:20px;
+    margin-right:20px;
 }
 
 .money-div {
@@ -162,121 +234,101 @@ margin-right:20px;
 
 }
 
-@font-face {
-	font-family: 'Gnuolane Free Cyrillic';
-	src: url('GnuolaneFreeCyrillic.eot');
-	src: local('Gnuolane Free Cyrillic'), local('GnuolaneFreeCyrillic'),
-		url('GnuolaneFreeCyrillic.eot?#iefix') format('embedded-opentype'),
-		url('GnuolaneFreeCyrillic.woff') format('woff'),
-		url('GnuolaneFreeCyrillic.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
+.project {
+    overflow:hidden;
+    display: flex;
+    border: 1px solid #D6D6D6;
+    background-color:white;
+    justify-content:center;
+    flex-direction:row;
+    border-radius: 10px;
+    padding:10px;
+    height:75px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2);
+    margin-bottom:20px;
+    /*, 0 6px 20px 0 rgba(0, 0, 0, 0.19);*/
 }
 
-.project-text {
-//font-family: 'Kautiva Cyrillic';
-//font-weight: normal;
-//font-style: normal;
+.project:hover {
+    background-color:#ffd9b3;
 }
 
-@font-face {
-	font-family: 'Kautiva Cyrillic1';
-	src: url('KautivaCyrillicBlack.eot');
-	src: local('Kautiva Cyrillic Black'), local('KautivaCyrillicBlack'),
-		url('fonts/KautivaCyrillicBlack.eot?#iefix') format('embedded-opentype'),
-		url('fonts/KautivaCyrillicBlack.woff') format('woff'),
-		url('fonts/KautivaCyrillicBlack.ttf') format('truetype');
-	font-weight: 900;
-	font-style: normal;
+.project-column-data {
+    display: flex;
+    justify-content:center;
+    flex-direction:column;
+    align-items: center;
+
+}
+.project-column-data-text {
+    color:#CECECE;
+    font-family: MyWebFont;
+    font-size:18px;
+}
+.project-column-data-value {
+    color:black;
+    font-family: MyWebFont;
+    font-weight:bold;
+    font-size:22px;
 }
 
-@font-face {
-	font-family: 'Kautiva Cyrillic2';
-	src: url('KautivaCyrillicBold.eot');
-	src: local('Kautiva Cyrillic Bold'), local('KautivaCyrillicBold'),
-		url('fonts/KautivaCyrillicBold.eot?#iefix') format('embedded-opentype'),
-		url('KautivaCyrillicBold.woff') format('woff'),
-		url('KautivaCyrillicBold.ttf') format('truetype');
-	font-weight: bold;
-	font-style: normal;
+.project-name {
+    padding-left:10px;
+    width:50%;
+    display: flex;
+    justify-content:flex-start;
+    flex-direction:row;
+    align-items: center;
 }
 
-@font-face {
-	font-family: 'Kautiva Cyrillic';
-	src: url('KautivaCyrillicBook.eot');
-	src: local('Kautiva Cyrillic Book'), local('KautivaCyrillicBook'),
-		url('fonts/KautivaCyrillicBook.eot?#iefix') format('embedded-opentype'),
-		url('fonts/KautivaCyrillicBook.woff') format('woff'),
-		url('fonts/KautivaCyrillicBook.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
+.project-name-value {
+    color:black;
+    font-family: MyWebFont;
+    font-size:18px;
+    margin-left:10px;
 }
-
-
-// Dropdown styles
-.dropbtn {
-    background-color: #3498DB;
-    color: white;
-    padding: 16px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
+.project-name-icon {
+    width:30px;
+    height:30px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(images/vk_icon.png);
 }
-
-.dropbtn:hover, .dropbtn:focus {
-    background-color: #2980B9;
+.project-pre-stats {
+    border-left: 1px solid #D6D6D6;
+    width:50%;
+    display: flex;
+    justify-content:space-around;
+    flex-direction:row;
 }
-
-.dropdown {
-    position: relative;
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f1f1f1;
-    min-width: 160px;
-    overflow: auto;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-.dropdown-content div {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content div {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-
-.dropdown-content div:hover {
-    background-color: #ddd;
+.projects-list {
+    display:flex;
+    flex-direction:column
 }
 
 
-.dropdown a:hover {background-color: #ddd;}
-
-.show {display: block;}
 
 
-#txt-icon {
-background-image: url(images/txt.png);
- width:30px;
- height:30px;
- background-position: center;
- background-size: cover;
- margin-right:20px;
+
+
+
+.project-buttons {
+    display: flex;
+    justify-content:start;
+    flex-direction:row;
+    height:70px;
+}
+
+
+
+.add-project-button {
+    width:20px;
+    height:20px;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(images/add_project.png);
+    align-self: flex-end;
+    margin-bottom:20px;
 }

@@ -1,60 +1,86 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--<link href="../../public/css/bootstrap.min.css"-->
-          <!--th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}"-->
-          <!--rel="stylesheet" media="screen"/>-->
-    <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"-->
-            <!--th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>-->
-    <title>
-    </title>
-</head>
-<body>
 <div class="container">
     <div th:fragment="header">
-        <nav class="navbar navbar-inverse">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a class="navbar-brand" href="#" th:href="@{/}">Link Maker</a>
+
+        <div class="header">
+            <div class="header-content">
+                <div style="width:20%"></div>
+                <div class="center-panel">
+                    <div class="left-logo">
+                        <!--<a class="navbar-brand" href="#" th:href="@{/}">Link Maker</a>-->
+                        <div class="app-logo-icon" th:href="@{/}">app-logo-icon</div>
+                        <div class="app-logo-name">app-logo-name</div>
+                    </div>
+                    <div class="right-user-info-panel">
+                        <div class="money">
+                            <div class="amount">5630</div>
+                            <img th:src="@{/css/header/ruble.png}" height="10" width="10"/>
+                        </div>
+                        <div class="user-name">
+                            <span th:text="${session.user.firstName}"></span>
+                            <span th:text="${session.user.lastName}"></span>
+                        </div>
+                        <img th:src="@{/css/header/user_avatar.png}" height="30" width="30"/>
+                        <div class="user-icon"></div>
+                        <div class="dropdown">
+                            <div class="menu-dropdown" onclick="dropDownUserMenu()"></div>
+                            <div id="myDropdown" class="user-dropdown-content">
+                                <div th:if="${#authorization.expression('isAuthenticated()')}">
+                                    <a>
+                                        <div>Профиль</div>
+                                    </a>
+                                    <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
+                                        <div>Выйти</div>
+                                    </a>
+                                    <form style="visibility: hidden" id="form" method="post" action="#"
+                                          th:action="@{/logout}"></form>
+                                </div>
+                                <!--<a href="#home">Выйти</a>-->
+                                <!--<a href="#about">About</a>-->
+                                <!--<a href="#contact">Contact</a>-->
+                            </div>
+                        </div>
+                        <!--<div class="menu-dropdown" onclick="dropdownUserMenu()"></div>-->
+                    </div>
+
+
                 </div>
+
+                <div style="width:20%"></div>
+            </div>
+
+
+        </div>
+            <!--<li th:if="${#authorization.expression('!isAuthenticated()')}">-->
+                <!--<a href="/login" th:href="@{/login}">-->
+                    <!--<span class="glyphicon glyphicon-log-in"></span>&nbsp;Log in-->
+                <!--</a>-->
+            <!--</li>-->
+            <!--<li th:if="${#authorization.expression('isAuthenticated()')}">
+                <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
+                    <span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout
+                </a>
+                <form style="visibility: hidden" id="form" method="post" action="#"
+                      th:action="@{/logout}"></form>
+            </li>-->
+
+
                 <!--<span th:text ="${#authentication.getPrincipal().getUsername()}"></span>-->
 
 
                 <!--<ul class="nav navbar-nav">-->
-                    <!--<li><a href="#" th:href="@{/singers}">Singers</a></li>-->
-                    <!--<li><a href="#" th:href="@{/singers/new}">Add Singer</a></li>-->
+                <!--<li><a href="#" th:href="@{/singers}">Singers</a></li>-->
+                <!--<li><a href="#" th:href="@{/singers/new}">Add Singer</a></li>-->
                 <!--</ul>-->
 
                 <!--<div th:fragment="logout" class="logout"-->
-                     <!--sec:authorize="isAuthenticated()">-->
-                    <!--Logged user: <span sec:authentication="name">Bob</span> |-->
-                    <!--Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span> |-->
-                    <!--&lt;!&ndash;/* When using CSRF this needs to be a POST */&ndash;&gt;-->
-                    <!--<form th:action="@{/logout}" method="post" style="display:inline"><input type="submit" value="Logout"/></form>-->
+                <!--sec:authorize="isAuthenticated()">-->
+                <!--Logged user: <span sec:authentication="name">Bob</span> |-->
+                <!--Roles: <span sec:authentication="principal.authorities">[ROLE_USER, ROLE_ADMIN]</span> |-->
+                <!--&lt;!&ndash;/* When using CSRF this needs to be a POST */&ndash;&gt;-->
+                <!--<form th:action="@{/logout}" method="post" style="display:inline"><input type="submit" value="Logout"/></form>-->
                 <!--</div>-->
-
-                <ul class="nav navbar-nav navbar-right" >
-                    <li th:if="${#authorization.expression('!isAuthenticated()')}">
-                        <a href="/login" th:href="@{/login}">
-                            <span class="glyphicon glyphicon-log-in"></span>&nbsp;Log in
-                        </a>
-                    </li>
-                    <li th:if="${#authorization.expression('isAuthenticated()')}">
-                        <a href="/logout" th:href="@{/logout}" onclick="$('#form').submit();">
-                            <span class="glyphicon glyphicon-log-out"></span>&nbsp;Logout
-                        </a>
-                        <form style="visibility: hidden" id="form" method="post" action="#" th:action="@{/logout}"></form>
-                    </li>
-                    <span style="color:white"th:text="${session.user.firstName}"></span>
-                    <span th:text="${session.user.lastName}"></span>
-                </ul>
-
-            </div>
-        </nav>
     </div>
 </div>
-</body>
 </html>

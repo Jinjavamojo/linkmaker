@@ -200,8 +200,13 @@ public class MainController {
 
     @ModelAttribute("projects")
     public List<Project> listProjects() {
-        List<Project> userProjects = projectService.getUserProjects();
-        return userProjects;
+        try {
+            return projectService.getUserProjectsWithAdditionalInfo();
+        } catch (Exception e) {
+            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, Utils.getStackTrace(e));
+        }
+        throw new RuntimeException("some error raise above");
     }
 
     @ModelAttribute("activeTab")
