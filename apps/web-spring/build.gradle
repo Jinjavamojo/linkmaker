@@ -1,5 +1,6 @@
 
 apply plugin: 'com.bmuschko.tomcat'
+//apply plugin: 'liquibase'
 
 tomcat {
     httpPort = 8090
@@ -17,7 +18,7 @@ buildscript {
 
     dependencies {
         classpath 'com.bmuschko:gradle-tomcat-plugin:2.4.2'
-
+       // classpath "org.liquibase:liquibase-gradle-plugin:2.0.0"
     }
 
 
@@ -59,6 +60,24 @@ task stopTom() << {
         arg(line: '/c shutdown.bat')
     }
 }
+//
+//def props = new Properties()
+//file("/src/main/resources/persistence-postgres.properties").withInputStream { props.load(it) }
+//
+//def changeLog = "$projectDir/src/main/db/changelog.xml"
+//task('dev') << {
+//    println "executing dev"
+//    liquibase {
+//        activities {
+//            main {
+//                changeLogFile changeLog
+//                url props.getProperty("jdbc.url")
+//                username props.getProperty("jdbc.username")
+//                password props.getProperty("jdbc.password")
+//            }
+//        }
+//    }
+//}
 
 
 repositories {
@@ -95,17 +114,30 @@ dependencies {
     compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.3'
 
 
-    compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.17' //SOAP
+    //compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxws', version: '3.1.17' //SOAP
     compile group: 'org.apache.cxf', name: 'cxf-rt-transports-http', version: '3.1.17'
     providedCompile group: 'javax.servlet', name: 'javax.servlet-api', version:'3.1.0'
     //compile group: 'org.apache.cxf', name: 'cxf-rt-frontend-jaxrs', version: '3.1.17' //REST
 
+    //compile group: 'org.liquibase', name: 'liquibase-core', version: '3.5.3'
+
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
 
 //    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
 //    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
-    
+
     compile 'com.vk.api:sdk:0.5.12'
 
+    //liquibaseRuntime 'org.liquibase:liquibase-core:3.5.3'
+    //liquibaseRuntime 'org.liquibase:liquibase-groovy-dsl:2.0.1'
+    //liquibaseRuntime 'org.postgresql:postgresql:42.2.2'
+
+    compile(group: 'log4j', name: 'log4j', version:'1.2.15') {
+exclude(module: 'jmxtools')
+exclude(module: 'jmxri')
+exclude(module: 'jms')
+    }
 //    compile(group: 'log4j', name: 'log4j', version:'1.2.15') {
 //exclude(module: 'jmxtools')
 //exclude(module: 'jmxri')
