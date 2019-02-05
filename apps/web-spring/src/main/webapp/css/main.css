@@ -47,11 +47,7 @@ div.logout {
     justify-content:space-between;
     flex-direction:row;
 }
-.left-logo {
-    display: flex;
-    justify-content:flex-start;
-    flex-direction:row;
-}
+
 .menu-dropdown {
     width:30px;
     height:30px;
@@ -63,47 +59,8 @@ div.logout {
 
 }
 
-.right-user-info-panel {
-    display: flex;
-    justify-content:flex-end;
-    flex-direction:row;
-    align-items:center;
-}
-.money {
-    font-size:14px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 25px;
-    border: 1px solid #D6D6D6;
-    display: flex;
-    justify-content:center;
-    flex-direction:row;
-    margin-right:50px;
-    align-items:center;
 
-}
 
-.amount {
-    font-family: MyWebFont;
-    align-items: center;
-    display:flex;
-    font-size:16px;
-    padding:2px;
-}
-.user-name {
-
-    font-size:14px;
-    font-family: MyWebFont;
-    font-weight:bold;
-    align-items: center;
-    display:flex;
-    margin-right:10px;
-}
-
-@font-face {
-  font-family: 'MyWebFont';
-  src: url('fonts/ofont_ru_Roboto.ttf');
-}
 
 .project-flex-container {
     display: flex;
@@ -262,12 +219,12 @@ a:active {
 }
 .project-column-data-text {
     color:#CECECE;
-    font-family: MyWebFont;
+    font-family: ROBOTO-REGULAR;
     font-size:18px;
 }
 .project-column-data-value {
     color:black;
-    font-family: MyWebFont;
+    font-family: ROBOTO-REGULAR;
     font-weight:bold;
     font-size:22px;
 }
@@ -283,7 +240,7 @@ a:active {
 
 .project-name-value {
     color:black;
-    font-family: MyWebFont;
+    font-family: ROBOTO-REGULAR;
     font-size:18px;
     margin-left:10px;
 }

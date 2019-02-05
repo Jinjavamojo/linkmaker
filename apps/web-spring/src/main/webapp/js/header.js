@@ -16,3 +16,10 @@ window.onclick = function(event) {
     }
   }
 }
+
+function setMenuActivated(menuId) {
+  var element = document.getElementById(menuId);
+  element.classList.add("menu-item-selected");
+  var elText = element.getElementsByClassName("menu-item-text");
+  elText[0].classList.add("menu-item-text-selected");
+}

@@ -1,23 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <div class="menu-container" th:fragment="menu">
-    <div class="menu-item">
-        <img th:src="@{/css/menu/office.png}"  th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
-        <div id="projects_info">
-            <a th:href="@{${'/index/'}}" th:text="#{projectedit.menu.projects}"></a>
-        </div>
+    <div id="project-menu-item" class="menu-item" th:onclick="'window.location.href=' + '\'' + @{${'/index.html'}} + '\''">
+        <img  class="menu-item-icon"th:src="@{/css/menu/office.png}"  th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
+        <div class="menu-item-text" th:text="#{projectedit.menu.projects}"></div>
     </div>
-    <div class="menu-item">
-        <img th:src="@{/css/menu/statistic.png}" th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
-        <div id="main_info">
-            <a th:href="@{${'/project/edit/'}}" th:text="#{projectedit.menu.main}"></a>
-        </div>
+    <div id="info-menu-item" class="menu-item" th:onclick="'window.location.href=' + '\'' + @{${'/project/edit/'}} + '\''">
+        <img class="menu-item-icon"  th:src="@{/css/menu/statistic.png}" th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
+        <div class="menu-item-text" th:text="#{projectedit.menu.main}"></div>
     </div>
-    <div class="menu-item">
-        <img th:src="@{/css/menu/statistic.png}" th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
-        <div id="statistic">
-            <a th:href="@{/project/statistic/paid}" th:text="#{projectedit.menu.statistic}"></a>
-        </div>
+    <div id="statistic-menu-item" class="menu-item" th:onclick="'window.location.href=' + '\'' + @{/project/statistic/paid} + '\''">
+        <img class="menu-item-icon" th:src="@{/css/menu/statistic.png}" th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
+        <div class="menu-item-text" th:text="#{projectedit.menu.statistic}"></div>
     </div>
 </div>
 </html>

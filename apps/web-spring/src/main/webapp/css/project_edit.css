@@ -73,54 +73,57 @@ menu-dropdown:hover {
     flex-direction:row;
     align-items:center;
 }
-.money {
-    font-size:14px;
-    padding-left: 20px;
-    padding-right: 20px;
-    border-radius: 25px;
-    border: 1px solid #D6D6D6;
-    display: flex;
-    justify-content:center;
-    flex-direction:row;
-    margin-right:50px;
-    align-items:center;
-
-}
-
-.amount {
-    font-family: MyWebFont;
-    align-items: center;
-    display:flex;
-    font-size:16px;
-    padding:2px;
-}
-.user-name {
-
-    font-size:14px;
-    font-family: MyWebFont;
-    font-weight:bold;
-    align-items: center;
-    display:flex;
-    margin-right:10px;
-}
-
-@font-face {
-  font-family: 'MyWebFont';
-  src: url('fonts/ofont_ru_Roboto.ttf');
-}
 
 .project-flex-container {
-display: flex;
-flex-direction: row;
-margin-bottom:10px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom:10px;
 }
+
+.project-flex-container-horizontal {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    margin-bottom:10px;
+}
+
+.project-flex-container-horizontal input {
+    width:auto;
+}
+.start-row-flex-item  {
+    margin-left:10px;
+    font-family: ROBOTO-REGULAR;
+    font-size:18px;
+}
+
 
 .project-flex-container .flex-item {
 }
 
 .start-column-flex-item {
-width:250px;
+    font-family: ROBOTO-REGULAR;
+    font-size:18px;
+}
 
+.save-button {
+  border: none;
+  color: white;
+  padding: 10px 10px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  width:50%;
+  border-radius: 10px;
+  background-color: #FF8F00;
+  font-family: ROBOTO-REGULAR;
+  font-size:22px;
+}
+
+.save-button:hover {
+  background-color:#CE7300;
 }
 
 .inline {
@@ -209,11 +212,13 @@ text-decoration:none;
     display: block;
     padding: 10px;
     font-size: 14px;
-    font-family: MyWebFont;
+    font-family: ROBOTO-BLACK;
 }
 
 .menu-container {
     width:20%;
+    height:100%;
+    padding-bottom:50px;
     background-color: white;
     border-radius: 5px;
     border: 1px solid #D6D6D6;
@@ -224,6 +229,11 @@ text-decoration:none;
     background-color: white;
     border-radius: 5px;
     border: 1px solid #D6D6D6;
+    display:flex;
+    justify-content:center;
+    flex-direction:row;
+    padding-bottom: 50px;
+
 }
 
 .left-side-menu {
@@ -239,6 +249,56 @@ text-decoration:none;
     display: flex;
     justify-content:flex-start;
     flex-direction:row;
-        align-items: center;
-        padding-left:20px;
+    align-items: center;
+    padding-left:20px;
+    font-family: ROBOTO-REGULAR;
+    font-size:16px;
+    padding-top: 7.5px;
+    padding-bottom: 7.5px;
+    cursor: pointer;
+}
+
+.menu-item:hover {
+    background-color:#F1F4FF;
+}
+
+.menu-item-text {
+    margin-left:10px;
+}
+.menu-item-selected {
+    border-left: 1px solid #FF9000;
+    background-color:#F1F4FF;
+}
+.menu-item-text-selected {
+    color:#FDB246;
+}
+
+.edit-form {
+
+    margin-top:20px;
+    margin-bottom:20px;
+}
+
+.generated-link {
+  padding: 12px 0px;
+  margin: 8px 0;
+  color:#FFAB37;
+  font-family: ROBOTO-CONDENSED-REGULAR;
+  font-size: 18px;
+}
+
+.stripped tr:nth-child(even)
+{
+    background-color: #f2f2f2;
+}
+.table {
+    width:100%
+}
+.table-headers {
+    font-size:18px;
+    font-family: ROBOTO-BOLD;
+}
+.table-content {
+    font-family: ROBOTO-REGULAR;
+    font-size:16px;
 }
