@@ -2,15 +2,13 @@ package thymeleafexamples.springsecurity.web.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import thymeleafexamples.springsecurity.config.SessionAttr;
 import thymeleafexamples.springsecurity.entity.VkUser;
 import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 import thymeleafexamples.springsecurity.report.ReportUtils;
+import thymeleafexamples.springsecurity.service.ProjectService;
 import thymeleafexamples.springsecurity.service.VKService;
 
 import java.util.List;
@@ -23,7 +21,8 @@ public class ProjectStatisticController {
     private VKService vkService;
 
 
-
+    @Autowired
+    private ProjectService projectService;
 
     private ModelAndView showLinkedUsersView(int page, ModelAndView model, SessionAttr sessionAttr) {
         model.addObject("activeTab","statistic");
@@ -56,9 +55,14 @@ public class ProjectStatisticController {
     }
 
 
-
     @RequestMapping(value = "/project/statistic/paid",method = RequestMethod.GET)
+    @ExceptionHandler(Exception.class)
     public ModelAndView showPaidUsers(ModelAndView model, SessionAttr sessionAttr) {
+        Long currentProjectId = sessionAttr.currentProjectId;
+        int uniqPaidUsers = projectService.getUniqPaidUsers(currentProjectId);
+        double projectMoneySum = projectService.getProjectMoneySum(currentProjectId);
+        model.addObject("paidUsersCount",uniqPaidUsers);
+        model.addObject("projectMoney",projectMoneySum);
         return getPaidUsersView(0, model,sessionAttr);
     }
 
@@ -89,17 +93,11 @@ public class ProjectStatisticController {
         return model;
     }
 
-
-
-
-
     @RequestMapping(value = "/project/statistic/user/{id}",method = RequestMethod.GET)
     public ModelAndView showUserPayments(@PathVariable("id") Long page, ModelAndView model, SessionAttr sessionAttr) {
         model.addObject("activeTab","statistic");
         model.setViewName("project/statistic_user_payments_details");
         return model;
     }
-
-
 
 }

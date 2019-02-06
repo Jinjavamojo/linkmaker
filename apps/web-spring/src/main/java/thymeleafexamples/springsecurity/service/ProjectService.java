@@ -20,4 +20,10 @@ public interface ProjectService {
     Long save(Project project);
 
     Project getProjectByName(String name);
+
+    double getProjectMoneySum(Long projectId);
+
+    int getUniqPaidUsers(Long projectId);
+
+    int getUniqClick(Long projectId);
 }

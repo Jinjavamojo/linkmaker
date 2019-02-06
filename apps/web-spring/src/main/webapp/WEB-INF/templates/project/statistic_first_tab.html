@@ -41,7 +41,18 @@
                         <!--<li><a href="#">Menu 2</a></li>-->
                         <!--<li><a href="#">Menu 3</a></li>-->
                     <!--</ul>-->
-                    <div class="containter" th:switch="${#lists.size(teacher.courses)}">
+                    <div class="containter" th:switch="${#lists.size(vk_users)}">
+                        <div th:case="'0'" th:text="#{project.noPaidUsers}">
+                        </div>
+                        <div class="vertical-flex" th:case="*">
+                            <div class="horizontal-flex robo-regular-font margin-bottom-10">
+                                <div>Человек оплатило:</div>
+                                <div th:text="${paidUsersCount}"></div>
+                            </div>
+                            <div class="horizontal-flex robo-regular-font margin-bottom-10">
+                                <div>Всего:</div>
+                                <div th:text="${projectMoney}"></div>
+                            </div>
                             <table class="table">
                                 <thead>
                                 <tr class="table-headers">
@@ -75,6 +86,8 @@
                                     <div id="txt_download3" onclick="location.href='paid/report/xlsx';">xlsx</div>
                                 </div>
                             </div>
+                        </div>
+
                     </div>
                 </div>
                 <div style="width:5%"></div>

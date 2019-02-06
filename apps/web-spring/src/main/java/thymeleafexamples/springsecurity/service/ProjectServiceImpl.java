@@ -53,5 +53,25 @@ public class ProjectServiceImpl implements ProjectService {
         return projectDao.getProjectByName(name);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public double getProjectMoneySum(Long projectId) {
+        return projectDao.getProjectMoneySum(projectId);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public int getUniqPaidUsers(Long projectId) {
+        return projectDao.getUniqPaidUsers(projectId);
+    }
+
+
+    @Override
+    @Transactional(readOnly = true)
+    public int getUniqClick(Long projectId) {
+        return projectDao.getUniqClick(projectId);
+    }
+
     //void save(CrmUser crmUser);
 }

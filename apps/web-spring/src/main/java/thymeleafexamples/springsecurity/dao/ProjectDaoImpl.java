@@ -19,6 +19,10 @@ import java.util.List;
 @Repository
 public class ProjectDaoImpl implements ProjectDao {
 
+    //Оплатившие, уникально + сумма
+    private String queryPaymentCountAndSum =
+            "select count(distinct(vk_user)),sum(pa.value) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId AND payment_status = 'SUCCEEDED'  and pr.id = :projectId ";
+
     @Autowired
     private SessionFactory sessionFactory;
 
@@ -66,27 +70,13 @@ public class ProjectDaoImpl implements ProjectDao {
     public List<Project> getUserProjectsWithAdditionalInfo() {
 
         User user = (User)httpSession.getAttribute("user");
-
         List<Project> userProjects = getUserProjects();
 
-        //уникальные переходы( оплатившие входят сюда)
-        String queryUniqueClick =
-                "select count(distinct(vk_user)) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId and pr.id = :projectId ";
-
-        //Оплатившие, уникально + сумма
-        String queryPaymentCountAndSum =
-                "select count(distinct(vk_user)),sum(pa.value) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId AND payment_status = 'SUCCEEDED'  and pr.id = :projectId ";
-
-
         for (Project userProject : userProjects) {
-            Integer uniqueClickCount = 0;
             Integer uniquePaidCount = 0;
             Double projectMoneySum = 0d;
-            uniqueClickCount = ((BigInteger)sessionFactory.getCurrentSession().createNativeQuery(
-                    queryUniqueClick)
-                    .setParameter("projectId", userProject.getId())
-                    .setParameter("userId", user.getId())
-                    .uniqueResult()).intValue();
+
+            int uniqClick = getUniqClick(userProject.getId());
 
             List<Object[]> tuples2 = sessionFactory.getCurrentSession().createNativeQuery(
                     queryPaymentCountAndSum)
@@ -96,15 +86,51 @@ public class ProjectDaoImpl implements ProjectDao {
             Object[] objects = tuples2.get(0);
             uniquePaidCount = ((BigInteger)objects[0]).intValue();
             projectMoneySum = (Double)objects[1];
-            int g = 0;
 
-            userProject.setUniqueClicksCount(uniqueClickCount);
+            userProject.setUniqueClicksCount(uniqClick);
             userProject.setPaidCount(uniquePaidCount);
             if (projectMoneySum != null) {
                 userProject.setTotalMoneyOfProject(projectMoneySum);
             }
         }
         return userProjects;
+    }
+
+    @Override
+    public int getUniqClick(Long projectId) {
+        User user = (User)httpSession.getAttribute("user");
+        //уникальные переходы( оплатившие входят сюда)
+        String queryUniqueClick =
+                "select count(distinct(vk_user)) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId and pr.id = :projectId ";
+        return ((BigInteger)sessionFactory.getCurrentSession().createNativeQuery(
+                queryUniqueClick)
+                .setParameter("projectId", projectId)
+                .setParameter("userId", user.getId())
+                .uniqueResult()).intValue();
+    }
+
+    @Override
+    public double getProjectMoneySum(Long projectId) {
+        User user = (User)httpSession.getAttribute("user");
+        List<Object[]> tuples2 = sessionFactory.getCurrentSession().createNativeQuery(
+                queryPaymentCountAndSum)
+                .setParameter("projectId", projectId)
+                .setParameter("userId", user.getId())
+                .list();
+        Object[] objects = tuples2.get(0);
+        return (Double)objects[1];
+    }
+
+    @Override
+    public int getUniqPaidUsers(Long projectId) {
+        User user = (User)httpSession.getAttribute("user");
+        List<Object[]> tuples2 = sessionFactory.getCurrentSession().createNativeQuery(
+                queryPaymentCountAndSum)
+                .setParameter("projectId", projectId)
+                .setParameter("userId", user.getId())
+                .list();
+        Object[] objects = tuples2.get(0);
+        return ((BigInteger)objects[0]).intValue();
 
     }
 

@@ -17,4 +17,10 @@ public interface ProjectDao {
     boolean update(Project project);
 
     Long save(Project project);
+
+    double getProjectMoneySum(Long projectId);
+
+    int getUniqPaidUsers(Long projectId);
+
+    int getUniqClick(Long projectId);
 }

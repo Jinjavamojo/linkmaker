@@ -243,6 +243,23 @@ input[type=text], input[type=date], input, textarea, select {
     font-family: ROBOTO-BOLD;
 }
 
+.vertical-flex {
+    display:flex;
+    flex-direction:column;
+}
+
+.horizontal-flex  {
+    display:flex;
+    flex-direction:row
+}
+
+.robo-regular-font {
+  font-family: ROBOTO-REGULAR;
+}
+
+.margin-bottom-10 {
+    margin-bottom:10px;
+}
 
 
 
