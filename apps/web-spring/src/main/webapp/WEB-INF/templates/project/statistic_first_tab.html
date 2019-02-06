@@ -23,14 +23,24 @@
         <div style="display:flex; flex-direction:row">
             <div th:replace="~{parts/menu :: menu}"></div>
             <div class="edit-content" id="content">
-                <div style="width:10%"></div>
-                <div style="width:80%; display:flex; flex-direction:column;">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a th:text="#{projectedit.menu.firstTab}" th:href="'#'">1</a></li>
-                        <li><a th:text="#{projectedit.menu.secondTab}" th:href="@{/project/statistic/linked}">2</a></li>
-                        <li><a href="#">Menu 2</a></li>
-                        <li><a href="#">Menu 3</a></li>
-                    </ul>
+                <div style="width:5%"></div>
+                <div style="width:90%; display:flex; flex-direction:column;">
+                    <!--<div class="tabset">-->
+                        <!--<input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>-->
+                        <!--<label for="tab1">Märzen</label>-->
+                        <!--&lt;!&ndash; Tab 2 &ndash;&gt;-->
+                        <!--<input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">-->
+                        <!--<label for="tab2">Rauchbier</label>-->
+                        <!--&lt;!&ndash; Tab 3 &ndash;&gt;-->
+                        <!--<input type="radio" name="tabset" id="tab3" aria-controls="dunkles">-->
+                        <!--<label for="tab3">Dunkles Bock</label>-->
+                    <!--</div>-->
+                    <!--<ul class="nav nav-tabs">-->
+                        <!--<li class="active"><a th:text="#{projectedit.menu.firstTab}" th:href="'#'">1</a></li>-->
+                        <!--<li><a th:text="#{projectedit.menu.secondTab}" th:href="@{/project/statistic/linked}">2</a></li>-->
+                        <!--<li><a href="#">Menu 2</a></li>-->
+                        <!--<li><a href="#">Menu 3</a></li>-->
+                    <!--</ul>-->
                     <div class="containter" th:switch="${#lists.size(teacher.courses)}">
                             <table class="table">
                                 <thead>
@@ -59,15 +69,15 @@
                             </ul>
 
                             <div class="dropdown">
-                                <div onclick="myFunction()" class="dropbtn">Сохранить отчет</div>
-                                <div id="myDropdown" class="dropdown-content">
+                                <div onclick="reportsDropdown()" class="orange-button report-button">Экспорт</div>
+                                <div id="reports-dropdown" class="dropdown-content">
                                     <div id="txt_download2" onclick="location.href='paid/report/txt';">txt</div>
                                     <div id="txt_download3" onclick="location.href='paid/report/xlsx';">xlsx</div>
                                 </div>
                             </div>
                     </div>
                 </div>
-                <div style="width:10%"></div>
+                <div style="width:5%"></div>
 
 
             </div>
@@ -79,12 +89,12 @@
 </div>
 
     <script th:inline="javascript">
-    function myFunction() {
-        document.getElementById("myDropdown").classList.toggle("show");
+    function reportsDropdown() {
+        document.getElementById("reports-dropdown").classList.toggle("show");
     }
 
     window.onclick = function(event) {
-        if (!event.target.matches('.dropbtn')) {
+        if (!event.target.matches('.orange-button')) {
 
         var dropdowns = document.getElementsByClassName("dropdown-content");
         var i;
