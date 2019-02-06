@@ -2,18 +2,12 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/main.css" th:href="@{/css/main.css}" />
-    <link rel="stylesheet"
-          href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <!--<script src="http://cdn.jsdelivr.net/webjars/jquery/3.2.1/jquery.min.js"-->
-    <!--th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>-->
-
-    <title>
-        Projects
-    </title>
-
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script th:src="@{/js/header.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/project_edit.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
 </head>
 <body>
 <div th:replace="~{user/header :: header}">Header</div>
