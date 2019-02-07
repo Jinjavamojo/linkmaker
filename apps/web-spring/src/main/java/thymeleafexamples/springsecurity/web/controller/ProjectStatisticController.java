@@ -15,6 +15,7 @@ import java.util.List;
 
 @Controller
 @SessionAttributes("sessionAttr")
+@ControllerAdvice
 public class ProjectStatisticController {
 
     @Autowired
@@ -56,7 +57,7 @@ public class ProjectStatisticController {
 
 
     @RequestMapping(value = "/project/statistic/paid",method = RequestMethod.GET)
-    @ExceptionHandler(Exception.class)
+    //@ExceptionHandler(ControllerException.class)
     public ModelAndView showPaidUsers(ModelAndView model, SessionAttr sessionAttr) {
         Long currentProjectId = sessionAttr.currentProjectId;
         int uniqPaidUsers = projectService.getUniqPaidUsers(currentProjectId);

@@ -27,9 +27,14 @@ buildscript {
 def tomcatHome='G:/apache-tomcat-8.5.37'
 def tomcat_webapps = tomcatHome + '/webapps'
 
-task startTom(type:Exec) {
+task startTom(type:Exec, dependsOn: ['stopTom']) {
     workingDir (tomcatHome + '/bin')
     commandLine 'cmd', '/c', 'startup.bat'
+}
+
+task stopTom(type:Exec) {
+    workingDir (tomcatHome + '/bin')
+    commandLine 'cmd', '/c', 'shutdown.bat'
 }
 
 task deployWar(type: Copy, dependsOn: ['war']) {
@@ -104,9 +109,8 @@ dependencies {
 
     compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
     compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
-
-//    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.8.2'
-//    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.8.2'
+    compile group: 'org.slf4j', name: 'slf4j-api', version:'1.7.25'
+    compile group: 'org.slf4j', name: 'slf4j-log4j12', version:'1.7.25'
 
     compile 'com.vk.api:sdk:0.5.12'
 
