@@ -9,6 +9,7 @@
     <script th:src="@{/js/header.js}"></script>
     <link rel="stylesheet" th:href="@{/css/project_edit.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
 </head>
 <body>
 <div th:replace="~{user/header :: header}"></div>
@@ -25,6 +26,20 @@
             <div class="edit-content" id="content">
                 <div style="width:5%"></div>
                 <div style="width:90%; display:flex; flex-direction:column;">
+                    <main>
+                        <input id="tab1" type="radio" name="tabs" checked>
+                        <label for="tab1">Codepen</label>
+
+                        <input id="tab2" type="radio" name="tabs">
+                        <label for="tab2">Dribbble</label>
+
+                        <input id="tab3" type="radio" name="tabs">
+                        <label for="tab3">Stack Overflow</label>
+
+                        <input id="tab4" type="radio" name="tabs">
+                        <label for="tab4">Bitbucket</label>
+                    </main>
+
                     <!--<div class="tabset">-->
                         <!--<input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>-->
                         <!--<label for="tab1">Märzen</label>-->

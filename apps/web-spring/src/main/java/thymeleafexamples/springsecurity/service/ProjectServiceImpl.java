@@ -74,4 +74,10 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     //void save(CrmUser crmUser);
+
+    @Override
+    @Transactional(readOnly = true)
+    public double getTotalMoneyOfAllProjects() {
+        return projectDao.getTotalMoneyOfAllProjects();
+    }
 }

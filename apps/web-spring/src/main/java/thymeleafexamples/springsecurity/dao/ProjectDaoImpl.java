@@ -118,6 +118,8 @@ public class ProjectDaoImpl implements ProjectDao {
                 .setParameter("userId", user.getId())
                 .list();
         Object[] objects = tuples2.get(0);
+        if (objects[1] == null)
+            return 0;
         return (Double)objects[1];
     }
 
@@ -157,5 +159,23 @@ public class ProjectDaoImpl implements ProjectDao {
         project.setUser(user);
         currentSession.save(project);
         return project.getId();
+    }
+
+    @Override
+    public double getTotalMoneyOfAllProjects() {
+        User user = (User)httpSession.getAttribute("user");
+
+        if (user == null) {
+            return 0;
+        }
+
+        String query = "select sum(pa.value) from payments pa " +
+                "join projects pr on pa.project = pr.id  " +
+                "where pr.user_id = :userId AND payment_status = 'SUCCEEDED' ";
+
+        return (Double)sessionFactory.getCurrentSession().createNativeQuery(
+                query)
+                .setParameter("userId", user.getId())
+                .uniqueResult();
     }
 }

@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -196,6 +197,13 @@ public class MainController {
         return new ModelAndView("redirect:project/edit/" +  project.getId(), model);
         //return "redirect:/projects/edit/" + project.getId();
         //return "redirect:/index";
+    }
+
+    @ModelAttribute("totalMoney")
+    public String totalMoney() {
+        double totalMoneyOfAllProjects = projectService.getTotalMoneyOfAllProjects();
+        DecimalFormat df = new DecimalFormat("#.");
+        return df.format(totalMoneyOfAllProjects);
     }
 
     @ModelAttribute("projects")

@@ -261,63 +261,81 @@ input[type=text], input[type=date], input, textarea, select {
 .margin-bottom-10 {
     margin-bottom:10px;
 }
-
-
-
-
-
-/* horizontal tabset. Currently not used*/
-.tabset > label {
-  position: relative;
-  display: inline-block;
-  padding: 7px;
-  border: 1px solid transparent;
-  border-bottom: 0;
-  cursor: pointer;
-  font-weight: 600;
+main {
+  max-width: 800px;
+  margin-top:20px;
+  border: 1px solid rgba(0,0,0,.2);
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,.1);
 }
 
-.tabset > label:hover,
-.tabset > input:focus + label {
-  color: #06c;
+label[for*='1']:before { content: '\f09a'; }
+label[for*='2']:before { content: '\f09a'; }
+label[for*='3']:before { content: '\f09a'; }
+label[for*='4']:before { content: '\f09a'; }
+
+section {
+  display: none;
+  padding: 20px 0 0;
+  border-top: 1px solid #abc;
 }
 
-.tabset > label:hover::after,
-.tabset > input:focus + label::after,
-.tabset > input:checked + label::after {
-  background: #06c;
-}
-
-.tabset > input:checked + label {
-  border-color: #ccc;
-  border-bottom: 1px solid #fff;
-  margin-bottom: -1px;
-  border-radius: 5px 5px 0px 0px;
-}
-
-.tab-panel {
-  padding: 30px 0;
-  border-top: 1px solid #ccc;
-}
-
-.tabset {
-  max-width: 65em;
-}
-
-.tabset > input[type="radio"] {
-  position: absolute;
-  left: -200vw;
-}
-
-.tabset .tab-panel {
+input {
   display: none;
 }
 
-.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
-.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
-.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
-.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
-.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
-.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+label {
+  display: inline-block;
+  margin: 0 0 -1px;
+  padding: 15px 25px;
+  font-weight: 600;
+  text-align: center;
+  color: #abc;
+  border: 1px solid transparent;
+}
+
+/*label:before {
+  font-family: fontawesome;
+  font-weight: normal;
+  margin-right: 10px;
+}*/
+
+label[for*='1']:before { content: '\f1cb'; }
+label[for*='2']:before { content: '\f17d'; }
+label[for*='3']:before { content: '\f16c'; }
+label[for*='4']:before { content: '\f171'; }
+
+label:hover {
+  color: #789;
+  cursor: pointer;
+}
+
+input:checked + label {
+  color: #0af;
+  border: 1px solid #abc;
+  border-top: 2px solid #0af;
+  border-bottom: 1px solid #fff;
+}
+
+#tab1:checked ~ #content1,
+#tab2:checked ~ #content2,
+#tab3:checked ~ #content3,
+#tab4:checked ~ #content4 {
   display: block;
+}
+
+@media screen and (max-width: 800px) {
+  label {
+    font-size: 0;
+  }
+  label:before {
+    margin: 0;
+    font-size: 18px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  label {
+    padding: 15px;
+  }
 }

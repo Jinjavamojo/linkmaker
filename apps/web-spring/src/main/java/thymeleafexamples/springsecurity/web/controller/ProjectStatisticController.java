@@ -11,6 +11,7 @@ import thymeleafexamples.springsecurity.report.ReportUtils;
 import thymeleafexamples.springsecurity.service.ProjectService;
 import thymeleafexamples.springsecurity.service.VKService;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 @Controller
@@ -24,6 +25,13 @@ public class ProjectStatisticController {
 
     @Autowired
     private ProjectService projectService;
+
+    @ModelAttribute("totalMoney")
+    public String totalMoney() {
+        double totalMoneyOfAllProjects = projectService.getTotalMoneyOfAllProjects();
+        DecimalFormat df = new DecimalFormat("#");
+        return df.format(totalMoneyOfAllProjects);
+    }
 
     private ModelAndView showLinkedUsersView(int page, ModelAndView model, SessionAttr sessionAttr) {
         model.addObject("activeTab","statistic");

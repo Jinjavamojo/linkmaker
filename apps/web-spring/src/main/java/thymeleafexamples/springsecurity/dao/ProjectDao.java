@@ -23,4 +23,6 @@ public interface ProjectDao {
     int getUniqPaidUsers(Long projectId);
 
     int getUniqClick(Long projectId);
-}
+
+    public double getTotalMoneyOfAllProjects();
+    }
