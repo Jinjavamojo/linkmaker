@@ -8,6 +8,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
 import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.lang.Nullable;
@@ -30,6 +31,10 @@ public class VKDaoImpl implements VKDao {
 
     @Autowired
     private SessionFactory sessionFactory;
+
+    @Autowired
+    private Environment env;
+
 
     @Override
     public VkUser getUserById(Long id) {
@@ -86,7 +91,7 @@ public class VKDaoImpl implements VKDao {
         String query = "SELECT count(*)" +
                 "FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid " +
                 "JOIN projects pr on pr.id = p.project where p.project = :projectId " +
-                "and (p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED') " +
+                "and (p.payment_status = 'SUCCEEDED') " +
                 "and p.value = pr.price";
         BigInteger count = null;
         try {
@@ -121,18 +126,20 @@ public class VKDaoImpl implements VKDao {
     public List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId) {
         String query = "SELECT first_name, last_name, p.created_at, vk_user.vkuserid " +
                 " FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid where p.project = :projectId " +
-                " and (p.payment_status = 'CANCELED' OR p.payment_status = 'PENDING')";
+                " ";
         return getLinkedUsers(query,pageNumber, projectId);
     }
 
     @Override
     public List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId) {
 
-        String query = "SELECT first_name, last_name, vk_user.vkuserid, vk_user.phone_number, vk_user.email " +
+        String query = "SELECT first_name, last_name, vk_user.vkuserid, vk_user.phone_number, vk_user.email,SUM(case when p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END)" +
         "FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid " +
         "JOIN projects pr on pr.id = p.project where p.project = :projectId " +
-        "and (p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED') " +
-        "and p.value = pr.price";
+        "and (p.payment_status = 'SUCCEEDED') " +
+        "and p.value = pr.price " +
+        "GROUP BY vk_user.first_name, vk_user.last_name, vk_user.vkuserid " +
+        "having SUM(case when p.payment_status = 'WAITING_FOR_CAPTURE' OR p.payment_status = 'SUCCEEDED' THEN p.value ELSE 0 END) > 0";
         return getUsersByTemplate(query, pageNumber, projectId);
     }
 
@@ -163,17 +170,17 @@ public class VKDaoImpl implements VKDao {
 
 
     private List<VkUserPaymentDTO> getUsersByTemplate(String query, @Nullable Integer pageNumber, long projectId) {
+        int userPerPageDisplayed = Integer.valueOf(env.getProperty("userPerPageDisplayed"));
         if (pageNumber < 0) {
             throw new RuntimeException("Wrong value");
         }
-        int firstRes = pageNumber * 10;
-        int maxRes = firstRes + 10;
+        int firstRes = pageNumber * userPerPageDisplayed;
         List<Object[]> tuples = sessionFactory.getCurrentSession().createNativeQuery(
                 query)
 //                .addEntity("vk_user", VkUser.class )
 //                .addJoin( "p", "vk_user.payments")
                 .setParameter("projectId", projectId)
-                .setMaxResults(maxRes)
+                .setMaxResults(userPerPageDisplayed)
                 .setFirstResult(firstRes)
                 .list();
 
@@ -185,6 +192,7 @@ public class VKDaoImpl implements VKDao {
             user.setVkUserId(((BigInteger) tuple[2]).longValue());
             user.setUserPhoneNumber((String)tuple[3]);
             user.setUserEmail((String)tuple[4]);
+            user.setSumOfPayments((Double) tuple[5]);
 
             //user.setPaymentsSum((Double) tuple[3]);
             users.add(user);
@@ -194,17 +202,18 @@ public class VKDaoImpl implements VKDao {
 
 
     private List<VkUserPaymentDTO> getLinkedUsers(String query, int pageNumber, long projectId) {
+        int userPerPageDisplayed = Integer.valueOf(env.getProperty("userPerPageDisplayed"));
+
         if (pageNumber < 0) {
             throw new RuntimeException("Wrong value");
         }
-        int firstRes = pageNumber * 10;
-        int maxRes = firstRes + 10;
+        int firstRes = pageNumber * userPerPageDisplayed;
         List<Object[]> tuples = sessionFactory.getCurrentSession().createNativeQuery(
                 query)
 //                .addEntity("vk_user", VkUser.class )
 //                .addJoin( "p", "vk_user.payments")
                 .setParameter("projectId", projectId)
-                .setMaxResults(maxRes)
+                .setMaxResults(userPerPageDisplayed)
                 .setFirstResult(firstRes)
                 .list();
 

@@ -28,4 +28,6 @@ public interface ProjectService {
     int getUniqClick(Long projectId);
 
     double getTotalMoneyOfAllProjects();
+
+    int getUserProjectsCount();
 }

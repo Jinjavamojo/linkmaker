@@ -9,10 +9,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.text.DecimalFormat;
 import java.util.stream.Stream;
 
 @Component
 public class Utils {
+
+    public static DecimalFormat df = new DecimalFormat("#");
 
     private static int paymentsCount;
 

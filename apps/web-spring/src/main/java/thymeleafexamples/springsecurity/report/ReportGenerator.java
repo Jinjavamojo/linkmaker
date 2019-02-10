@@ -178,7 +178,7 @@ public class ReportGenerator {
 
             CellStyle contentRowLightGray2 = book.createCellStyle();
             contentRowLightGray2.cloneStyleFrom(tableTitlesStyle);
-            contentRowLightGray2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
+            //contentRowLightGray2.setFillForegroundColor(IndexedColors.GREY_50_PERCENT.getIndex());
             contentRowLightGray2.setFont(tableContentFont);
 
             int initRowIndex = 6;

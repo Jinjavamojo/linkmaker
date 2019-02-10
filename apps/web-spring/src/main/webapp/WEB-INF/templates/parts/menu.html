@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <div class="menu-container" th:fragment="menu">
-    <div id="project-menu-item" class="menu-item" th:onclick="'window.location.href=' + '\'' + @{${'/index.html'}} + '\''">
-        <img  class="menu-item-icon"th:src="@{/css/menu/office.png}"  th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
-        <div class="menu-item-text" th:text="#{projectedit.menu.projects}"></div>
+    <div id="project-menu-item" style="justify-content: space-between;" class="menu-item" th:onclick="'window.location.href=' + '\'' + @{${'/index.html'}} + '\''">
+        <div style="display: flex;flex-direction: row;">
+            <img  class="menu-item-icon"th:src="@{/css/menu/office.png}"  th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>
+            <div class="menu-item-text" th:text="#{projectedit.menu.projects}"></div>
+        </div>
+        <div style="margin-right:20px;color: gray;">
+            <div th:text="${projectsCount}"></div>
+        </div>
     </div>
     <div id="info-menu-item" class="menu-item" th:onclick="'window.location.href=' + '\'' + @{${'/project/edit/'}} + '\''">
         <img class="menu-item-icon"  th:src="@{/css/menu/statistic.png}" th:height="${@environment.getProperty('menuIconSize')}" th:width="${@environment.getProperty('menuIconSize')}"/>

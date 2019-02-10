@@ -8,6 +8,7 @@
     <script th:src="@{/js/header.js}"></script>
     <link rel="stylesheet" th:href="@{/css/project_edit.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 </head>
 <body>
 <div th:replace="~{user/header :: header}"></div>
@@ -73,7 +74,7 @@
                             <div>
                                 <!--<label for="birthdate" th:text="*{projectStartDate}">Birth date</label>-->
                                 <label class="input">
-                                    <i class="icon-append fa fa-calendar"></i>
+                                    <!--<i class="icon-append fa fa-calendar"></i>-->
                                     <input type="date" name="date" id="birthdate" class="form-control margin-bottom-20" th:value="${#dates.format(project.projectStartDate,'yyyy/MM/dd')}" th:field="*{projectStartDate}"/>
                                 </label>
                                 <!--<h3 th:text="${#dates.format(project.projectStartDate,'yyyy/MM/dd')}"></h3>-->

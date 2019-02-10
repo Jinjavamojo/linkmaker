@@ -51,12 +51,24 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
+    public int getUserProjectsCount() {
+        Session currentSession = sessionFactory.getCurrentSession();
+        User user = (User)httpSession.getAttribute("user");
+        if (user == null) {
+            return 0;
+        }
+        return ((BigInteger) sessionFactory.getCurrentSession().createNativeQuery("SELECT COUNT(*) FROM PROJECTS WHERE user_id=:userId")
+                .setParameter("userId", user.getId()).uniqueResult()).intValue();
+    }
+
+    @Override
     public List<Project> getUserProjects() {
         Session currentSession = sessionFactory.getCurrentSession();
         User user = (User)httpSession.getAttribute("user");
         if (user == null) {
             return new ArrayList<>();
         }
+
         Query<Project> query = currentSession.createQuery("from Project as p where p.user.id = :user", Project.class);
         query.setParameter("user", user.getId());
         //Query<Project> query = currentSession.createQuery("from Project as p where p.user.id = (select id from User where userName = :username)", Project.class);

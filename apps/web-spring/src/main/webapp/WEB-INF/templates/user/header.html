@@ -18,13 +18,14 @@
                     <div class="right-user-info-panel">
                         <div class="money">
                             <div class="amount" th:text="${totalMoney}"></div>
-                            <img th:src="@{/css/header/ruble.png}" height="10" width="10"/>
+                            <i style="font-size: 13px" class="fas fa-ruble-sign"></i>
+
                         </div>
                         <div class="user-name">
                             <span th:text="${session.user.firstName}"></span>
                             <span th:text="${session.user.lastName}"></span>
                         </div>
-                        <img th:src="@{/css/header/user_avatar.png}" height="30" width="30"/>
+                        <img th:src="@{/css/avatars/av1.png}" height="30" width="30"/>
                         <div class="user-icon"></div>
                         <div class="dropdown">
                             <div class="menu-dropdown" onclick="dropDownUserMenu()"></div>

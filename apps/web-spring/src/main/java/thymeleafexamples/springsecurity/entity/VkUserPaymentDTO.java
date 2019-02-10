@@ -32,6 +32,7 @@ public class VkUserPaymentDTO {
     }
 
     private Long vkUserId;
+
     private String vkUserIdString;
 
     private Date lastPaymentDate;
@@ -47,6 +48,16 @@ public class VkUserPaymentDTO {
     private String userEmail;
 
     private String userPhoneNumber;
+
+    private double sumOfPayments;
+
+    public double getSumOfPayments() {
+        return sumOfPayments;
+    }
+
+    public void setSumOfPayments(double sumOfPayments) {
+        this.sumOfPayments = sumOfPayments;
+    }
 
     public String getUserEmail() {
         return userEmail;

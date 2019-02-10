@@ -3,76 +3,130 @@
       xsi:schemaLocation="http://www.thymeleaf.org ">
 
 <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="Content-Type"  content="text/html; charset=UTF-8"/>
+    <meta charset="utf-8"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script>
-$( document ).ready(function() {
-$( "#statistic" ).addClass('active');
-$( $( "#left_side_menu" ).children() ).each(function( index ) {
-    if (this.id != 'statistic') {
-    $(this).removeClass('active');
-    }
-});
-});
-</script>
+    <script th:src="@{/js/header.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/project_edit.css}" />
+    <link rel="stylesheet" th:href="@{/css/header.css}" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 </head>
 <body>
-<div th:replace="~{user/header :: header}">Header</div>
-<div style="display:flex; flex-direction:row">
-    <div th:replace="~{parts/menu :: menu}">Parts</div>
-    <div style="display:flex; flex-direction:column">
-        <ul class="nav nav-tabs">
-            <li ><a th:text="#{projectedit.menu.firstTab}" th:href="@{/project/statistic/paid}">1</a></li>
-            <li class="active" ><a th:text="#{projectedit.menu.secondTab}" th:href="'#'">2</a></li>
-            <li><a href="#">Menu 2</a></li>
-            <li><a href="#">Menu 3</a></li>
-        </ul>
+<div th:replace="~{user/header :: header}"></div>
+<div class="main-edit-content">
+    <div style="width:20%"></div>
+    <div style="width:60%">
+        <script>
+            $( document ).ready(function() {
+                setMenuActivated('statistic-menu-item');
+            });
+        </script>
+        <div style="display:flex; flex-direction:row">
+            <div th:replace="~{parts/menu :: menu}"></div>
+            <div class="edit-content" id="content">
+                <div style="width:5%"></div>
+                <div style="width:90%; display:flex; flex-direction:column;">
+                    <div class="containter">
+                        <div>
+                        </div>
+                        <div class="vertical-flex">
+                            <div class="horizontal-flex robo-regular-font margin-bottom-10">
+                                <div>Количество людей, перешедших по ссылке:</div>
+                                <div style="margin-left:10px" th:text="${uniqClickUsers}"></div>
+                            </div>
+                            <main>
+                                <label for="tab1" th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/paid'}} + '\''">Оплатили</label>
 
-        <div id="content" class="lead">
-            <div class="containter">
-                <div class="card">
-                    <div class="card-block">
-                        <table class="table table-hover">
-                            <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Имя</th>
-                                <th>Фамилия</th>
-                                <th>Дата перехода по ссылке</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr th:each="payment_info  :${payment_infos}">
-                                <td th:href="@{/project/statistic/paid}">
-                                    <a th:text="${payment_info.vkUserId}" th:href="@{'https://vk.com/id' + ${payment_info.vkUserId}}">1</a>
-                                </td>
-                                <td th:text="${payment_info.firstName}"></td>
-                                <td th:text="${payment_info.lastName}"></td>
+                                <label class="selected-label" for="tab2">Перешли по ссылке</label>
+                            </main>
+                            <table class="table">
+                                <thead>
+                                <tr class="table-headers">
+                                    <th style="width:25%">ID</th>
+                                    <th style="width:25%">Имя</th>
+                                    <th style="width:25%">Фамилия</th>
+                                    <th style="width:25%">Дата перехода по ссылке</th>
+                                </tr>
+                                </thead>
+                                <tbody class="table-content stripped">
+                                <tr th:each="payment_info  :${payment_infos}">
+                                    <td class="vk-user-link" th:text="${payment_info.vkUserId}" th:onclick="'window.location.href=' + '\'' + @{'https://vk.com/id' + ${payment_info.vkUserId}} + '\''">
+                                    </td>
+                                    <td th:text="${payment_info.firstName}"></td>
+                                    <td th:text="${payment_info.lastName}"></td>
 
-                                <td th:text="${#dates.format(payment_info.createdAt, 'dd-MMM-yyyy HH:mm:ss')}"></td>
-                                <!--<td th:text="${vk_user.}"></td>-->
-                            </tr>
-                            </tbody>
-                        </table>
-                        <ul th:if="${totalPages} > 1" class="nav nav-pills">
-                            <li class="nav-item" th:each="i : ${#numbers.sequence(0,totalPages-1)}">
-                                <a th:href="@{${'project/statistic/linked/page/' +i}}" th:text="${i}" class="nav-link"></a>
-                            </li>
+                                    <td th:text="${#dates.format(payment_info.createdAt, 'dd-MMM-yyyy HH:mm:ss')}"></td>
+                                    <!--<td th:text="${vk_user.}"></td>-->
+                                </tr>
+                                </tbody>
+                            </table>
 
-                        </ul>
+                            <div style="margin-top:10px" th:if="${totalPages} > 1" class="horizontal-flex robo-regular-font">
+                                <div class="horizontal-flex cursor-pointer active-text-hover" th:if="${prev_page != null}"
+                                     th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/linked/page/' + prev_page}} + '\''">
+                                    <div th:text="${prev_page_text}"></div>
+                                    <div style="margin-left:5px;">←</div>
+                                </div>
+                                <div style="
+                                    border: 1px solid gray;
+                                    border-radius: 5px;
+                                    margin-left:5px;
+                                     margin-right:5px;
+                                     padding-left:10px;
+                                     padding-right:10px;"
+                                     th:if="${current_page != null}" th:text="${current_page_text}" >
+                                </div>
+                                <div class="horizontal-flex cursor-pointer active-text-hover" th:if="${next_page != null}"
+                                     th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/linked/page/' + next_page}} + '\''">
+                                    <div>→</div>
+                                    <div style="margin-left:5px;" th:text="${next_page_text}"></div>
+                                </div>
+                            </div>
+
+                            <div class="dropdown">
+                                <div onclick="reportsDropdown()" class="orange-button report-button">Экспорт</div>
+                                <div id="reports-dropdown" class="dropdown-content">
+                                    <div id="txt_download2" onclick="location.href='paid/report/txt';">txt</div>
+                                    <div id="txt_download3" onclick="location.href='paid/report/xlsx';">xlsx</div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div>
                 </div>
+                <div style="width:5%"></div>
+
+
             </div>
-
         </div>
-
     </div>
+    <div style="width:20%"></div>
 
 
-    <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
 </div>
+
+<script th:inline="javascript">
+    function reportsDropdown() {
+        document.getElementById("reports-dropdown").classList.toggle("show");
+    }
+
+    window.onclick = function(event) {
+        if (!event.target.matches('.orange-button')) {
+
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var i;
+            for (i = 0; i < dropdowns.length; i++) {
+              var openDropdown = dropdowns[i];
+              if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+              }
+            }
+        }
+    }
+</script>
+
+
+<!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
 
 </body>
 </html>

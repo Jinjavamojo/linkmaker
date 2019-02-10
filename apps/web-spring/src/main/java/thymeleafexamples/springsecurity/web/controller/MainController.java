@@ -50,10 +50,9 @@ import thymeleafexamples.springsecurity.service.VKService;
  */
 @Controller
 @SessionAttributes("sessionAttr")
-public class MainController {
+public class MainController extends BaseController {
 
     private Logger logger = Logger.getLogger(getClass().getName());
-
 
     @Autowired
     private ServletContext servletContext; //TODO WHAT IS THIS?
@@ -199,29 +198,6 @@ public class MainController {
         //return "redirect:/index";
     }
 
-    @ModelAttribute("totalMoney")
-    public String totalMoney() {
-        double totalMoneyOfAllProjects = projectService.getTotalMoneyOfAllProjects();
-        DecimalFormat df = new DecimalFormat("#.");
-        return df.format(totalMoneyOfAllProjects);
-    }
-
-    @ModelAttribute("projects")
-    public List<Project> listProjects() {
-        try {
-            return projectService.getUserProjectsWithAdditionalInfo();
-        } catch (Exception e) {
-            logger.log(Level.SEVERE, e.getMessage());
-            logger.log(Level.SEVERE, Utils.getStackTrace(e));
-        }
-        throw new RuntimeException("some error raise above");
-    }
-
-    @ModelAttribute("activeTab")
-    public String activeTab(HttpServletRequest request) {
-        String activeTab = (String) request.getSession().getAttribute("activeTab");
-        return StringUtils.isEmpty(activeTab) ? "main_info" : activeTab;
-    }
 
     @RequestMapping("/index.html")
     public String index() {

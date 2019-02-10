@@ -80,4 +80,10 @@ public class ProjectServiceImpl implements ProjectService {
     public double getTotalMoneyOfAllProjects() {
         return projectDao.getTotalMoneyOfAllProjects();
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public int getUserProjectsCount() {
+        return projectDao.getUserProjectsCount();
+    }
 }

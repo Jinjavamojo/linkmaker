@@ -9,7 +9,7 @@
     <script th:src="@{/js/header.js}"></script>
     <link rel="stylesheet" th:href="@{/css/project_edit.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 </head>
 <body>
 <div th:replace="~{user/header :: header}"></div>
@@ -26,76 +26,68 @@
             <div class="edit-content" id="content">
                 <div style="width:5%"></div>
                 <div style="width:90%; display:flex; flex-direction:column;">
-                    <main>
-                        <input id="tab1" type="radio" name="tabs" checked>
-                        <label for="tab1">Codepen</label>
-
-                        <input id="tab2" type="radio" name="tabs">
-                        <label for="tab2">Dribbble</label>
-
-                        <input id="tab3" type="radio" name="tabs">
-                        <label for="tab3">Stack Overflow</label>
-
-                        <input id="tab4" type="radio" name="tabs">
-                        <label for="tab4">Bitbucket</label>
-                    </main>
-
-                    <!--<div class="tabset">-->
-                        <!--<input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>-->
-                        <!--<label for="tab1">Märzen</label>-->
-                        <!--&lt;!&ndash; Tab 2 &ndash;&gt;-->
-                        <!--<input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">-->
-                        <!--<label for="tab2">Rauchbier</label>-->
-                        <!--&lt;!&ndash; Tab 3 &ndash;&gt;-->
-                        <!--<input type="radio" name="tabset" id="tab3" aria-controls="dunkles">-->
-                        <!--<label for="tab3">Dunkles Bock</label>-->
-                    <!--</div>-->
-                    <!--<ul class="nav nav-tabs">-->
-                        <!--<li class="active"><a th:text="#{projectedit.menu.firstTab}" th:href="'#'">1</a></li>-->
-                        <!--<li><a th:text="#{projectedit.menu.secondTab}" th:href="@{/project/statistic/linked}">2</a></li>-->
-                        <!--<li><a href="#">Menu 2</a></li>-->
-                        <!--<li><a href="#">Menu 3</a></li>-->
-                    <!--</ul>-->
-                    <div class="containter" th:switch="${#lists.size(vk_users)}">
-                        <div th:case="'0'" th:text="#{project.noPaidUsers}">
-                        </div>
-                        <div class="vertical-flex" th:case="*">
+                    <div class="containter" >
+                        <div class="vertical-flex" >
                             <div class="horizontal-flex robo-regular-font margin-bottom-10">
                                 <div>Человек оплатило:</div>
-                                <div th:text="${paidUsersCount}"></div>
+                                <div style="margin-left:10px" th:text="${paidUsersCount}"></div>
                             </div>
                             <div class="horizontal-flex robo-regular-font margin-bottom-10">
-                                <div>Всего:</div>
-                                <div th:text="${projectMoney}"></div>
+                                <div>Получено денег:</div>
+                                <div style="margin-left:10px" th:text="${projectMoney}"></div>
                             </div>
+
+                            <main>
+                                <label class="selected-label" for="tab1">Оплатили</label>
+
+                                <label for="tab2" th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/linked'}} + '\''">Перешли по ссылке</label>
+                            </main>
                             <table class="table">
                                 <thead>
                                 <tr class="table-headers">
-                                    <th style="width:20%">ID</th>
-                                    <th style="width:40%">Имя</th>
-                                    <th style="width:40%">Фамилия</th>
+                                    <th style="width:25%">ID</th>
+                                    <th style="width:25%">Имя</th>
+                                    <th style="width:25%">Фамилия</th>
+                                    <th style="width:25%">Сумма платежей</th>
                                 </tr>
                                 </thead>
                                 <tbody class="table-content stripped">
                                 <tr th:each="vk_user  :${vk_users}">
-                                    <td th:href="@{/project/statistic/paid}">
-                                        <a th:text="${vk_user.vkUserId}"  th:href="@{'https://vk.com/id' + ${vk_user.vkUserId}}">1</a>
-                                    </td>
+                                    <td class="vk-user-link" th:text="${vk_user.vkUserId}" th:onclick="'window.location.href=' + '\'' + @{'https://vk.com/id' + ${vk_user.vkUserId}} + '\''"></td>
                                     <td th:text="${vk_user.firstName}"></td>
                                     <td th:text="${vk_user.lastName}"></td>
+                                    <td th:text="${vk_user.sumOfPayments}"></td>
                                 </tr>
                                 </tbody>
                             </table>
 
-                            <ul th:if="${totalPages} > 1" class="nav nav-pills">
-                                <li class="nav-item" th:each="i : ${#numbers.sequence(0,totalPages-1)}">
-                                    <a th:href="@{${'project/statistic/paid/page' +i}}" th:text="${i}" class="nav-link"></a>
-                                </li>
-
-                            </ul>
+                            <div style="margin-top:10px" th:if="${totalPages} > 1" class="horizontal-flex robo-regular-font">
+                                <div class="horizontal-flex cursor-pointer active-text-hover" th:if="${prev_page != null}"
+                                    th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/paid/page/' + prev_page}} + '\''">
+                                    <div th:text="${prev_page_text}"></div>
+                                    <div style="margin-left:5px;">←</div>
+                                </div>
+                                <div style="
+                                    border: 1px solid gray;
+                                    border-radius: 5px;
+                                    margin-left:5px;
+                                     margin-right:5px;
+                                     padding-left:10px;
+                                     padding-right:10px;"
+                                     th:if="${current_page != null}" th:text="${current_page_text}" >
+                                </div>
+                                <div class="horizontal-flex cursor-pointer active-text-hover" th:if="${next_page != null}"
+                                    th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/paid/page/' + next_page}} + '\''">
+                                    <div>→</div>
+                                    <div style="margin-left:5px;" th:text="${next_page_text}"></div>
+                                </div>
+                            </div>
 
                             <div class="dropdown">
-                                <div onclick="reportsDropdown()" class="orange-button report-button">Экспорт</div>
+                                <div onclick="reportsDropdown()" class="orange-button report-button">
+                                    <i class="fas fa-file-download"></i>
+                                    <div>Экспорт</div>
+                                </div>
                                 <div id="reports-dropdown" class="dropdown-content">
                                     <div id="txt_download2" onclick="location.href='paid/report/txt';">txt</div>
                                     <div id="txt_download3" onclick="location.href='paid/report/xlsx';">xlsx</div>
