@@ -98,8 +98,8 @@
                                             <div class="report-button-text">Экспорт</div>
                                         </div>
                                         <div  id="reports-dropdown" class="report-button-content dropdown-content ">
-                                            <div onclick="location.href='paid/report/txt';">txt</div>
-                                            <div onclick="location.href='paid/report/xlsx';">xls</div>
+                                            <div th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/paid/report/txt'}} + '\''">txt</div>
+                                            <div th:onclick="'window.location.href=' + '\'' + @{${'/project/statistic/paid/report/xlsx'}} + '\''">xls</div>
                                         </div>
                                     </div>
                                 </div>
