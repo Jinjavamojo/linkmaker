@@ -36,7 +36,7 @@ public class VKServiceImpl implements VKService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId) {
+    public List<VkUserPaymentDTO> getVisitedUsersByPage(int pageNumber, long projectId) {
         return vkDao.getVisitedUsersByPage(pageNumber, projectId);
     }
 

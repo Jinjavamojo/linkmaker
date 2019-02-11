@@ -25,7 +25,7 @@ public interface ProjectService {
 
     int getUniqPaidUsers(Long projectId);
 
-    int getUniqClick(Long projectId);
+    int getUniqueVisitedUsersOfProject(Long projectId);
 
     double getTotalMoneyOfAllProjects();
 

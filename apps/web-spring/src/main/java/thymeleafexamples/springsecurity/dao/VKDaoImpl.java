@@ -217,7 +217,7 @@ public class VKDaoImpl implements VKDao {
 
     @Override
     public List<VkUserPaymentDTO> getVisitedUsers(long projectId) {
-        String query = "SELECT vk_user.first_name,vk_user.last_name, CAST(vk_user.vkuserid AS varchar(255)), vk_user.email, p.captured_at " +
+        String query = "SELECT vk_user.first_name,vk_user.last_name, CAST(vk_user.vkuserid AS varchar(255)), vk_user.email, p.created_at " +
                 "FROM vk_users vk_user JOIN payments p ON p.vk_user = vk_user.vkuserid " +
                 "JOIN projects pr on pr.id = p.project where p.project = :projectId " +
                 "and p.payment_status != 'SUCCEEDED' ";
@@ -233,7 +233,7 @@ public class VKDaoImpl implements VKDao {
             user.setLastName((String)tuple[1]);
             user.setVkUserIdString((String)(tuple[2]));
             user.setUserEmail((String)tuple[3]);
-            user.setPaymentCapturedAt((Date) tuple[4]);
+            user.setCreatedAt((Date) tuple[4]);
             users.add(user);
         }
         return users;

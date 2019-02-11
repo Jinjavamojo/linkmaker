@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/reports.js}"></script>
     <link rel="stylesheet" th:href="@{/css/project_edit.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
@@ -56,7 +57,7 @@
                                 </tr>
                                 </thead>
                                 <tbody class="table-content stripped">
-                                <tr th:each="vk_user  :${vk_users}">
+                                <tr th:each="vk_user:${vk_users}">
                                     <td class="vk-user-link" th:text="${vk_user.vkUserId}" th:onclick="'window.location.href=' + '\'' + @{'https://vk.com/id' + ${vk_user.vkUserId}} + '\''"></td>
                                     <td th:text="${vk_user.firstName}"></td>
                                     <td th:text="${vk_user.lastName}"></td>
@@ -87,16 +88,23 @@
                                 </div>
                             </div>
 
-                            <div id="report-dropdown" class="dropdown">
-                                <div onclick="reportsDropdown()" class="orange-button report-button">
-                                    <i class="fas fa-file-download"></i>
-                                    <div>Экспорт</div>
+                            <div th:switch="${#lists.size(vk_users)}">
+                                <div th:case="'0'">
                                 </div>
-                                <div id="reports-dropdown" class="dropdown-content">
-                                    <div id="txt_download2" onclick="location.href='paid/report/txt';">txt</div>
-                                    <div id="txt_download3" onclick="location.href='paid/report/xlsx';">xlsx</div>
+                                <div th:case="*">
+                                    <div class="dropdown">
+                                        <div onclick="reportsDropdown()" class="orange-button report-button horizontal-flex">
+                                            <i class="report-button-icon fas fa-file-download"></i>
+                                            <div class="report-button-text">Экспорт</div>
+                                        </div>
+                                        <div  id="reports-dropdown" class="report-button-content dropdown-content ">
+                                            <div onclick="location.href='paid/report/txt';">txt</div>
+                                            <div onclick="location.href='paid/report/xlsx';">xls</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
+
                         </div>
 
                     </div>
@@ -111,26 +119,6 @@
 
 
 </div>
-
-    <script th:inline="javascript">
-    function reportsDropdown() {
-        document.getElementById("reports-dropdown").classList.toggle("show");
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.matches('#report-dropdown')) {
-
-        var dropdowns = document.getElementsByClassName("report-button-content");
-        var i;
-            for (i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
-            }
-        }
-    }
-</script>
 
 
     <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->

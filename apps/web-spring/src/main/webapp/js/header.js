@@ -3,7 +3,6 @@ function dropDownUserMenu() {
     document.getElementById("myDropdown").classList.toggle("show");
 }
 
-// Close the dropdown if the user clicks outside of it
 window.onclick = function(event) {
   if (!event.target.matches('.menu-dropdown')) {
     var dropdowns = document.getElementsByClassName("user-dropdown-content");
@@ -15,11 +14,4 @@ window.onclick = function(event) {
       }
     }
   }
-}
-
-function setMenuActivated(menuId) {
-  var element = document.getElementById(menuId);
-  element.classList.add("menu-item-selected");
-  var elText = element.getElementsByClassName("menu-item-text");
-  elText[0].classList.add("menu-item-text-selected");
 }

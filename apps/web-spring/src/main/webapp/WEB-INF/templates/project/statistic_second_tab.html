@@ -7,6 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script th:src="@{/js/header.js}"></script>
+    <script th:src="@{/js/reports.js}"></script>
     <link rel="stylesheet" th:href="@{/css/project_edit.css}" />
     <link rel="stylesheet" th:href="@{/css/header.css}" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
@@ -83,15 +84,23 @@
                                 </div>
                             </div>
 
-                            <div class="dropdown">
-                                <div onclick="reportsDropdown()" class="orange-button report-button">Экспорт</div>
-                                <div id="reports-dropdown" class="dropdown-content report-button-content">
-                                    <div id="txt_download2" onclick="location.href='visited/report/txt'">txt</div>
-                                    <div id="txt_download3" onclick="location.href='visited/report/xlsx';">xlsx</div>
+                            <div th:switch="${#lists.size(payment_infos)}">
+                                <div th:case="'0'">
+                                </div>
+                                <div th:case="*">
+                                    <div class="dropdown">
+                                        <div onclick="reportsDropdown()" class="orange-button report-button horizontal-flex">
+                                            <i class="report-button-icon fas fa-file-download"></i>
+                                            <div class="report-button-text">Экспорт</div>
+                                        </div>
+                                        <div id="reports-dropdown" class="dropdown-content report-button-content">
+                                            <div onclick="location.href='visited/report/txt'">txt</div>
+                                            <div onclick="location.href='visited/report/xlsx';">xls</div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 <div style="width:5%"></div>
@@ -104,27 +113,6 @@
 
 
 </div>
-
-<script th:inline="javascript">
-    function reportsDropdown() {
-        document.getElementById("reports-dropdown").classList.toggle("show");
-    }
-
-    window.onclick = function(event) {
-        if (!event.target.matches('.orange-button')) {
-
-        var dropdowns = document.getElementsByClassName("report-button-content");
-        var i;
-            for (i = 0; i < dropdowns.length; i++) {
-              var openDropdown = dropdowns[i];
-              if (openDropdown.classList.contains('show')) {
-                openDropdown.classList.remove('show');
-              }
-            }
-        }
-    }
-</script>
-
 
 <!--<div th:insert="~{fragments/footer :: footer}">&copy; 2017 Iuliana Cosmina & Apress</div>-->
 

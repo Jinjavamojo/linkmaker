@@ -7,13 +7,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import thymeleafexamples.springsecurity.Utils;
 import thymeleafexamples.springsecurity.config.SessionAttr;
-import thymeleafexamples.springsecurity.entity.VkUser;
 import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 import thymeleafexamples.springsecurity.report.ReportUtils;
-import thymeleafexamples.springsecurity.service.ProjectService;
 import thymeleafexamples.springsecurity.service.VKService;
 
-import java.text.DecimalFormat;
 import java.util.List;
 
 @Controller
@@ -39,8 +36,8 @@ public class ProjectStatisticController extends BaseController {
         if (!generatePages(page,model,linkedUserCount)) {
             return model;
         }
-        List<VkUserPaymentDTO> linkedUsers = vkService.getLinkedUsers(page, currentProjectId);
-        int uniqClickUsers = projectService.getUniqClick(currentProjectId);
+        List<VkUserPaymentDTO> linkedUsers = vkService.getVisitedUsersByPage(page, currentProjectId);
+        int uniqClickUsers = projectService.getUniqueVisitedUsersOfProject(currentProjectId);
         model.addObject("uniqClickUsers",uniqClickUsers);
         model.addObject("payment_infos",linkedUsers);
         return model;

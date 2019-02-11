@@ -1,6 +1,5 @@
 package thymeleafexamples.springsecurity.web.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -18,10 +17,7 @@ import thymeleafexamples.springsecurity.service.VKService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,12 +43,12 @@ public class ReportController {
 
     @RequestMapping(value = "/project/statistic/paid/report/xlsx",method = RequestMethod.GET)
     public void exportPaidXlsxReport(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpServletResponse response, HttpServletRequest request) {
-        generateXLSXReport(UserType.PAID,"paid_users_project_" + sessionAttr.projectName + ".xlsx",response,sessionAttr.currentProjectId);
+        generateXLSXReport(UserType.PAID,"paid_users_project_" + sessionAttr.projectName + ".xls",response,sessionAttr.currentProjectId);
     }
 
     @RequestMapping(value = "/project/statistic/visited/report/xlsx",method = RequestMethod.GET)
     public void exportVisitedXlsxReport(@ModelAttribute("sessionAttr") SessionAttr sessionAttr, HttpServletResponse response, HttpServletRequest request) {
-        generateXLSXReport(UserType.VISITED,"visited_users_project_" + sessionAttr.projectName + ".xlsx",response,sessionAttr.currentProjectId);
+        generateXLSXReport(UserType.VISITED,"visited_users_project_" + sessionAttr.projectName + ".xls",response,sessionAttr.currentProjectId);
     }
 
 
@@ -65,13 +61,13 @@ public class ReportController {
             switch (userType) {
                 case PAID: {
                     users = vkService.getAllPaidUsers(currentProjectId);
+                    reportGenerator.generateXLSXForPaidUsers(bos,users, currentProjectId);
                 }break;
                 case VISITED: {
                     users = vkService.getVisitedUsers(currentProjectId);
-
+                    reportGenerator.generateXLSXForVisitedUsers(bos,users, currentProjectId);
                 }break;
             }
-            reportGenerator.generateXLSX(bos,users);
             String transliterated = Utils.transliterate(fileName);
             response.setHeader(HttpHeaders.CONTENT_DISPOSITION,"attachment;filename=" + transliterated);
             MediaType mediaType1 = MediaType.parseMediaType("application/octet-stream");

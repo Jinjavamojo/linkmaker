@@ -69,7 +69,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     @Transactional(readOnly = true)
-    public int getUniqClick(Long projectId) {
+    public int getUniqueVisitedUsersOfProject(Long projectId) {
         return projectDao.getUniqueVisitedUsersOfProject(projectId);
     }
 

@@ -20,6 +20,6 @@ public interface VKService {
     List<String> getVisitedUserIds(long projectId);
     List<VkUserPaymentDTO> getVisitedUsers(long projectId);
     Long getLinkedUserCount(Long projectId);
-    List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
+    List<VkUserPaymentDTO> getVisitedUsersByPage(int pageNumber, long projectId);
 
 }
