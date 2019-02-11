@@ -7,4 +7,5 @@
                    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
     <include file="2018-12-12--01-init_schema.sql" relativeToChangelogFile="true"/>
     <include file="2018-12-12--02-add_test_data.sql" relativeToChangelogFile="true"/>
+    <include file="2019-02-11--03-add_test_data2.sql" relativeToChangelogFile="true"/>
 </databaseChangeLog>

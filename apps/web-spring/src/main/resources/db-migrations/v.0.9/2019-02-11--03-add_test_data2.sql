@@ -6,7 +6,9 @@ insert into users(id,username,password, first_name,last_name) values
 ('-4','test','$2a$10$u0bZFDkQPJmqPvKgyNEEoODZmAbPmMfGoFkrozfI8d3x0jsFRNBjO','Имя','Фамилия');
 
 INSERT INTO users_roles (user_id,role_id) VALUES (-4, -4);
+INSERT INTO users_roles (user_id,role_id) VALUES (-4, -3);
 
+update users set username='admin8713' where username='admin';
 
 insert into projects(id,name,user_id,price) values(-3000, 'На пути к мечте',-4,30000);
 
@@ -75,34 +77,34 @@ insert into payments(yandex_payment_id, currency,   value,   paid,    project,  
 ('ya12','RUB',30000,true,-3000,-12, 'SUCCEEDED');
 
 
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya13','RUB',30000,true,-3000,-13, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya14','RUB',30000,true,-3000,-14, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya15','RUB',30000,true,-3000,-15, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya16','RUB',30000,true,-3000,-16, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya17','RUB',30000,true,-3000,-17, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya18','RUB',30000,true,-3000,-18, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya19','RUB',30000,true,-3000,-19, 'CANCELED');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status, created_at) values
+('ya13','RUB',30000,true,-3000,-13, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya14','RUB',30000,true,-3000,-14, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya15','RUB',30000,true,-3000,-15, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya16','RUB',30000,true,-3000,-16, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya17','RUB',30000,true,-3000,-17, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya18','RUB',30000,true,-3000,-18, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya19','RUB',30000,true,-3000,-19, 'CANCELED','2019-02-11 23:10:03.912');
 
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya20','RUB',30000,true,-3000,-20, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya21','RUB',30000,true,-3000,-21, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya22','RUB',30000,true,-3000,-22, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya23','RUB',30000,true,-3000,-23, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya24','RUB',30000,true,-3000,-24, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya25','RUB',30000,true,-3000,-25, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya26','RUB',30000,true,-3000,-26, 'CANCELED');
-insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status) values
-('ya27','RUB',30000,true,-3000,-27, 'CANCELED');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya20','RUB',30000,true,-3000,-20, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya21','RUB',30000,true,-3000,-21, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya22','RUB',30000,true,-3000,-22, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya23','RUB',30000,true,-3000,-23, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya24','RUB',30000,true,-3000,-24, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya25','RUB',30000,true,-3000,-25, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya26','RUB',30000,true,-3000,-26, 'CANCELED','2019-02-11 23:10:03.912');
+insert into payments(yandex_payment_id, currency,   value,   paid,    project,   vk_user,   payment_status,created_at) values
+('ya27','RUB',30000,true,-3000,-27, 'CANCELED','2019-02-11 23:10:03.912');

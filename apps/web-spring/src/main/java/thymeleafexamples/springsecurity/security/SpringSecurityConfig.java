@@ -58,12 +58,12 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         filter.setForceEncoding(true);
         http
                 .authorizeRequests()
-                .antMatchers("/pay/**").hasAnyRole("ANONYMOUS","EMPLOYEE","ADMIN")
+                .antMatchers("/pay/**").hasAnyRole("ANONYMOUS","EMPLOYEE","ADMIN","TEST_ROLE")
                 .antMatchers("/error.html").anonymous()
-                .antMatchers("/index.html").hasAnyRole("EMPLOYEE","ADMIN")
-                .antMatchers("/project/**").hasAnyRole("EMPLOYEE","ADMIN")
+                .antMatchers("/index.html").hasAnyRole("EMPLOYEE","ADMIN","TEST_ROLE")
+                .antMatchers("/project/**").hasAnyRole("EMPLOYEE","ADMIN","TEST_ROLE")
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/shared/**").hasAnyRole("EMPLOYEE","ADMIN")
+                .antMatchers("/shared/**").hasAnyRole("EMPLOYEE","ADMIN","TEST_ROLE")
 
             .and()
                 .formLogin()
