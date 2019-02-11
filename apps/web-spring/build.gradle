@@ -24,34 +24,48 @@ buildscript {
 
 }
 
-def tomcatHome='G:/apache-tomcat-8.5.37'
+
+def tomcatHome='D:/ll/apache-tomcat-8.5.34'
 def tomcat_webapps = tomcatHome + '/webapps'
 
-task startTom(type:Exec, dependsOn: ['stopTom']) {
-    workingDir (tomcatHome + '/bin')
-    commandLine 'cmd', '/c', 'startup.bat'
-}
-
-task stopTom(type:Exec) {
-    workingDir (tomcatHome + '/bin')
-    commandLine 'cmd', '/c', 'shutdown.bat'
+task startTom(dependsOn: ['stopTom','deployWar']) << {
+    ant.exec(osfamily: 'windows', dir: "", executable: 'cmd.exe', spawn: true) {
+        env(key: 'NOPAUSE', value: true)
+        arg(line: '/c run.bat ' )
+    }
 }
 
 task deployWar(type: Copy, dependsOn: ['war']) {
-    from war.archiveFile
+    from war.archivePath
     into tomcat_webapps
 }
 
-task ech()  {
+task undeploy() << {
+    delete "${tomcatHome}/webapps/$project.name"
+    delete "${tomcatHome}/webapps/$project.name" + ".war"
+}
+
+task ech() << {
     println "$project.name"
 }
 
+task redeploy(type: Copy,  dependsOn: ['war']) {
+    from war.archivePath
+    into tomcat_webapps
+}
+
+task stopTom() << {
+    ant.exec(osfamily: 'windows', dir: "${tomcatHome}/bin", executable: 'cmd.exe', spawn: true) {
+        env(key: 'NOPAUSE', value: true)
+        arg(line: '/c shutdown.bat')
+    }
+}
 //
 //def props = new Properties()
 //file("/src/main/resources/persistence-postgres.properties").withInputStream { props.load(it) }
 //
 //def changeLog = "$projectDir/src/main/db/changelog.xml"
-//task('dev') << { 
+//task('dev') << {
 //    println "executing dev"
 //    liquibase {
 //        activities {
