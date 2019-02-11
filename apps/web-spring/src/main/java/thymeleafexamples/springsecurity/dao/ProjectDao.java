@@ -22,7 +22,7 @@ public interface ProjectDao {
 
     int getUniqPaidUsers(Long projectId);
 
-    int getUniqClick(Long projectId);
+    int getUniqueVisitedUsersOfProject(Long projectId);
 
     double getTotalMoneyOfAllProjects();
 

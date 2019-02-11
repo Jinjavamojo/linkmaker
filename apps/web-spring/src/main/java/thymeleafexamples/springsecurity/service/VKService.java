@@ -11,17 +11,15 @@ public interface VKService {
 
     void saveUserIfNotExists(VkUser user);
 
+    List<String> getPaidUserIds(long projectId);
+    List<VkUserPaymentDTO> getAllPaidUsers(long projectId);
+    Long getPaidUsersCount(Long projectId);
+    Long getParticallyPaidUserCount(Long projectId);
     List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId);
 
-    List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
-
-    Long getPaidUsersCount(Long projectId);
-
+    List<String> getVisitedUserIds(long projectId);
+    List<VkUserPaymentDTO> getVisitedUsers(long projectId);
     Long getLinkedUserCount(Long projectId);
-
-    List<String> getPaidUserIds(long projectId);
-
-    List<VkUserPaymentDTO> getAllPaidUsers(long projectId);
-
+    List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
 
 }

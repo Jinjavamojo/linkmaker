@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
 @Component
@@ -18,6 +20,78 @@ public class Utils {
     public static DecimalFormat df = new DecimalFormat("#");
 
     private static int paymentsCount;
+
+    private static Map<Character,String> map;
+    static {
+        map = new HashMap<>();
+        map.put('а',"a");
+        map.put('б',"b");
+        map.put('в',"v");
+        map.put('г',"g");
+        map.put('д',"d");
+        map.put('е',"e");
+        map.put('ё',"e");
+        map.put('ж',"zh");
+        map.put('з',"z");
+        map.put('и',"i");
+        map.put('й',"y");
+        map.put('к',"k");
+        map.put('л',"l");
+        map.put('м',"m");
+        map.put('н',"n");
+        map.put('о',"o");
+        map.put('п',"p");
+        map.put('р',"r");
+        map.put('с',"s");
+        map.put('т',"t");
+        map.put('у',"u");
+        map.put('ф',"f");
+        map.put('х',"h");
+        map.put('ц',"ts");
+        map.put('ч',"ch");
+        map.put('ш',"sh");
+        map.put('щ',"sch");
+        map.put('ы',"i");
+        map.put('ь',"");
+        map.put('ъ',"");
+        map.put('э',"e");
+        map.put('ю',"ju");
+        map.put('я',"ja");
+
+        map.put('А',"A");
+        map.put('Б',"B");
+        map.put('В',"V");
+        map.put('Г',"G");
+        map.put('Д',"D");
+        map.put('Е',"E");
+        map.put('Ё',"E");
+        map.put('Ж',"ZH");
+        map.put('З',"Z");
+        map.put('И',"I");
+        map.put('Й',"Y");
+        map.put('К',"K");
+        map.put('Л',"L");
+        map.put('М',"M");
+        map.put('Н',"N");
+        map.put('О',"O");
+        map.put('П',"P");
+        map.put('Р',"R");
+        map.put('С',"S");
+        map.put('Т',"T");
+        map.put('У',"U");
+        map.put('Ф',"F");
+        map.put('Х',"H");
+        map.put('Ц',"TS");
+        map.put('Ч',"CH");
+        map.put('Ш',"SH");
+        map.put('Щ',"SCH");
+        map.put('Ы',"I");
+        map.put('Ь',"");
+        map.put('Ъ',"");
+        map.put('Э',"E");
+        map.put('Ю',"JU");
+        map.put('Я',"JA");
+    }
 
     @Value("${stackTraceLogDepth}")
     public void setDatabase(int value) {
@@ -60,5 +134,22 @@ public class Utils {
             e.printStackTrace();
         }
         return contentBuilder.toString();
+    }
+
+    public static String transliterate(String message){
+
+        StringBuilder builder = new StringBuilder();
+
+        for (int i = 0; i < message.length(); i++) {
+            char c = message.charAt(i);
+            String replacement = map.get(c);
+            if (replacement != null) {
+                builder.append(replacement);
+            } else {
+                builder.append(c);
+            }
+        }
+        return builder.toString();
+
     }
 }

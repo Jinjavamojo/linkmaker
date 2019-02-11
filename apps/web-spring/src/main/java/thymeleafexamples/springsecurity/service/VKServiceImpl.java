@@ -31,13 +31,13 @@ public class VKServiceImpl implements VKService {
     @Override
     @Transactional(readOnly = true)
     public List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId) {
-        return vkDao.getPaidUsers(pageNumber, projectId);
+        return vkDao.getPaidUsersByPage(pageNumber, projectId);
     }
 
     @Override
     @Transactional(readOnly = true)
     public List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId) {
-        return vkDao.getLinkedUsers(pageNumber, projectId);
+        return vkDao.getVisitedUsersByPage(pageNumber, projectId);
     }
 
     @Override
@@ -48,8 +48,20 @@ public class VKServiceImpl implements VKService {
 
     @Override
     @Transactional(readOnly = true)
+    public List<String> getVisitedUserIds(long projectId) {
+        return vkDao.getVisitedUserIds(projectId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<VkUserPaymentDTO> getAllPaidUsers(long projectId) {
-        return vkDao.getAllPaidUsers(projectId);
+        return vkDao.getPaidUsers(projectId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<VkUserPaymentDTO> getVisitedUsers(long projectId) {
+        return vkDao.getVisitedUsers(projectId);
     }
 
     @Override
@@ -60,7 +72,13 @@ public class VKServiceImpl implements VKService {
 
     @Override
     @Transactional(readOnly = true)
+    public Long getParticallyPaidUserCount(Long projectId) {
+        return vkDao.getParticallyPaidUserCount(projectId);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public Long getLinkedUserCount(Long projectId) {
-        return vkDao.getLinkedUsersCount(projectId);
+        return vkDao.getVisitedUsersCount(projectId);
     }
 }

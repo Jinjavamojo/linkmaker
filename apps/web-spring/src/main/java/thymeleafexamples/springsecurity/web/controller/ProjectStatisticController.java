@@ -128,7 +128,9 @@ public class ProjectStatisticController extends BaseController {
             return model;
         }
         List<VkUserPaymentDTO> userPagination = vkService.getPaidUsers(displayedPage,currentProjectId);
+        Long particallyPaidUserCount = vkService.getParticallyPaidUserCount(currentProjectId);
         model.addObject("vk_users",userPagination);
+        model.addObject("particallyPaidUserCount",particallyPaidUserCount);
         model.addObject("report_types", ReportUtils.getTypes());
         return model;
     }

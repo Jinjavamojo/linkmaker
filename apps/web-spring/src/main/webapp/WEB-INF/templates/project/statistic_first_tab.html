@@ -33,6 +33,10 @@
                                 <div style="margin-left:10px" th:text="${paidUsersCount}"></div>
                             </div>
                             <div class="horizontal-flex robo-regular-font margin-bottom-10">
+                                <div>Частично оплатило:</div>
+                                <div style="margin-left:10px" th:text="${particallyPaidUserCount}"></div>
+                            </div>
+                            <div class="horizontal-flex robo-regular-font margin-bottom-10">
                                 <div>Получено денег:</div>
                                 <div style="margin-left:10px" th:text="${projectMoney}"></div>
                             </div>
@@ -83,7 +87,7 @@
                                 </div>
                             </div>
 
-                            <div class="dropdown">
+                            <div id="report-dropdown" class="dropdown">
                                 <div onclick="reportsDropdown()" class="orange-button report-button">
                                     <i class="fas fa-file-download"></i>
                                     <div>Экспорт</div>
@@ -114,9 +118,9 @@
     }
 
     window.onclick = function(event) {
-        if (!event.target.matches('.orange-button')) {
+        if (!event.target.matches('#report-dropdown')) {
 
-        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var dropdowns = document.getElementsByClassName("report-button-content");
         var i;
             for (i = 0; i < dropdowns.length; i++) {
               var openDropdown = dropdowns[i];

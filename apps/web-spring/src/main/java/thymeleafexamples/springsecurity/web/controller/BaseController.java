@@ -40,6 +40,6 @@ public class BaseController {
             logger.log(Level.SEVERE, e.getMessage());
             logger.log(Level.SEVERE, Utils.getStackTrace(e));
         }
-        throw new RuntimeException("some error raise above");
+        return null;
     }
 }

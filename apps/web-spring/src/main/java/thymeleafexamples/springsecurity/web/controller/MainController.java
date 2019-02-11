@@ -165,6 +165,7 @@ public class MainController extends BaseController {
         model.addObject("activeTab","main_info");
         //model.addObject("sessionAttr", sessionAttr);
         sessionAttr.currentProjectId = id;
+        sessionAttr.projectName = byId.getName();
         model.setViewName("project/project");
         model.addObject("name", byId.getName());
         model.addObject("baseUrl", baseUrl);

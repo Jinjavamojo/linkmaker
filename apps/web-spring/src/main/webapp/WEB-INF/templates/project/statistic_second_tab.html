@@ -31,7 +31,7 @@
                         </div>
                         <div class="vertical-flex">
                             <div class="horizontal-flex robo-regular-font margin-bottom-10">
-                                <div>Количество людей, перешедших по ссылке:</div>
+                                <div>Уникальных переходов:</div>
                                 <div style="margin-left:10px" th:text="${uniqClickUsers}"></div>
                             </div>
                             <main>
@@ -85,9 +85,9 @@
 
                             <div class="dropdown">
                                 <div onclick="reportsDropdown()" class="orange-button report-button">Экспорт</div>
-                                <div id="reports-dropdown" class="dropdown-content">
-                                    <div id="txt_download2" onclick="location.href='paid/report/txt';">txt</div>
-                                    <div id="txt_download3" onclick="location.href='paid/report/xlsx';">xlsx</div>
+                                <div id="reports-dropdown" class="dropdown-content report-button-content">
+                                    <div id="txt_download2" onclick="location.href='visited/report/txt'">txt</div>
+                                    <div id="txt_download3" onclick="location.href='visited/report/xlsx';">xlsx</div>
                                 </div>
                             </div>
                         </div>
@@ -113,7 +113,7 @@
     window.onclick = function(event) {
         if (!event.target.matches('.orange-button')) {
 
-        var dropdowns = document.getElementsByClassName("dropdown-content");
+        var dropdowns = document.getElementsByClassName("report-button-content");
         var i;
             for (i = 0; i < dropdowns.length; i++) {
               var openDropdown = dropdowns[i];

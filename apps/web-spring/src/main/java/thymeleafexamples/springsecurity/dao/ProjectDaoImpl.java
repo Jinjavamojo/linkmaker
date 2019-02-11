@@ -6,14 +6,11 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import thymeleafexamples.springsecurity.entity.Project;
-import thymeleafexamples.springsecurity.entity.Role;
 import thymeleafexamples.springsecurity.entity.User;
-import thymeleafexamples.springsecurity.entity.VkUserPaymentDTO;
 
 import javax.servlet.http.HttpSession;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -21,7 +18,7 @@ public class ProjectDaoImpl implements ProjectDao {
 
     //Оплатившие, уникально + сумма
     private String queryPaymentCountAndSum =
-            "select count(distinct(vk_user)),sum(pa.value) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId AND payment_status = 'SUCCEEDED'  and pr.id = :projectId ";
+            "select count(distinct(vk_user)),sum(pa.value) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId AND payment_status = 'SUCCEEDED'  and pr.id = :projectId and pa.value >= pr.price";
 
     @Autowired
     private SessionFactory sessionFactory;
@@ -88,7 +85,7 @@ public class ProjectDaoImpl implements ProjectDao {
             Integer uniquePaidCount = 0;
             Double projectMoneySum = 0d;
 
-            int uniqClick = getUniqClick(userProject.getId());
+            int uniqClick = getUniqueVisitedUsersOfProject(userProject.getId());
 
             List<Object[]> tuples2 = sessionFactory.getCurrentSession().createNativeQuery(
                     queryPaymentCountAndSum)
@@ -109,11 +106,11 @@ public class ProjectDaoImpl implements ProjectDao {
     }
 
     @Override
-    public int getUniqClick(Long projectId) {
+    public int getUniqueVisitedUsersOfProject(Long projectId) {
         User user = (User)httpSession.getAttribute("user");
-        //уникальные переходы( оплатившие входят сюда)
+        //уникальные переходы( оплатившие не входят сюда)
         String queryUniqueClick =
-                "select count(distinct(vk_user)) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId and pr.id = :projectId ";
+                "select count(distinct(vk_user)) from payments pa join projects pr on pa.project = pr.id  where pr.user_id = :userId and pr.id = :projectId and pa.payment_status != 'SUCCEEDED' ";
         return ((BigInteger)sessionFactory.getCurrentSession().createNativeQuery(
                 queryUniqueClick)
                 .setParameter("projectId", projectId)

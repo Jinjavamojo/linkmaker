@@ -12,15 +12,15 @@ public interface VKDao {
 
     VkUser getUserById(Long id);
 
-    List<VkUserPaymentDTO> getPaidUsers(int pageNumber, long projectId);
-    List<VkUserPaymentDTO> getLinkedUsers(int pageNumber, long projectId);
-
+    List<VkUserPaymentDTO> getPaidUsers(long projectId);
+    List<VkUserPaymentDTO> getPaidUsersByPage(int pageNumber, long projectId);
     List<String> getPaidUserIds(long projectId);
-
     Long getPaidUsersCount(long projectId);
+    Long getParticallyPaidUserCount(long projectId);
 
-    Long getLinkedUsersCount(long projectId);
-
-    List<VkUserPaymentDTO> getAllPaidUsers(long projectId);
+    Long getVisitedUsersCount(long projectId);
+    List<VkUserPaymentDTO> getVisitedUsersByPage(int pageNumber, long projectId);
+    List<String> getVisitedUserIds(long projectId);
+    List<VkUserPaymentDTO> getVisitedUsers(long projectId);
 
 }
