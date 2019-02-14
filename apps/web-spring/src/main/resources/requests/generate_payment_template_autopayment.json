@@ -12,5 +12,5 @@
   },
   "capture": true,
   "description": "${description}",
-  "save_payment_method": false
+  "save_payment_method": true
 }
