@@ -19,7 +19,7 @@ public class Utils {
 
     public static DecimalFormat df = new DecimalFormat("#");
 
-    private static int paymentsCount;
+    private static int stackTraceMaxCount;
 
     private static Map<Character,String> map;
     static {
@@ -95,13 +95,13 @@ public class Utils {
 
     @Value("${stackTraceLogDepth}")
     public void setDatabase(int value) {
-        paymentsCount = value;
+        stackTraceMaxCount = value;
     }
 
     public static String getStackTrace(Exception e) {
         StackTraceElement[] stackTrace = e.getStackTrace();
         StringBuilder b = new StringBuilder();
-        int max = stackTrace.length <= paymentsCount ? stackTrace.length : paymentsCount;
+        int max = stackTrace.length <= stackTraceMaxCount ? stackTrace.length : stackTraceMaxCount;
         for (int i = 0; i < max; i++) {
              b.append("     at ")
                      .append(stackTrace[i].getClassName())

@@ -182,9 +182,13 @@ public class ProjectDaoImpl implements ProjectDao {
                 "join projects pr on pa.project = pr.id  " +
                 "where pr.user_id = :userId AND payment_status = 'SUCCEEDED' ";
 
-        return (Double)sessionFactory.getCurrentSession().createNativeQuery(
+        Object sumOfPaymentsOfAllProjects = sessionFactory.getCurrentSession().createNativeQuery(
                 query)
                 .setParameter("userId", user.getId())
                 .uniqueResult();
+        if (sumOfPaymentsOfAllProjects == null) {
+            return 0;
+        }
+        return (Double)sumOfPaymentsOfAllProjects;
     }
 }

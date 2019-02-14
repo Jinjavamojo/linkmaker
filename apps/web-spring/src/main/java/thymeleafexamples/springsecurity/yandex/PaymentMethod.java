@@ -12,13 +12,13 @@ public class PaymentMethod {
     @Column(name = "payment_method_id")
     private String paymentMethodId;
 
+    @Column(name = "payment_method_saved")
     private Boolean saved;
 
     private String title;
 
     @Embedded
     private Card card;
-
 
     public PaymentType getPaymentType() {
         return paymentType;

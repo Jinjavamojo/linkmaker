@@ -11,5 +11,6 @@
     "return_url": "${redirect_link}"
   },
   "capture": true,
-  "description": "${description}"
+  "description": "${description}",
+  "save_payment_method": true
 }
